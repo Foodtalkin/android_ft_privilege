@@ -16,6 +16,9 @@ android {
             res.srcDirs = [
                     'src/main/res/layouts/custom',
                     'src/main/res/layouts/activities',
+                    'src/main/res/drawables/shapes',
+                    'src/main/res/drawables/icons',
+                    'src/main/res/drawables',
                     'src/main/res/layouts',
                     'src/main/res'
             ]

@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context="in.foodtalk.privilege.Login"
     android:background="@color/dark_grey">
+    <include
+        android:id="@+id/action_bar_layout"
+        layout="@layout/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        />
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/action_bar_layout">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,15 +28,217 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Verify OTP"
+                android:textSize="18sp"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Please enter 4 digit OTP \n sent to +91 978452154"
                 android:textColor="@color/warm_grey"/>
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:maxLength="1"
+                    android:background="@drawable/rect_grey"
+                    android:id="@+id/editText" />
+
+                <TextView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:maxLength="1"
+                android:background="@drawable/rect_grey"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:maxLength="1"
+                android:background="@drawable/rect_grey"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:maxLength="1"
+                android:background="@drawable/rect_grey"
+                android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend OTP"
+            android:layout_gravity="center"
+            android:textColor="@color/bright_sky_blue"
+            android:layout_marginTop="40dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_below="@+id/content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight="1"
+                android:textSize="@dimen/keypad_txt_size"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:padding="@dimen/keypad_padding"/>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
