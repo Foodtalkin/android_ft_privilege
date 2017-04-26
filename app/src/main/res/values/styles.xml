@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!--Text Styles-->
+    <style name="TextStyleActionbar">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/light_gold</item>
+    </style>
+    <style name="TextStyleNav">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16.8sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="TextStyleThumbTitle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+    <style name="TextStyleThumbTxt">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/brownish_grey</item>
+    </style>
+    <style name="TextStyleRs">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/warm_grey</item>
+    </style>
+
+</resources>

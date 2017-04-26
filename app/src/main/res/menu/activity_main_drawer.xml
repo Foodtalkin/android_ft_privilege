@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_login_24"
+            android:title="Login"
+            />
+        <item
+            android:id="@+id/nav_buynow"
+            android:icon="@drawable/ic_buynow_24"
+            android:title="Buy Now" />
+        <item
+            android:id="@+id/nav_howitwork"
+            android:icon="@drawable/ic_howitwork_24"
+            android:title="How it work"/>
+        <item
+            android:id="@+id/nav_rules"
+            android:icon="@drawable/ic_rules_24"
+            android:title="Rules Of Use" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_legal"
+                android:icon="@drawable/ic_legal_24"
+                android:title="Legal" />
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/ic_contact_24"
+                android:title="Contact us" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about_24"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>
