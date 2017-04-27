@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">@color/dark_grey</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="black">#000000</color>
     <color name="light_gold">#ffda44</color>
     <color name="greyish_brown">#3d3b3b</color>
     <color name="brownish_grey">#646262</color>
