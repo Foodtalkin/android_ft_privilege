@@ -40,7 +40,7 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         gotoLogin();
-                        Log.d(TAG, "Login");
+                        Log.d(TAG, "LoginOtp");
                         break;
                 }
                 break;

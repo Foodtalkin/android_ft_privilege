@@ -25,49 +25,87 @@
             android:layout_gravity="center"
             android:gravity="center">
             <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/battleship_grey"
-                android:textSize="15sp"
-                android:textColor="@color/pale_grey"
-                android:textColorHint="@color/pale_grey"
-                android:hint="Your mobile"
-                android:maxLength="10"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/battleship_grey"
-                android:layout_marginTop="6dp"/>
+                android:text="Verify OTP"
+                android:textSize="18sp"
+                android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:textAlignment="center"
-                android:text="We will send you One-Time-Password (OTP) \n via SMS. Please enter OTP in next step."
+                android:layout_marginTop="8dp"
+                android:text="Please enter 4 digit OTP \n sent to +91 978452154"
                 android:textColor="@color/warm_grey"/>
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/tv_next"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:textSize="16sp"
-            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_otp1"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:background="@drawable/rect_grey"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_otp2"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:background="@drawable/rect_grey"
+                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/tv_otp3"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:background="@drawable/rect_grey"
+                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/tv_otp4"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:maxLength="1"
+                    android:background="@drawable/rect_grey"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend OTP"
             android:layout_gravity="center"
             android:textColor="@color/bright_sky_blue"
-            android:layout_marginTop="40dp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:clickable="true"/>
+            android:layout_marginTop="40dp"/>
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="270dp"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"

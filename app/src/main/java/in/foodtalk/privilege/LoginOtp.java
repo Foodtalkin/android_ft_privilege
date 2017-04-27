@@ -1,32 +1,32 @@
 package in.foodtalk.privilege;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.graphics.Typeface;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by RetailAdmin on 27-04-2017.
- */
+public class LoginOtp extends AppCompatActivity implements View.OnTouchListener {
 
-public class Login extends AppCompatActivity implements View.OnTouchListener {
 
-    final String TAG = "LoginPhone";
+    Typeface typeface;
     TextView key1, key2, key3 ,key4, key5, key6, key7, key8, key9, key0;
+    TextView tvOtp1, tvOtp2, tvOtp3, tvOtp4;
     ImageView keyBack;
-    TextView tvPhone, tvNext;
-
-
+    final String TAG = "LoginOtp";
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_otp);
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
+        actionBar();
 
         key1 = (TextView) findViewById(R.id.key1);
         key2 = (TextView) findViewById(R.id.key2);
@@ -40,8 +40,10 @@ public class Login extends AppCompatActivity implements View.OnTouchListener {
         key0 = (TextView) findViewById(R.id.key0);
         keyBack = (ImageView) findViewById(R.id.key_back);
 
-        tvNext = (TextView) findViewById(R.id.tv_next);
-        tvNext.setOnTouchListener(this);
+        tvOtp1 = (TextView) findViewById(R.id.tv_otp1);
+        tvOtp2 = (TextView) findViewById(R.id.tv_otp2);
+        tvOtp3 = (TextView) findViewById(R.id.tv_otp3);
+        tvOtp4 = (TextView) findViewById(R.id.tv_otp4);
 
         key1.setOnTouchListener(this);
         key2.setOnTouchListener(this);
@@ -54,29 +56,51 @@ public class Login extends AppCompatActivity implements View.OnTouchListener {
         key9.setOnTouchListener(this);
         key0.setOnTouchListener(this);
         keyBack.setOnTouchListener(this);
-
-        tvPhone = (TextView) findViewById(R.id.tv_phone);
-    }
-    private void typeOtpAdd(String value){
-        if (!value.equals("")){
-            tvPhone.append(value);
-        }else if (tvPhone.length() > 0){
-            tvPhone.setText(method(tvPhone.getText().toString()));
-        }
     }
 
-    public String method(String str) {
-        if (str != null && str.length() > 0) {
-            str = str.substring(0, str.length()-1);
-        }
-        return str;
-    }
+    private void actionBar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_title, null);
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
 
-    private void gotoOtp(){
-        Intent intent = new Intent(Login.this, LoginOtp.class);
+        TextView title = (TextView) mCustomView.findViewById(R.id.title_text);
+        title.setText("LoginOtp");
+        title.setTypeface(typeface);
+    }
+    private void gotoHome(){
+        Intent intent = new Intent(LoginOtp.this, MainActivity.class);
         startActivity(intent);
     }
+    private void typeOtpAdd(String value){
+        if (tvOtp1.length() == 0){
+            tvOtp1.setText(value);
+        }else if (tvOtp2.length() == 0){
+            tvOtp2.setText(value);
+        }else if (tvOtp3.length() == 0 ){
+            tvOtp3.setText(value);
+        }else if (tvOtp4.length() == 0){
+            tvOtp4.setText(value);
+            gotoHome();
+        }
 
+        if (value.equals("")){
+            if (tvOtp4.length() > 0){
+                tvOtp4.setText(value);
+            }else if (tvOtp3.length() > 0){
+                tvOtp3.setText(value);
+            }else if (tvOtp2.length() > 0 ){
+                tvOtp2.setText(value);
+            }else if (tvOtp1.length() > 0){
+                tvOtp1.setText(value);
+            }
+        }
+    }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()){
@@ -125,9 +149,6 @@ public class Login extends AppCompatActivity implements View.OnTouchListener {
                     case R.id.key_back:
                         typeOtpAdd("");
                         Log.d(TAG, "back");
-                        break;
-                    case R.id.tv_next:
-                        gotoOtp();
                         break;
                 }
                 break;
