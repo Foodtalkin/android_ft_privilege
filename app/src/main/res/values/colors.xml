@@ -17,4 +17,5 @@
     <color name="dark_grey_two">#262729</color>
     <color name="bright_sky_blue">#1fb6ff</color>
     <color name="pale_grey">#f7f9fb</color>
+    <color name="pale_grey_two">#f9fafc</color>
 </resources>

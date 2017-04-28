@@ -16,6 +16,12 @@
 
 
     <!--Text Styles-->
+
+    <style name="TextStyleHeading">
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">#d8d8d8</item>
+    </style>
     <style name="TextStyleActionbar">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">17sp</item>
@@ -24,6 +30,14 @@
     <style name="TextStyleNav">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">16.8sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="TextStyleSubHead">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="TextStyleAddress">
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
     <style name="TextStyleThumbTitle">
@@ -38,5 +52,6 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/warm_grey</item>
     </style>
+
 
 </resources>
