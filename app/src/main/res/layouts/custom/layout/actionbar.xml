@@ -13,14 +13,15 @@
         android:textStyle="bold"/>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/nav_btn"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_nav_24"
         android:scaleX=".8"
-        android:scaleY=".8"/>
+        android:scaleY=".8"
+        android:clickable="true"/>
 
     <ImageButton
         android:id="@+id/imageButton"

@@ -4,27 +4,39 @@ package in.foodtalk.privilege;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.HomeFrag;
 import in.foodtalk.privilege.fragment.SelectOfferFrag;
 
-public class MainActivity extends AppCompatActivity implements CallbackFragOpen {
+public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {
 
     NavigationView navigationView;
     Fragment currentFragment;
 
     HomeFrag homeFrag;
     //FrameLayout container;
+    TextView txtFoodtalkNav, txtTitle;
+    ImageView navBtn;
+
+    DrawerLayout drawerLayout;
+
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +46,43 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+        txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);
+
+        navLogin = (LinearLayout) findViewById(R.id.nav_login);
+        navBuyNow = (LinearLayout) findViewById(R.id.nav_buynow);
+        navHowItWork = (LinearLayout) findViewById(R.id.nav_howitwork);
+        navRules = (LinearLayout) findViewById(R.id.nav_rules);
+        navLegal = (LinearLayout) findViewById(R.id.nav_contact);
+        navContact = (LinearLayout) findViewById(R.id.nav_contact);
+        navAbout = (LinearLayout) findViewById(R.id.nav_about);
+
+        navLogin.setOnTouchListener(this);
+        navBuyNow.setOnTouchListener(this);
+        navHowItWork.setOnTouchListener(this);
+        navRules.setOnTouchListener(this);
+        navLegal.setOnTouchListener(this);
+        navContact.setOnTouchListener(this);
+        navAbout.setOnTouchListener(this);
+
         //container = (FrameLayout) findViewById(R.id.container);
         actionBar();
 
+        navBtn = (ImageView) findViewById(R.id.nav_btn);
+        navBtn.setOnTouchListener(this);
+
+
+
         homeFrag = new HomeFrag();
         setFragmentView(homeFrag, R.id.container, "HomeFrag", false);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
+
+        txtFoodtalkNav.setTypeface(typeface);
+        txtTitle = (TextView) findViewById(R.id.title_text);
+        txtTitle.setTypeface(typeface);
     }
 
     private void actionBar(){
@@ -71,5 +115,26 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen 
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
             setFragmentView(selectOfferFrag, R.id.container, "selectOfferFrag", false);
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.nav_btn:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+            case R.id.nav_login:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+        }
+        return false;
     }
 }
