@@ -15,13 +15,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import in.foodtalk.privilege.comm.CallbackFragOpen;
-import in.foodtalk.privilege.fragment.HomeFrag;
+import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.SelectOfferFrag;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {

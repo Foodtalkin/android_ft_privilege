@@ -18,17 +18,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.library.UserAgent;
 
 /**
  * Created by RetailAdmin on 02-05-2017.
  */
 
-public class apiCall {
-    ApiCallback apiCallback1;
+public class ApiCall {
+    static ApiCallback apiCallback1;
 
     //DatabaseHandler db;
-    public void apiRequestPost(int requestType, final Context context, final JSONObject obj, final String url, final String tag, final ApiCallback apiCallback){
+    public static void jsonObjRequest(int requestType, final Context context, final JSONObject obj, final String url, final String tag, final ApiCallback apiCallback){
 
         //db = new DatabaseHandler(context);
         //Request.Method.POST
@@ -90,7 +92,10 @@ public class apiCall {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json; charset=utf-8");
-
+                UserAgent userAgent = new UserAgent();
+                if (userAgent.getUserAgent(context) != null ){
+                    headers.put("User-agent", userAgent.getUserAgent(context));
+                }
                 return headers;
             }
         };
@@ -103,10 +108,8 @@ public class apiCall {
         }else {
             Log.d("ApiCall","getInstance null");
         }
-
-
     }
-    public void showToast(Context context, String msg){
+    public static void showToast(Context context, String msg){
         Toast toast= Toast.makeText(context,
                 msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 300);
