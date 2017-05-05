@@ -15,6 +15,7 @@ import in.foodtalk.privilege.R;
 public class SelectOfferFrag extends Fragment {
 
     View layout;
+    public String outletId;
 
 
     public SelectOfferFrag() {

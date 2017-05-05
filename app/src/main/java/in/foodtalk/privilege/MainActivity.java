@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.fragment.OfferDetailsFrag;
+import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.SelectOfferFrag;
 
@@ -112,7 +114,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     public void openFrag(String fragName, String value) {
         if (fragName.equals("selectOfferFrag")){
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
-            setFragmentView(selectOfferFrag, R.id.container, "selectOfferFrag", false);
+            selectOfferFrag.outletId = value;
+            setFragmentView(selectOfferFrag, R.id.container, "selectOfferFrag", true);
+        }
+        if (fragName.equals("selectOutletFrag")){
+            SelectOutletFrag selectOutletFrag = new SelectOutletFrag();
+            selectOutletFrag.rId = value;
+            setFragmentView(selectOutletFrag, R.id.container, "selectOutletFrag", true);
+        }
+        if (fragName.equals("offerDetailsFrag")){
+            OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
+            //offerDetailsFrag.outletId = value;
+            setFragmentView(offerDetailsFrag, R.id.container, "offerDetailsFrag", true);
         }
     }
 

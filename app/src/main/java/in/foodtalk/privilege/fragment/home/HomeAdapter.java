@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.fragment.home;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.models.OfferCardObj;
 
 /**
@@ -27,12 +31,16 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<OfferCardObj> offerCardList;
     LayoutInflater layoutInflater;
 
+    CallbackFragOpen callbackFragOpen;
+
     String rs;
 
     public HomeAdapter(Context context, List<OfferCardObj> offerCardList){
         this.context = context;
         this.offerCardList = offerCardList;
         layoutInflater = LayoutInflater.from(context);
+
+        callbackFragOpen = (CallbackFragOpen) context;
 
         rs = context.getResources().getString(R.string.rs);
     }
@@ -57,6 +65,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else {
             offerCard.tvLocation.setText("Offer "+offerCardObj.offerCount);
         }
+
+        Picasso.with(context)
+                .load(offerCardObj.cardImage)
+                .fit().centerCrop()
+                //.fit()
+                .placeholder(R.drawable.bitmap)
+                .into(offerCard.imgView);
     }
 
     @Override
@@ -84,6 +99,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (view.getId()){
                 case R.id.card_view:
                     Log.d(TAG, "card clicked");
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_UP:
+                            if (Integer.parseInt(offerCardList.get(getAdapterPosition()).outletCount) > 1){
+                                Log.d(TAG, "open outlet list");
+                                callbackFragOpen.openFrag("selectOutletFrag", offerCardList.get(getAdapterPosition()).rId);
+                            }else if (Integer.parseInt(offerCardList.get(0).offerCount) > 1){
+                                Log.d(TAG, "open offer list");
+                                callbackFragOpen.openFrag("selectOfferFrag", offerCardList.get(getAdapterPosition()).outletIds);
+                            }else {
+                                Log.d(TAG, "open details");
+                                callbackFragOpen.openFrag("offerDetailsFrag", offerCardList.get(getAdapterPosition()).outletIds);
+                            }
+                            break;
+                    }
                     break;
             }
             return false;

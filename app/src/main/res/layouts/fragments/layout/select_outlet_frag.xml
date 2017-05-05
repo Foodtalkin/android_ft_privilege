@@ -8,7 +8,7 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         >
         <LinearLayout
@@ -21,17 +21,19 @@
             android:paddingTop="20dp"
             android:background="@color/dark_grey">
             <TextView
+                android:id="@+id/tv_outlet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SodaBottleOpenerWala"
                 style="@style/TextStyleHeading"/>
 
             <TextView
+                android:id="@+id/tv_outlet_line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="A mid-range parsi restaurant."
                 style="@style/TextStyleSubHead"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="7dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,34 +46,19 @@
                 android:text="SELECT AN OUTLET"
                 android:textColor="@color/dark_grey"/>
         </LinearLayout>
-        <RelativeLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="120dp"
-                android:layout_marginLeft="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BUY ONE GET ONE"
-                    android:textAllCaps="true"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:alpha=".1"
-                android:scaleX="2"
-                android:scaleY="2"
-                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
-        </RelativeLayout>
+            android:layout_height="0.7dp"
+            android:background="@color/battleship_grey"
+            android:alpha=".3"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:background="@color/pale_grey_two">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
-
 </RelativeLayout>

@@ -92,6 +92,7 @@ public class HomeFrag extends Fragment implements ApiCallback {
 
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
+        offerCardList.clear();
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
             offerCardObj.offerCount = listArray.getJSONObject(i).getString("offer_count");
@@ -106,10 +107,11 @@ public class HomeFrag extends Fragment implements ApiCallback {
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
 
             offerCardList.add(offerCardObj);
-            if (getActivity() != null){
-                homeAdapter = new HomeAdapter(getActivity(), offerCardList);
-                recyclerView.setAdapter(homeAdapter);
-            }
+
+        }
+        if (getActivity() != null){
+            homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+            recyclerView.setAdapter(homeAdapter);
         }
     }
 
