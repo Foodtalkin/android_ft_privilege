@@ -23,7 +23,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
-import in.foodtalk.privilege.fragment.SelectOfferFrag;
+import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {
 
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navigationView.setItemIconTintList(null);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
 
 
         txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);

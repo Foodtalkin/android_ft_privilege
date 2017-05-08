@@ -74,7 +74,7 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         case MotionEvent.ACTION_UP:
                             Log.d(TAG, "btn cliced");
                             if (Integer.parseInt(outletCardList.get(getAdapterPosition()).offerCount) > 1){
-                                callbackFragOpen.openFrag("selectOfferFrag", "");
+                                callbackFragOpen.openFrag("selectOfferFrag", outletCardList.get(getAdapterPosition()).id);
                                 Log.d(TAG, "goto offer list");
                             }else {
                                 Log.d(TAG, "goto offer details");
