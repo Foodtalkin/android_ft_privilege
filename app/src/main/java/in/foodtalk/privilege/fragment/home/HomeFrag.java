@@ -105,9 +105,7 @@ public class HomeFrag extends Fragment implements ApiCallback {
             offerCardObj.description = listArray.getJSONObject(i).getString("description");
             offerCardObj.coverImage = listArray.getJSONObject(i).getString("cover_image");
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
-
             offerCardList.add(offerCardObj);
-
         }
         if (getActivity() != null){
             homeAdapter = new HomeAdapter(getActivity(), offerCardList);
@@ -124,10 +122,8 @@ public class HomeFrag extends Fragment implements ApiCallback {
                     sendToAdapter(response, tag);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }
