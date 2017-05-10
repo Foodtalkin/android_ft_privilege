@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FOOD TALK\nPRIVILEGE"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group_12"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SUCCESS"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RID: 1335555"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="We have sent the details by SMS  Email.\nFor any help you can contact us."/>
+        <TextView
+            android:id="@+id/txt_explore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:textColor="@color/dark_grey"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:layout_marginRight="80dp"
+            android:gravity="center"
+            android:layout_marginLeft="80dp"
+            android:text="Done"
+            android:textSize="15sp"
+            android:background="@drawable/btn_bg2"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

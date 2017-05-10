@@ -22,6 +22,7 @@ import android.widget.TextView;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
+import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
 
@@ -127,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
             //offerDetailsFrag.outletId = value;
             setFragmentView(offerDetailsFrag, R.id.container, "offerDetailsFrag", true);
+        }
+        if (fragName.equals("restaurantPin")){
+            RestaurantPin restaurantPin = new RestaurantPin();
+            setFragmentView(restaurantPin, R.id.container, "offerDetailsFrag", true);
         }
     }
 

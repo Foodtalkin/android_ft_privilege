@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 /**
  * Created by RetailAdmin on 02-05-2017.
@@ -27,6 +29,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
     LinearLayout redeemBar, btnRedeem, btnSlideUp;
     Boolean redeemBarVisible = false;
     String TAG = OfferDetailsFrag.class.getSimpleName();
+    ImageView btnRemove, btnAdd;
+    CallbackFragOpen callbackFragOpen;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,10 +41,17 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
         btnCancel = (TextView) layout.findViewById(R.id.btn_cancel);
         btnNext = (TextView) layout.findViewById(R.id.btn_next);
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
+        btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
+        btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
+
+        btnRemove.setOnTouchListener(this);
+        btnAdd.setOnTouchListener(this);
         btnCancel.setOnTouchListener(this);
         btnNext.setOnTouchListener(this);
         btnRedeem.setOnTouchListener(this);
         btnSlideUp.setOnTouchListener(this);
+
+        callbackFragOpen = (CallbackFragOpen) getActivity();
 
         Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
         tvCounter.setTypeface(typefaceFutura);
@@ -118,7 +129,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn next clicked");
-
+                        callbackFragOpen.openFrag("restaurantPin","");
                         break;
                 }
                 break;
@@ -135,6 +146,27 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
                     case MotionEvent.ACTION_UP:
                         showRedeemBar();
                         btnSlideUp.setVisibility(View.GONE);
+                        break;
+                }
+                break;
+            case R.id.btn_add:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "btn add clicked");
+                        int currentCounter = Integer.parseInt(tvCounter.getText().toString());
+                        tvCounter.setText(String.valueOf(currentCounter+1));
+                        break;
+                }
+                break;
+            case R.id.btn_remove:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "btn remove clicked");
+                        int currentCounter = Integer.parseInt(tvCounter.getText().toString());
+                        if (currentCounter > 1){
+                            tvCounter.setText(String.valueOf(currentCounter-1));
+                        }
+
                         break;
                 }
                 break;
