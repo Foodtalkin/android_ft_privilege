@@ -73,6 +73,7 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
         tvOfferLine.setTypeface(typefaceFutura);
         tvLocation.setTypeface(typefaceFutura);
 
+
         loadData("outletOffer");
         return layout;
     }
