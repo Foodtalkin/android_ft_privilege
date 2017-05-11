@@ -4,6 +4,7 @@ package in.foodtalk.privilege.fragment.OutletList;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,6 +54,8 @@ public class SelectOutletFrag extends Fragment implements ApiCallback {
         //Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.select_outlet_frag, container, false);
         loadData("restaurantOutlets");
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         tvOutletName = (TextView) layout.findViewById(R.id.tv_outlet_name);
         tvOutletLine = (TextView) layout.findViewById(R.id.tv_outlet_line);

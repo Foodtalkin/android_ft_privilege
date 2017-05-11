@@ -4,6 +4,7 @@ package in.foodtalk.privilege.fragment.home;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -64,6 +65,8 @@ public class HomeFrag extends Fragment implements ApiCallback {
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         loadData("loadOffers");
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
 
 

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,6 +44,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
         btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
         btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         btnRemove.setOnTouchListener(this);
         btnAdd.setOnTouchListener(this);

@@ -4,6 +4,7 @@ package in.foodtalk.privilege.fragment.offerlist;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,6 +62,8 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
         tvOfferName = (TextView) layout.findViewById(R.id.tv_offer_name);
         tvOfferLine = (TextView) layout.findViewById(R.id.tv_offer_line);
         tvLocation = (TextView) layout.findViewById(R.id.tv_location);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
 
         layoutManager = new LinearLayoutManager(getActivity());
