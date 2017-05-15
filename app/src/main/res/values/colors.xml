@@ -19,4 +19,7 @@
     <color name="pale_grey">#f7f9fb</color>
     <color name="pale_grey_two">#f9fafc</color>
     <color name="black1">#353434</color>
+    <color name="light_grey_blue">#8ab3cf</color>
+    <color name="blue_grey">#618094</color>
+    <color name="light_blue_grey">#d6e2e9</color>
 </resources>

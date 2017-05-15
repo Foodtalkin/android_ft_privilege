@@ -24,12 +24,12 @@
         android:clickable="true"/>
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
+        android:padding="10dp"
         android:background="@null"
         android:src="@drawable/ic_search_24"/>
 </RelativeLayout>

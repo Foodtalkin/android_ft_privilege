@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
+import in.foodtalk.privilege.fragment.SearchFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
@@ -31,11 +33,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     NavigationView navigationView;
     Fragment currentFragment;
+    SearchFrag searchFrag;
 
     HomeFrag homeFrag;
     //FrameLayout container;
     TextView txtFoodtalkNav, txtTitle;
     ImageView navBtn;
+    ImageView searchBtn;
 
     DrawerLayout drawerLayout;
 
@@ -78,9 +82,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         navBtn = (ImageView) findViewById(R.id.nav_btn);
         navBtn.setOnTouchListener(this);
+        searchBtn = (ImageView) findViewById(R.id.btn_search);
+        searchBtn.setOnTouchListener(this);
 
 
-
+        searchFrag = new SearchFrag();
         homeFrag = new HomeFrag();
         setFragmentView(homeFrag, R.id.container, "homeFrag", false);
 
@@ -185,6 +191,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+            case R.id.btn_search:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d("MainActivity","search btn clicked");
+                        setFragmentView(searchFrag, R.id.container, "searchFrag", false);
                         break;
                 }
                 break;
