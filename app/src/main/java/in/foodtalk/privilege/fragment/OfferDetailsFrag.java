@@ -16,22 +16,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.Url;
+import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 /**
  * Created by RetailAdmin on 02-05-2017.
  */
 
-public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
+public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, ApiCallback {
     View layout;
-    TextView tvCounter, btnCancel, btnNext;
+    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes;
     Animation slideUpAnimation, slideDownAnimation, slideUpAnimation1;
     LinearLayout redeemBar, btnRedeem, btnSlideUp;
     Boolean redeemBarVisible = false;
     String TAG = OfferDetailsFrag.class.getSimpleName();
     ImageView btnRemove, btnAdd;
     CallbackFragOpen callbackFragOpen;
+    ImageView imgView;
+
+    public String offerId;
+    public String outletId;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +58,13 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
         btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
         btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
+        imgView = (ImageView) layout.findViewById(R.id.img_view);
+        tvShortDes = (TextView) layout.findViewById(R.id.tv_short_des);
+        tvAddress = (TextView) layout.findViewById(R.id.tv_address);
+        tvHours = (TextView) layout.findViewById(R.id.tv_hours);
+        tvDes = (TextView) layout.findViewById(R.id.tv_des);
+
+        Log.d(TAG, "offerId: "+offerId+" outletId: "+outletId);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
@@ -60,7 +81,27 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
         tvCounter.setTypeface(typefaceFutura);
 
         setAnimation();
+        loadData("offerDetails");
         return layout;
+    }
+
+    private void loadData(String tag){
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFER_DETAILS+"outlet/"+outletId+"/offer/"+offerId, tag, this);
+    }
+
+    private void setData(JSONObject response) throws JSONException {
+        JSONObject result = response.getJSONObject("result");
+        Picasso.with(getActivity())
+                .load(result.getString("cover_image"))
+                .fit().centerCrop()
+                //.fit()
+                .placeholder(R.drawable.bitmap)
+                .into(imgView);
+
+        tvShortDes.setText(result.getString("short_description"));
+        tvAddress.setText(result.getString("address"));
+        tvHours.setText(result.getString("work_hours"));
+        tvDes.setText(result.getString("description"));
     }
 
     private void setAnimation(){
@@ -175,5 +216,18 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener {
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void apiResponse(JSONObject response, String tag) {
+        if (response != null){
+            if (tag.equals("offerDetails")){
+                try {
+                    setData(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

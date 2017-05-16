@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import in.foodtalk.privilege.R;
@@ -104,12 +107,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             if (Integer.parseInt(offerCardList.get(getAdapterPosition()).outletCount) > 1){
                                 Log.d(TAG, "open outlet list");
                                 callbackFragOpen.openFrag("selectOutletFrag", offerCardList.get(getAdapterPosition()).rId);
-                            }else if (Integer.parseInt(offerCardList.get(0).offerCount) > 1){
+                            }else if (Integer.parseInt(offerCardList.get(getAdapterPosition()).offerCount) > 1){
                                 Log.d(TAG, "open offer list");
                                 callbackFragOpen.openFrag("selectOfferFrag", offerCardList.get(getAdapterPosition()).outletIds);
                             }else {
                                 Log.d(TAG, "open details");
-                                callbackFragOpen.openFrag("offerDetailsFrag", offerCardList.get(getAdapterPosition()).outletIds);
+                                JSONObject offerOutletId = new JSONObject();
+                                try {
+                                    offerOutletId.put("offerId", offerCardList.get(getAdapterPosition()).offerIds);
+                                    offerOutletId.put("outletId", offerCardList.get(getAdapterPosition()).outletIds);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             }
                             break;
                     }

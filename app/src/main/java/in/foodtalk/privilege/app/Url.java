@@ -16,5 +16,5 @@ public class Url {
     public static String OUTLET = baseUrl+"outlet";
 
     public static String SEARCH_TEXT = baseUrl+"search/SEARCH_TEXT";
-
+    public static String OFFER_DETAILS = baseUrl;
 }

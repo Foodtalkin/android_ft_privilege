@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     NavigationView navigationView;
     Fragment currentFragment;
     SearchFrag searchFrag;
+
+    String TAG = MainActivity.class.getSimpleName();
 
     HomeFrag homeFrag;
     //FrameLayout container;
@@ -144,6 +149,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("offerDetailsFrag")){
             OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
             //offerDetailsFrag.outletId = value;
+            Log.d(TAG, value);
+            try {
+                JSONObject offerOutletId = new JSONObject(value);
+                offerDetailsFrag.offerId = offerOutletId.getString("offerId");
+                offerDetailsFrag.outletId = offerOutletId.getString("outletId");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             setFragmentView(offerDetailsFrag, R.id.container, "offerDetailsFrag", true);
         }
         if (fragName.equals("restaurantPin")){
