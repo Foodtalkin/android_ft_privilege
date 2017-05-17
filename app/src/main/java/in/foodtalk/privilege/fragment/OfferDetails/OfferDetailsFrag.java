@@ -1,10 +1,12 @@
-package in.foodtalk.privilege.fragment;
+package in.foodtalk.privilege.fragment.OfferDetails;
 
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,14 +21,19 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.models.ImagesObj;
 
 /**
  * Created by RetailAdmin on 02-05-2017.
@@ -34,7 +41,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, ApiCallback {
     View layout;
-    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes;
+    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes, tvCuisine;
     Animation slideUpAnimation, slideDownAnimation, slideUpAnimation1;
     LinearLayout redeemBar, btnRedeem, btnSlideUp;
     Boolean redeemBarVisible = false;
@@ -43,8 +50,15 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     CallbackFragOpen callbackFragOpen;
     ImageView imgView;
 
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+
+
+
     public String offerId;
     public String outletId;
+
+    List<ImagesObj> imagesList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -63,6 +77,10 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         tvAddress = (TextView) layout.findViewById(R.id.tv_address);
         tvHours = (TextView) layout.findViewById(R.id.tv_hours);
         tvDes = (TextView) layout.findViewById(R.id.tv_des);
+        tvCuisine = (TextView) layout.findViewById(R.id.tv_cuisine);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
 
         Log.d(TAG, "offerId: "+offerId+" outletId: "+outletId);
 
@@ -102,6 +120,33 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         tvAddress.setText(result.getString("address"));
         tvHours.setText(result.getString("work_hours"));
         tvDes.setText(result.getString("description"));
+
+        ArrayList<String> stringArray = new ArrayList<String>();
+
+        JSONArray jsonArray = result.getJSONArray("cuisine");
+        StringBuilder cuisine = new StringBuilder(jsonArray.getJSONObject(0).getString("title"));
+        for(int i = 1, count = jsonArray.length(); i< count; i++)
+        {
+            cuisine.append(", "+jsonArray.getJSONObject(i).getString("title"));
+        }
+        Log.d(TAG, "cuisine: "+cuisine);
+        tvCuisine.setText(cuisine);
+
+        setImages(result.getJSONArray("images"));
+    }
+
+    private void setImages(JSONArray images) throws JSONException {
+        for (int i = 0; i < images.length(); i++){
+            ImagesObj imagesObj = new ImagesObj();
+            imagesObj.url = images.getJSONObject(i).getString("url");
+            imagesList.add(imagesObj);
+        }
+        if (getActivity() != null){
+            ImagesAdapter imagesAdapter = new ImagesAdapter(getActivity(), imagesList);
+            recyclerView.setAdapter(imagesAdapter);
+        }
+
+
     }
 
     private void setAnimation(){

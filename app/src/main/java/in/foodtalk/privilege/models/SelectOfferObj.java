@@ -8,4 +8,6 @@ public class SelectOfferObj {
     public String id;
     public String title;
     public String shortDescription;
+    public String offerId;
+    public String outletId;
 }

@@ -2,6 +2,7 @@ package in.foodtalk.privilege.fragment.home;
 
 
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -35,7 +38,7 @@ import in.foodtalk.privilege.models.OfferCardObj;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFrag extends Fragment implements ApiCallback {
+public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListener {
 
     View layout;
 
@@ -47,6 +50,7 @@ public class HomeFrag extends Fragment implements ApiCallback {
     HomeAdapter homeAdapter;
 
     RecyclerView recyclerView;
+    TextView btnBuy, tvHeader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,12 +58,22 @@ public class HomeFrag extends Fragment implements ApiCallback {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.home_frag, container, false);
 
+        btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
+        tvHeader = (TextView) layout.findViewById(R.id.tv_header);
+
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+        tvHeader.setTypeface(typefaceFmedium);
+        btnBuy.setTypeface(typefaceFutura);
+
+        btnBuy.setOnTouchListener(this);
 
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
@@ -128,5 +142,19 @@ public class HomeFrag extends Fragment implements ApiCallback {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.btn_buy:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        callbackFragOpen.openFrag("signupFrag","");
+                        break;
+                }
+                break;
+        }
+        return false;
     }
 }

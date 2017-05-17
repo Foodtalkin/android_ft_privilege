@@ -24,10 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.foodtalk.privilege.comm.CallbackFragOpen;
-import in.foodtalk.privilege.fragment.OfferDetailsFrag;
+import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SearchFrag;
+import in.foodtalk.privilege.fragment.SignupFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout;
 
-    SuccessFrag successFrag = new SuccessFrag(); ;
+    SuccessFrag successFrag = new SuccessFrag();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
         if (fragName.equals("successFrag")){
             setFragmentView(successFrag, R.id.container, "successFrag", false);
+        }
+        if (fragName.equals("signupFrag")){
+            SignupFrag signupFrag = new SignupFrag();
+            setFragmentView(signupFrag, R.id.container, "signupFrag", false);
         }
     }
 

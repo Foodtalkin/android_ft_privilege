@@ -147,6 +147,7 @@
                         android:textColor="@color/warm_grey"
                         android:text="Cuisines"/>
                     <TextView
+                        android:id="@+id/tv_cuisine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black1"
@@ -222,36 +223,12 @@
                         android:layout_marginLeft="25dp"
                         android:orientation="horizontal"
                         android:layout_marginTop="10dp">
-                        <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@color/light_gold"
-                            />
-                        <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@color/light_gold"
-                            android:layout_marginLeft="10dp"
-                            />
-                        <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@color/light_gold"
-                            android:layout_marginLeft="10dp"
-                            />
-                        <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@color/light_gold"
-                            android:layout_marginLeft="10dp"
-                            />
-                        <View
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:background="@color/light_gold"
-                            android:layout_marginLeft="10dp"
-                            />
-
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none">
+                        </android.support.v7.widget.RecyclerView>
                     </LinearLayout>
                 </LinearLayout>
                 <View

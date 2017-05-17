@@ -94,6 +94,8 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
             selectOfferObj.id = listArray.getJSONObject(i).getString("id");
             selectOfferObj.title = listArray.getJSONObject(i).getString("title");
             selectOfferObj.shortDescription = listArray.getJSONObject(i).getString("short_description");
+            selectOfferObj.offerId = listArray.getJSONObject(i).getString("offer_id");
+            selectOfferObj.outletId = listArray.getJSONObject(i).getString("outlet_id");
             offerCardList.add(selectOfferObj);
             //OfferCardObj offerCardObj = new OfferCardObj();
             //offerCardObj.id = listArray.getJSONObject(i).getString("id");

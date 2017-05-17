@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -78,7 +80,14 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     switch (motionEvent.getAction()){
                         case MotionEvent.ACTION_UP:
                             Log.d(TAG, "offer clicked");
-                            callbackFragOpen.openFrag("offerDetailsFrag", "");
+                            JSONObject offerOutletId = new JSONObject();
+                            try {
+                                offerOutletId.put("offerId", offerCardList.get(getAdapterPosition()).offerId);
+                                offerOutletId.put("outletId", offerCardList.get(getAdapterPosition()).outletId);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             break;
                     }
                     break;

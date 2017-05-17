@@ -6,9 +6,42 @@
     android:layout_height="match_parent"
     tools:context="in.foodtalk.privilege.LoginOtp"
     android:background="@color/pale_grey_two">
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/dark_grey"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pale_grey"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+
+            android:text="Get access to all these offers\nfor one year at ₹999 Only."/>
+        <TextView
+            android:id="@+id/btn_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:textSize="12sp"
+            android:text="BUY"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:clickable="true"
+            android:background="@drawable/btn_bg2"/>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
