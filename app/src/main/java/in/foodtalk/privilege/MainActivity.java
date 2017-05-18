@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
+import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SearchFrag;
@@ -174,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("signupFrag")){
             SignupFrag signupFrag = new SignupFrag();
             setFragmentView(signupFrag, R.id.container, "signupFrag", false);
+        }
+        if (fragName.equals("otpVerify")){
+            OtpVerifyFrag otpVerifyFrag = new OtpVerifyFrag();
+            otpVerifyFrag.phone = value;
+            setFragmentView(otpVerifyFrag, R.id.container, "otpVerify", false);
         }
     }
 
