@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navContact.setOnTouchListener(this);
         navAbout.setOnTouchListener(this);
 
+
         //container = (FrameLayout) findViewById(R.id.container);
         actionBar();
 
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
     }
-    public  void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
+    public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
         /*if (tag.equals("successFrag")){
             //mActionBar.setDisplayShowCustomEnabled(false);

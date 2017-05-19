@@ -14,13 +14,16 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.Login;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.CallbackKeypad;
 import in.foodtalk.privilege.library.Keypad;
+import in.foodtalk.privilege.models.LoginValue;
 
 /**
  * Created by RetailAdmin on 18-05-2017.
@@ -36,6 +39,8 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
 
     public String phone;
 
+    DatabaseHandler db;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
 
         Keypad keypad = new Keypad(layout, this);
         callbackFragOpen = (CallbackFragOpen) getActivity();
+
+        db = new DatabaseHandler(getActivity());
 
         tvOtp1 = (TextView) layout.findViewById(R.id.tv_otp1);
         tvOtp2 = (TextView) layout.findViewById(R.id.tv_otp2);
@@ -105,6 +112,13 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
         String message = response.getString("message");
         if (message.equals("OTP Accepted")){
             callbackFragOpen.openFrag("homeFrag","");
+            LoginValue loginValue = new LoginValue();
+            loginValue.sId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+            loginValue.rToken = response.getJSONObject("result").getJSONObject("session").getString("refresh_token");
+            loginValue.uId = response.getJSONObject("result").getJSONObject("session").getString("user_id");
+            loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
+            loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
+            db.addUser(loginValue);
         }
     }
 

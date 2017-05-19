@@ -119,9 +119,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             offerCardObj.rId = listArray.getJSONObject(i).getString("rid");
             offerCardObj.name = listArray.getJSONObject(i).getString("name");
             offerCardObj.cost = listArray.getJSONObject(i).getString("cost");
-            offerCardObj.description = listArray.getJSONObject(i).getString("description");
-            offerCardObj.coverImage = listArray.getJSONObject(i).getString("cover_image");
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
+            offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
