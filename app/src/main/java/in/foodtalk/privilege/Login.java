@@ -11,11 +11,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.Url;
+import in.foodtalk.privilege.comm.ApiCallback;
+
 /**
  * Created by RetailAdmin on 27-04-2017.
  */
 
-public class Login extends AppCompatActivity implements View.OnTouchListener {
+public class Login extends AppCompatActivity implements View.OnTouchListener, ApiCallback {
 
     final String TAG = "LoginPhone";
     TextView key1, key2, key3 ,key4, key5, key6, key7, key8, key9, key0;
@@ -72,9 +81,27 @@ public class Login extends AppCompatActivity implements View.OnTouchListener {
         return str;
     }
 
-    private void gotoOtp(){
-        Intent intent = new Intent(Login.this, LoginOtp.class);
-        startActivity(intent);
+    private void checkUser() {
+
+        if (tvPhone.getText().toString().length() == 10){
+            ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.CHECK_USER+"/"+tvPhone.getText().toString(), "checkUser", this);
+        }
+    }
+    private void gotoOtp(JSONObject response){
+        try {
+            String status = response.getString("status");
+            String message = response.getString("message");
+            String phone = tvPhone.getText().toString();
+            if (status.equals("OK")){
+                Intent intent = new Intent(Login.this, LoginOtp.class);
+                intent.putExtra("phone", phone);
+                startActivity(intent);
+            }else {
+                Log.e(TAG,"error Msg: "+ message);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -127,11 +154,21 @@ public class Login extends AppCompatActivity implements View.OnTouchListener {
                         Log.d(TAG, "back");
                         break;
                     case R.id.tv_next:
-                        gotoOtp();
+                        checkUser();
                         break;
                 }
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void apiResponse(JSONObject response, String tag) {
+        if (response != null){
+            if (tag.equals("checkUser")){
+                Log.d(TAG,"response: "+response);
+                gotoOtp(response);
+            }
+        }
     }
 }

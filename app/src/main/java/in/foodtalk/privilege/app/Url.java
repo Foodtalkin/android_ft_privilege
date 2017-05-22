@@ -21,4 +21,6 @@ public class Url {
     public static String GET_OTP = baseUrl+"getotp";
 
     public static String USER_LOGIN = baseUrl+"userlogin";
+
+    public static String CHECK_USER = baseUrl+"checkuser";
 }

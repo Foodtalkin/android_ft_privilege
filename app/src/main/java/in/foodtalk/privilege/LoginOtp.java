@@ -13,20 +13,38 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class LoginOtp extends AppCompatActivity implements View.OnTouchListener {
+import com.android.volley.Request;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
+import in.foodtalk.privilege.app.Url;
+import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.models.LoginValue;
+
+public class LoginOtp extends AppCompatActivity implements View.OnTouchListener, ApiCallback {
 
 
     Typeface typeface;
     TextView key1, key2, key3 ,key4, key5, key6, key7, key8, key9, key0;
     TextView tvOtp1, tvOtp2, tvOtp3, tvOtp4;
     ImageView keyBack;
+    DatabaseHandler db;
     final String TAG = "LoginOtp";
+
+    String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_otp);
         typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
         actionBar();
+
+        db = new DatabaseHandler(this);
+
+        phone = getIntent().getStringExtra("phone");
 
         key1 = (TextView) findViewById(R.id.key1);
         key2 = (TextView) findViewById(R.id.key2);
@@ -56,6 +74,12 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener 
         key9.setOnTouchListener(this);
         key0.setOnTouchListener(this);
         keyBack.setOnTouchListener(this);
+
+        try {
+            getOtp("getOtp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void actionBar(){
@@ -73,9 +97,51 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener 
         title.setText("LoginOtp");
         title.setTypeface(typeface);
     }
-    private void gotoHome(){
-        Intent intent = new Intent(LoginOtp.this, MainActivity.class);
-        startActivity(intent);
+    private void gotoHome(JSONObject response) throws JSONException {
+
+
+        String status = response.getString("status");
+        String message = response.getString("message");
+        if (status.equals("OK")){
+            //callbackFragOpen.openFrag("homeFrag","");
+            LoginValue loginValue = new LoginValue();
+            loginValue.sId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+            loginValue.rToken = response.getJSONObject("result").getJSONObject("session").getString("refresh_token");
+            loginValue.uId = response.getJSONObject("result").getJSONObject("session").getString("user_id");
+            loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
+            loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
+            db.addUser(loginValue);
+
+            Intent intent = new Intent(LoginOtp.this, MainActivity.class);
+            startActivity(intent);
+        }else {
+            Log.e(TAG, "message: "+ message);
+        }
+    }
+    private void getOtp(String tag) throws JSONException {
+
+
+
+            Log.d(TAG, "getOtp");
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("phone", phone);
+
+            ApiCall.jsonObjRequest(Request.Method.POST, this, jsonObject, Url.GET_OTP, tag, this);
+
+    }
+    private void sendOtp(String tag) throws JSONException {
+        String otp = tvOtp1.getText().toString()
+                +tvOtp2.getText().toString()
+                +tvOtp3.getText().toString()
+                +tvOtp4.getText().toString();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("phone", phone);
+        jsonObject.put("otp", otp);
+        ApiCall.jsonObjRequest(Request.Method.POST, this, jsonObject, Url.USER_LOGIN, tag, this);
+
+        Log.d(TAG, "sendOtp to server");
     }
     private void typeOtpAdd(String value){
         if (tvOtp1.length() == 0){
@@ -86,9 +152,12 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener 
             tvOtp3.setText(value);
         }else if (tvOtp4.length() == 0){
             tvOtp4.setText(value);
-            gotoHome();
+            try {
+                sendOtp("sendOtp");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
         if (value.equals("")){
             if (tvOtp4.length() > 0){
                 tvOtp4.setText(value);
@@ -154,5 +223,21 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener 
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void apiResponse(JSONObject response, String tag) {
+        if (response != null ){
+            if (tag.equals("getOtp")){
+                Log.d(TAG, "response: "+ response);
+            }
+            if (tag.equals("sendOtp")){
+                try {
+                    gotoHome(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

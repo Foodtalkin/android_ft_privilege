@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
@@ -51,6 +53,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     RecyclerView recyclerView;
     TextView btnBuy, tvHeader;
+    LinearLayout header;
+    DatabaseHandler db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +66,16 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        header = (LinearLayout) layout.findViewById(R.id.header);
+
+        db = new DatabaseHandler(getActivity());
+
+        if (db.getRowCount() > 0){
+            header.setVisibility(View.GONE);
+        }else {
+            header.setVisibility(View.VISIBLE);
+        }
+
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);

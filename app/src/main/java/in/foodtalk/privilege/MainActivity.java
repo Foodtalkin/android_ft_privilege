@@ -4,6 +4,7 @@ package in.foodtalk.privilege;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
@@ -51,9 +53,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     DrawerLayout drawerLayout;
 
-    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout;
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout;
 
     SuccessFrag successFrag = new SuccessFrag();
+
+    DatabaseHandler db;
+
 
 
     @Override
@@ -66,9 +71,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        db = new DatabaseHandler(this);
+
+
+
 
 
         txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);
+
+        forLogin = (LinearLayout) findViewById(R.id.for_login);
+        forLogin1 = (LinearLayout) findViewById(R.id.for_login1);
 
         navLogin = (LinearLayout) findViewById(R.id.nav_login);
         navBuyNow = (LinearLayout) findViewById(R.id.nav_buynow);
@@ -77,6 +89,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navLegal = (LinearLayout) findViewById(R.id.nav_contact);
         navContact = (LinearLayout) findViewById(R.id.nav_contact);
         navAbout = (LinearLayout) findViewById(R.id.nav_about);
+
+        navAccount = (LinearLayout) findViewById(R.id.nav_account);
+        navHistory = (LinearLayout) findViewById(R.id.nav_history);
+        navFavourites = (LinearLayout) findViewById(R.id.nav_favourites);
+        navLogout = (LinearLayout) findViewById(R.id.nav_logout);
+
+        navAccount.setOnTouchListener(this);
+        navHistory.setOnTouchListener(this);
+        navFavourites.setOnTouchListener(this);
+        navLogout.setOnTouchListener(this);
+
 
         navLogin.setOnTouchListener(this);
         navBuyNow.setOnTouchListener(this);
@@ -87,6 +110,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navAbout.setOnTouchListener(this);
 
 
+
+
+        if (db.getRowCount() > 0){
+            forLogin.setVisibility(View.VISIBLE);
+            forLogin1.setVisibility(View.VISIBLE);
+            navLogin.setVisibility(View.GONE);
+            navBuyNow.setVisibility(View.GONE);
+        }else {
+            forLogin.setVisibility(View.GONE);
+            forLogin1.setVisibility(View.GONE);
+            navLogin.setVisibility(View.VISIBLE);
+            navBuyNow.setVisibility(View.VISIBLE);
+        }
         //container = (FrameLayout) findViewById(R.id.container);
         actionBar();
 
@@ -204,6 +240,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
     }
 
+    public void logOut() {
+        Log.e("Home","logOut function call");
+        db.resetTables();
+        //LoginManager.getInstance().logOut();
+        Intent i = new Intent(this, Splash_activity.class);
+        startActivity(i);
+        finish();
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
@@ -226,6 +271,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         Log.d("MainActivity","search btn clicked");
                         setFragmentView(searchFrag, R.id.container, "searchFrag", false);
+                        break;
+                }
+                break;
+            case R.id.nav_logout:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG,"logout clicked");
+                        logOut();
                         break;
                 }
                 break;
