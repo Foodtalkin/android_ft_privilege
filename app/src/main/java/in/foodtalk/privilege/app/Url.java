@@ -23,4 +23,10 @@ public class Url {
     public static String USER_LOGIN = baseUrl+"userlogin";
 
     public static String CHECK_USER = baseUrl+"checkuser";
+
+    public static String BOOKMARK = baseUrl+"/bookmark";
+
+    //http://stg-api.foodtalk.in/bookmark?sessionid=30f28e8eb0b90533ab8453b20d39506ce6088780
+
+
 }

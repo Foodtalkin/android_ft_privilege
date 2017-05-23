@@ -34,6 +34,7 @@ import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
+import in.foodtalk.privilege.fragment.favorites.FavoritesFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
 
@@ -279,6 +280,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG,"logout clicked");
                         logOut();
+                        break;
+                }
+                break;
+            case R.id.nav_favourites:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        FavoritesFrag favoritesFrag = new FavoritesFrag();
+                        setFragmentView(favoritesFrag, R.id.container, "favoritesFrag", true);
                         break;
                 }
                 break;

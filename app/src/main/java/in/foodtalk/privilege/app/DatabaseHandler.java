@@ -28,6 +28,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CREATE_AT = "createAt";
     private static final String KEY_UPDATE_AT = "updateAt";
 
+    private static final String KEY_NAME = "uName";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_PHONE = "phone";
+    private static final String KEY_GENDER = "gender";
+    private static final String KEY_DOB = "dob";
+
+
+
+
     String TAG = DatabaseHandler.class.getSimpleName();
 
 
@@ -43,10 +52,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_RTOKEN + " TEXT,"
                 + KEY_CREATE_AT + " TEXT,"
                 + KEY_UPDATE_AT + " TEXT,"
+                + KEY_NAME + " TEXT,"
+                + KEY_EMAIL + " TEXT,"
+                + KEY_PHONE + " TEXT,"
+                + KEY_GENDER + " TEXT,"
+                + KEY_DOB + " TEXT,"
                 + KEY_USERID +" TEXT"+ ")";
         db.execSQL(CREATE_LOGIN_TABLE);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
@@ -60,6 +73,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_USERID, loginValue.uId);
         values.put(KEY_CREATE_AT, loginValue.updateAt);
         values.put(KEY_USERID, loginValue.updateAt);
+        values.put(KEY_NAME, loginValue.name);
+        values.put(KEY_EMAIL, loginValue.email);
+        values.put(KEY_GENDER, loginValue.gender);
+        values.put(KEY_DOB, loginValue.dob);
 
 
         db.insert(TABLE_LOGIN, null, values);
@@ -76,10 +93,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.moveToFirst();
         if (cursor.getCount() > 0){
             user.put("sessionId", cursor.getString(cursor.getColumnIndex(KEY_SID)));
-            user.put("sessionId", cursor.getString(cursor.getColumnIndex(KEY_RTOKEN)));
-            user.put("sessionId", cursor.getString(cursor.getColumnIndex(KEY_USERID)));
-            user.put("sessionId", cursor.getString(cursor.getColumnIndex(KEY_CREATE_AT)));
-            user.put("sessionId", cursor.getString(cursor.getColumnIndex(KEY_UPDATE_AT)));
+            user.put("refreshToken", cursor.getString(cursor.getColumnIndex(KEY_RTOKEN)));
+            user.put("userId", cursor.getString(cursor.getColumnIndex(KEY_USERID)));
+            user.put("createAt", cursor.getString(cursor.getColumnIndex(KEY_CREATE_AT)));
+            user.put("updateAt", cursor.getString(cursor.getColumnIndex(KEY_UPDATE_AT)));
+            user.put("name", cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+            user.put("email", cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
+            user.put("gender", cursor.getString(cursor.getColumnIndex(KEY_GENDER)));
+            user.put("dob", cursor.getString(cursor.getColumnIndex(KEY_DOB)));
         }
         cursor.close();
         db.close();

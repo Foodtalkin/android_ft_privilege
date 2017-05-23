@@ -110,7 +110,18 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             loginValue.uId = response.getJSONObject("result").getJSONObject("session").getString("user_id");
             loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
             loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
+
+
+            JSONObject result = response.getJSONObject("result");
+
+            loginValue.name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
+            loginValue.email = ((result.isNull("email")) ? "N/A" : result.getString("email"));
+            loginValue.phone = ((result.isNull("phone")) ? "N/A" : result.getString("phone"));
+            loginValue.gender = ((result.isNull("gender")) ? "N/A" : result.getString("gender"));
+            loginValue.dob = ((result.isNull("dob")) ? "N/A" : result.getString("dob"));
             db.addUser(loginValue);
+
+            //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
 
             Intent intent = new Intent(LoginOtp.this, MainActivity.class);
             startActivity(intent);
@@ -224,7 +235,6 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         }
         return false;
     }
-
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (response != null ){
