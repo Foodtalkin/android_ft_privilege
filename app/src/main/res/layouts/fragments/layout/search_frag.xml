@@ -57,24 +57,23 @@
                 android:text="FILTER BY LOCATION"
                 android:textColor="@color/light_grey_blue"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 >
                 <LinearLayout
-                    android:id="@+id/btn_loadtion1"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/margin_search_btns"
-                    android:paddingBottom="@dimen/margin_search_btns"
-                    >
+                    android:paddingBottom="@dimen/margin_search_btns">
                     <View
                         android:id="@+id/circle_location1"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/circle_select"
+                        android:background="@drawable/circle_selected"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -86,8 +85,8 @@
                         android:textColor="@color/blue_grey"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/btn_loadtion2"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -110,8 +109,8 @@
                         android:textColor="@color/blue_grey"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/btn_loadtion3"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -134,8 +133,8 @@
                         android:textColor="@color/blue_grey"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/btn_loadtion4"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -158,8 +157,8 @@
                         android:textColor="@color/blue_grey"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/btn_loadtion5"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location5"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -182,8 +181,8 @@
                         android:textColor="@color/blue_grey"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/btn_loadtion6"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_location6"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -220,14 +219,14 @@
                 android:textColor="@color/light_grey_blue"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 >
                 <LinearLayout
                     android:id="@+id/btn_cost1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/margin_search_btns"
@@ -250,7 +249,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/btn_cost2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -274,7 +273,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/btn_cost3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -311,14 +310,14 @@
                 android:textColor="@color/light_grey_blue"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 >
                 <LinearLayout
                     android:id="@+id/btn_cuisine1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/margin_search_btns"
@@ -341,7 +340,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/btn_cuisine2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"
@@ -365,7 +364,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/btn_cuisine3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"

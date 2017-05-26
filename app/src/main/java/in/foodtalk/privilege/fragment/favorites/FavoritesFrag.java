@@ -49,7 +49,6 @@ public class FavoritesFrag extends Fragment implements ApiCallback {
         return layout;
     }
     private void loadData(String tag){
-
         if (db.getRowCount() > 0){
             String sessionId = db.getUserDetails().get("sessionId");
             Log.d(TAG, "url: "+ Url.BOOKMARK+"?sessionid="+sessionId);

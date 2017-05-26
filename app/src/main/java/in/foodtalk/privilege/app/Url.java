@@ -23,10 +23,15 @@ public class Url {
     public static String USER_LOGIN = baseUrl+"userlogin";
 
     public static String CHECK_USER = baseUrl+"checkuser";
+    public static String BOOKMARK = baseUrl+"bookmark";
 
-    public static String BOOKMARK = baseUrl+"/bookmark";
+    public static String REDEEM_HISTORY = baseUrl+"redeemhistory";
+
+    //redeemhistory?sessionid=4d17c8ecb555eeb99eb8849c6b58b66c93864a7d
+
+
+
+    //http://stg-api.foodtalk.in/offers?city_zone_id=3&cuisine=2,1&cost=budget
 
     //http://stg-api.foodtalk.in/bookmark?sessionid=30f28e8eb0b90533ab8453b20d39506ce6088780
-
-
 }
