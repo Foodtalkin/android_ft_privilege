@@ -31,5 +31,5 @@
         android:layout_centerVertical="true"
         android:padding="10dp"
         android:background="@null"
-        android:src="@drawable/ic_search_24"/>
+        android:src="@drawable/ic_search"/>
 </RelativeLayout>

@@ -93,7 +93,7 @@ public class SelectOutletFrag extends Fragment implements ApiCallback {
             outletCardObj.cityZone_id = listArray.getJSONObject(i).getString("city_zone_id");
             outletCardObj.address = listArray.getJSONObject(i).getString("address");
             outletCardObj.postcode = listArray.getJSONObject(i).getString("postcode");
-            outletCardObj.description = listArray.getJSONObject(i).getString("description");
+           // outletCardObj.description = listArray.getJSONObject(i).getString("description");
             outletCardObj.workHours = listArray.getJSONObject(i).getString("work_hours");
             outletCardList.add(outletCardObj);
         }

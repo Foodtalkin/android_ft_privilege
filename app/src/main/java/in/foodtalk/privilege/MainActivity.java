@@ -17,7 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewStub;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +31,7 @@ import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
-import in.foodtalk.privilege.fragment.SearchFrag;
+import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
 import in.foodtalk.privilege.fragment.favorites.FavoritesFrag;
@@ -183,16 +183,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
             selectOfferFrag.outletId = value;
             setFragmentView(selectOfferFrag, R.id.container, "selectOfferFrag", true);
+            hideSoftKeyboard();
         }
         if (fragName.equals("selectOutletFrag")){
             SelectOutletFrag selectOutletFrag = new SelectOutletFrag();
             selectOutletFrag.rId = value;
             setFragmentView(selectOutletFrag, R.id.container, "selectOutletFrag", true);
+            hideSoftKeyboard();
         }
         if (fragName.equals("offerDetailsFrag")){
             OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
             //offerDetailsFrag.outletId = value;
             Log.d(TAG, value);
+            hideSoftKeyboard();
             try {
                 JSONObject offerOutletId = new JSONObject(value);
                 offerDetailsFrag.offerId = offerOutletId.getString("offerId");
@@ -232,13 +235,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }else {
             super.onBackPressed();
         }
-
     }
     private void clearBackStack() {
         FragmentManager manager = getFragmentManager();
         if (manager.getBackStackEntryCount() > 0) {
             FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
             manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
+
+    public void hideSoftKeyboard() {
+        if(this.getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(this.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         }
     }
 
