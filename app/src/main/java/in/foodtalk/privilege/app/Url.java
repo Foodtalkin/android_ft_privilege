@@ -27,6 +27,8 @@ public class Url {
 
     public static String REDEEM_HISTORY = baseUrl+"redeemhistory";
 
+    public static String GET_CUISINE = baseUrl+"/cuisine";
+
     //redeemhistory?sessionid=4d17c8ecb555eeb99eb8849c6b58b66c93864a7d
 
 

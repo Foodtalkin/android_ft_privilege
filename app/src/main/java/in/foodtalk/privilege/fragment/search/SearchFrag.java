@@ -33,13 +33,15 @@ import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.models.SearchObj;
 
 /**
  * Created by RetailAdmin on 15-05-2017.
  */
 
-public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCallback {
+public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCallback, ValueCallback {
     View layout;
 
     String TAG = SearchFrag.class.getSimpleName();
@@ -49,20 +51,27 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
     EditText etSearch;
 
-    View circleL1, circleL2, circleL3, circleL4, circleL5, circleL6, circleL7;
+    View circleL1, circleL2, circleL3, circleL4, circleL5, circleL6, circleL7, circleCost1, circleCost2, circleCost3;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+    RecyclerView recyclerViewFilters;
+    RecyclerView.LayoutManager layoutManager1;
+
     ImageView iconClear;
 
     RelativeLayout searchHolder;
+
+    LinearLayout btnApplyFilters;
 
     List<SearchObj> searchList = new ArrayList<>();
 
     List<String> cityZoneIds = new ArrayList<>();
     List<String> cuisineIds = new ArrayList<>();
     List<String> cost = new ArrayList<>();
+
+    CallbackFragOpen callbackFragOpen;
 
 
     @Nullable
@@ -77,6 +86,9 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnLocation5 = (LinearLayout) layout.findViewById(R.id.btn_location5);
         btnLocation6 = (LinearLayout) layout.findViewById(R.id.btn_location6);
         btnLocation7 = (LinearLayout) layout.findViewById(R.id.btn_location7);
+
+        btnApplyFilters = (LinearLayout) layout.findViewById(R.id.btn_apply_filters);
+        btnApplyFilters.setOnTouchListener(this);
 
         btnLocation1.setOnTouchListener(this);
         btnLocation2.setOnTouchListener(this);
@@ -94,6 +106,16 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         circleL6 = layout.findViewById(R.id.circle_location6);
         circleL7 = layout.findViewById(R.id.circle_location7);
 
+        circleCost1 = layout.findViewById(R.id.circle_cost1);
+        circleCost2 = layout.findViewById(R.id.circle_cost2);
+        circleCost3 = layout.findViewById(R.id.circle_cost3);
+
+        callbackFragOpen = (CallbackFragOpen) getActivity();
+
+
+
+
+
 
 
         iconClear = (ImageView) layout.findViewById(R.id.icon_clear);
@@ -103,6 +125,10 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnCost2 = (LinearLayout) layout.findViewById(R.id.btn_cost2);
         btnCost3 = (LinearLayout) layout.findViewById(R.id.btn_cost3);
 
+        btnCost1.setOnTouchListener(this);
+        btnCost2.setOnTouchListener(this);
+        btnCost3.setOnTouchListener(this);
+
         etSearch = (EditText) layout.findViewById(R.id.et_search);
         searchHolder = (RelativeLayout) layout.findViewById(R.id.search_holder);
 
@@ -110,7 +136,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        recyclerViewFilters = (RecyclerView) layout.findViewById(R.id.recycler_view_filters);
+        recyclerViewFilters.setNestedScrollingEnabled(true);
+        layoutManager1 = new LinearLayoutManager(getActivity());
+        recyclerViewFilters.setLayoutManager(layoutManager1);
+
         textListener();
+        loadCuisineData ();
 
         return layout;
     }
@@ -149,6 +181,19 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }
         Log.d(TAG, "key: "+ query);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.SEARCH_TEXT+"/"+query, "search", this);
+
+    }
+    private void loadCuisineData (){
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.GET_CUISINE,"getCuisine", this);
+    }
+
+    private void setCuisineAdapter(JSONObject response) throws JSONException {
+        String status = response.getString("status");
+        JSONArray list = response.getJSONArray("result");
+        if (status.equals("OK")){
+            SearchFilterAdapter searchFilterAdapter = new SearchFilterAdapter(getActivity(), this, list);
+            recyclerViewFilters.setAdapter(searchFilterAdapter);
+        }
     }
 
     private void setAdapter(JSONObject response) throws JSONException {
@@ -183,15 +228,53 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     Boolean location1 = false; Boolean location2 = false; Boolean location3 = false;
     Boolean location4 = false; Boolean location5 = false; Boolean location6 = false;
     Boolean location7 = false;
+    Boolean cost1 = false; Boolean cost2 = false; Boolean cost3 = false;
+    private void costFilter(String costP){
+        if (costP.equals("1")){
+            if (cost1 == false){
+                cost1 = true;
+                circleCost1.setBackgroundResource(R.drawable.circle_selected);
+                cost.add("budget");
+            }else {
+                cost1 = false;
+                circleCost1.setBackgroundResource(R.drawable.circle_select);
+                cost.remove("budget");
+            }
+        }
+        if (costP.equals("2")){
+            if (cost2 == false){
+                cost2 = true;
+                circleCost2.setBackgroundResource(R.drawable.circle_selected);
+                cost.add("midrange");
+            }else {
+                cost2 = false;
+                circleCost2.setBackgroundResource(R.drawable.circle_select);
+                cost.remove("midrange");
+            }
+        }
+        if (costP.equals("3")){
+            if (cost3 == false){
+                cost3 = true;
+                circleCost3.setBackgroundResource(R.drawable.circle_selected);
+                cost.add("splurge");
+            }else {
+                cost3 = false;
+                circleCost3.setBackgroundResource(R.drawable.circle_select);
+                cost.remove("splurge");
+            }
+        }
+    }
     private void locationFilter(String location){
         if (location.equals("1")){
             if (location1 == false){
                 location1 = true;
                 circleL1.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("1");
                 Log.d(TAG, "location selected");
             }else {
                 location1 = false;
                 circleL1.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("1");
                 Log.d(TAG, "location remove");
             }
         }
@@ -199,10 +282,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location2 == false){
                 location2 = true;
                 circleL2.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("2");
                 Log.d(TAG, "location selected");
             }else {
                 location2 = false;
                 circleL2.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("2");
                 Log.d(TAG, "location remove");
             }
         }
@@ -210,10 +295,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location3 == false){
                 location3 = true;
                 circleL3.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("3");
                 Log.d(TAG, "location selected");
             }else {
                 location3 = false;
                 circleL3.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("3");
                 Log.d(TAG, "location remove");
             }
         }
@@ -221,10 +308,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location4 == false){
                 location4 = true;
                 circleL4.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("4");
                 Log.d(TAG, "location selected");
             }else {
                 location4 = false;
                 circleL4.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("4");
                 Log.d(TAG, "location remove");
             }
         }
@@ -232,10 +321,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location5 == false){
                 location5 = true;
                 circleL5.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("5");
                 Log.d(TAG, "location selected");
             }else {
                 location5 = false;
                 circleL5.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("5");
                 Log.d(TAG, "location remove");
             }
         }
@@ -243,10 +334,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location6 == false){
                 location6 = true;
                 circleL6.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("6");
                 Log.d(TAG, "location selected");
             }else {
                 location6 = false;
                 circleL6.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("6");
                 Log.d(TAG, "location remove");
             }
         }
@@ -254,13 +347,47 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location7 == false){
                 location7 = true;
                 circleL7.setBackgroundResource(R.drawable.circle_selected);
+                cityZoneIds.add("7");
                 Log.d(TAG, "location selected");
             }else {
                 location7 = false;
                 circleL7.setBackgroundResource(R.drawable.circle_select);
+                cityZoneIds.remove("7");
                 Log.d(TAG, "location remove");
             }
         }
+
+        Log.d(TAG,"cityZoneIds: "+ cityZoneIds.toString());
+    }
+
+    private void applyFilters(){
+        //http://stg-api.foodtalk.in/offers?city_zone_id=3&cuisine=2,1&cost=budget
+        String urlParams = "";
+        if (cityZoneIds.size() > 0){
+            urlParams = cityZoneIds.toString();
+            urlParams = urlParams.replaceAll("\\s","");
+            urlParams = "city_zone_id="+urlParams.substring(1, urlParams.length()-1);
+            //urlParams = urlParams.replaceAll("]","");
+        }else {
+            urlParams = "city_zone_id=";
+        }
+        if (cuisineIds.size() > 0){
+            String cIds = cuisineIds.toString();
+            cIds = cIds.replaceAll("\\s","");
+            cIds = "&cuisine="+cIds.substring(1, cIds.length()-1);
+            urlParams = urlParams+cIds;
+        }else {
+            urlParams = urlParams+"&cuisine=";
+        }
+        if (cost.size() > 0){
+            String cost1 = cost.toString();
+            cost1 = cost1.replaceAll("\\s","");
+            cost1 = "&cost="+cost1.substring(1, cost1.length()-1);
+            urlParams = urlParams+cost1;
+        }
+        Log.d(TAG, urlParams);
+        callbackFragOpen.openFrag("searchResult", Url.OFFERS+"?"+urlParams);
+
     }
 
     @Override
@@ -270,6 +397,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         etSearch.setText("");
+                        break;
+                }
+                break;
+            case R.id.btn_apply_filters:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        applyFilters();
                         break;
                 }
                 break;
@@ -325,20 +459,21 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             case R.id.btn_cost1:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-
+                        costFilter("1");
                         break;
                 }
                 break;
             case R.id.btn_cost2:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-
+                        costFilter("2");
                         break;
                 }
                 break;
             case R.id.btn_cost3:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
+                        costFilter("3");
                         break;
                 }
                 break;
@@ -357,6 +492,22 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                     e.printStackTrace();
                 }
             }
+            if (tag.equals("getCuisine")){
+                try {
+                    setCuisineAdapter(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setValue(String v1, String v2) {
+        if (v1.equals("add")){
+            cuisineIds.add(v2);
+        }else if (v1.equals("remove")){
+            cuisineIds.remove(v2);
         }
     }
 }

@@ -31,6 +31,7 @@ import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
+import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
@@ -38,6 +39,7 @@ import in.foodtalk.privilege.fragment.favorites.FavoritesFrag;
 import in.foodtalk.privilege.fragment.history.HistoryFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
+import in.foodtalk.privilege.fragment.search.SearchResult;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {
 
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navBuyNow = (LinearLayout) findViewById(R.id.nav_buynow);
         navHowItWork = (LinearLayout) findViewById(R.id.nav_howitwork);
         navRules = (LinearLayout) findViewById(R.id.nav_rules);
-        navLegal = (LinearLayout) findViewById(R.id.nav_contact);
+        navLegal = (LinearLayout) findViewById(R.id.nav_legal);
         navContact = (LinearLayout) findViewById(R.id.nav_contact);
         navAbout = (LinearLayout) findViewById(R.id.nav_about);
 
@@ -177,6 +179,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         transaction.commit();
     }
 
+    private void signUp(){
+        SignupFrag signupFrag = new SignupFrag();
+        setFragmentView(signupFrag, R.id.container, "signupFrag", false);
+    }
+
     @Override
     public void openFrag(String fragName, String value) {
         if (fragName.equals("selectOfferFrag")){
@@ -216,13 +223,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(successFrag, R.id.container, "successFrag", false);
         }
         if (fragName.equals("signupFrag")){
-            SignupFrag signupFrag = new SignupFrag();
-            setFragmentView(signupFrag, R.id.container, "signupFrag", false);
+
+            signUp();
         }
         if (fragName.equals("otpVerify")){
             OtpVerifyFrag otpVerifyFrag = new OtpVerifyFrag();
             otpVerifyFrag.phone = value;
             setFragmentView(otpVerifyFrag, R.id.container, "otpVerify", false);
+        }
+        if (fragName.equals("searchResult")){
+            SearchResult searchResult = new SearchResult();
+            searchResult.offerUrl = value;
+            setFragmentView(searchResult, R.id.container, "searchResult", true);
         }
     }
 
@@ -260,6 +272,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         finish();
     }
 
+    private void email(){
+        /* Create the Intent */
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+/* Fill it with Data */
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"info@foodtalkindia.com"});
+        //emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
+        //emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+
+/* Send it off to the Activity-Chooser */
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+    }
+
+    private void webView(String url){
+        WebViewFrag webViewFrag = new WebViewFrag();
+        webViewFrag.url = url;
+        setFragmentView(webViewFrag, R.id.container, "webViewLegal", true);
+        drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
@@ -274,6 +307,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        Intent i = new Intent(MainActivity.this, Login.class);
+                        startActivity(i);
+                        break;
+                }
+                break;
+            case R.id.nav_buynow:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        signUp();
+                        drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }
                 break;
@@ -281,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d("MainActivity","search btn clicked");
-                        setFragmentView(searchFrag, R.id.container, "searchFrag", false);
+                        setFragmentView(searchFrag, R.id.container, "searchFrag", true);
                         break;
                 }
                 break;
@@ -291,6 +334,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         Log.d(TAG,"logout clicked");
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         logOut();
+                        break;
+                }
+                break;
+            case R.id.nav_contact:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        email();
                         break;
                 }
                 break;
@@ -308,6 +358,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         HistoryFrag historyFrag = new HistoryFrag();
                         setFragmentView(historyFrag, R.id.container, "historyFrag", true);
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+            case R.id.nav_legal:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        webView("http://foodtalk.in/app/legal.html");
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+            case R.id.nav_rules:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        webView("http://foodtalk.in/app/faq.html");
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }
