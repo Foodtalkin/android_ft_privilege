@@ -87,7 +87,9 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            Log.e(TAG," jsonString: "+ offerOutletId.toString());
                             callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
+
                             break;
                     }
                     break;

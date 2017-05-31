@@ -78,6 +78,7 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 Log.d(TAG, "goto offer list");
                             }else {
                                 Log.d(TAG, "goto offer details");
+                                //error with this
                                 callbackFragOpen.openFrag("offerDetailsFrag", "");
                             }
                             break;

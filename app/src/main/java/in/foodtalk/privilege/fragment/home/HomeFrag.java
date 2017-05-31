@@ -146,15 +146,18 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     @Override
     public void apiResponse(JSONObject response, String tag) {
         Log.d(TAG, "response: "+ response);
-        try {
-            if (tag.equals("loadOffers")){
-                if (response.getString("status").equals("OK")){
-                    sendToAdapter(response, tag);
+        if (response != null){
+            try {
+                if (tag.equals("loadOffers")){
+                    if (response.getString("status").equals("OK")){
+                        sendToAdapter(response, tag);
+                    }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -163,7 +166,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_buy:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signupFrag","");
+                        callbackFragOpen.openFrag("signupAlert","");
                         break;
                 }
                 break;

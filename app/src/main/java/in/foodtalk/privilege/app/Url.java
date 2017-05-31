@@ -29,6 +29,10 @@ public class Url {
 
     public static String GET_CUISINE = baseUrl+"/cuisine";
 
+    public static String GET_REDEEM = baseUrl+"/redeem";
+
+    //http://stg-api.foodtalk.in/redeem?sessionid=3c3ab93992fa3e583195003b54d8e5650a868954
+
     //redeemhistory?sessionid=4d17c8ecb555eeb99eb8849c6b58b66c93864a7d
 
 

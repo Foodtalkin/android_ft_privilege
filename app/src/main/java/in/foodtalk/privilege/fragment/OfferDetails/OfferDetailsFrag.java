@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -53,6 +54,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+    ScrollView scrollView;
+
 
 
     public String offerId;
@@ -79,6 +82,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         tvDes = (TextView) layout.findViewById(R.id.tv_des);
         tvCuisine = (TextView) layout.findViewById(R.id.tv_cuisine);
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
+        scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
+        scrollView.setVisibility(View.GONE);
+
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -124,13 +130,16 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         ArrayList<String> stringArray = new ArrayList<String>();
 
         JSONArray jsonArray = result.getJSONArray("cuisine");
-        StringBuilder cuisine = new StringBuilder(jsonArray.getJSONObject(0).getString("title"));
-        for(int i = 1, count = jsonArray.length(); i< count; i++)
-        {
-            cuisine.append(", "+jsonArray.getJSONObject(i).getString("title"));
+
+        if (jsonArray != null){
+            StringBuilder cuisine = new StringBuilder(jsonArray.getJSONObject(0).getString("title"));
+            for(int i = 1, count = jsonArray.length(); i< count; i++)
+            {
+                cuisine.append(", "+jsonArray.getJSONObject(i).getString("title"));
+            }
+            Log.d(TAG, "cuisine: "+cuisine);
+            tvCuisine.setText(cuisine);
         }
-        Log.d(TAG, "cuisine: "+cuisine);
-        tvCuisine.setText(cuisine);
 
         setImages(result.getJSONArray("images"));
     }
@@ -145,8 +154,6 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             ImagesAdapter imagesAdapter = new ImagesAdapter(getActivity(), imagesList);
             recyclerView.setAdapter(imagesAdapter);
         }
-
-
     }
 
     private void setAnimation(){
@@ -218,7 +225,15 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn next clicked");
-                        callbackFragOpen.openFrag("restaurantPin","");
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("outlet_id",outletId);
+                            jsonObject.put("offer_id",offerId);
+                            jsonObject.put("offers_redeemed", tvCounter.getText().toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callbackFragOpen.openFrag("restaurantPin", jsonObject.toString());
                         break;
                 }
                 break;
@@ -269,6 +284,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             if (tag.equals("offerDetails")){
                 try {
                     setData(response);
+                    scrollView.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

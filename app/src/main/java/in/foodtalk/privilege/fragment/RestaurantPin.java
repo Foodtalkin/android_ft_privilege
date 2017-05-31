@@ -25,6 +25,10 @@ public class RestaurantPin extends Fragment implements CallbackKeypad {
 
     CallbackFragOpen callbackFragOpen;
 
+    public String jsonString;
+
+    String TAG = RestaurantPin.class.getSimpleName();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,11 +38,12 @@ public class RestaurantPin extends Fragment implements CallbackKeypad {
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
 
-
         tvOtp1 = (TextView) layout.findViewById(R.id.tv_otp1);
         tvOtp2 = (TextView) layout.findViewById(R.id.tv_otp2);
         tvOtp3 = (TextView) layout.findViewById(R.id.tv_otp3);
         tvOtp4 = (TextView) layout.findViewById(R.id.tv_otp4);
+
+        Log.d(TAG, jsonString);
 
         return layout;
     }

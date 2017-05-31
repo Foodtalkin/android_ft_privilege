@@ -7,6 +7,7 @@
     tools:context="in.foodtalk.privilege.LoginOtp"
     android:background="@color/white">
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -17,7 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/dark_grey"
-
             >
             <RelativeLayout
                 android:layout_width="match_parent"

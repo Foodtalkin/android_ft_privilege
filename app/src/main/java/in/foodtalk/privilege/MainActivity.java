@@ -31,6 +31,7 @@ import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
+import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
@@ -181,7 +182,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     private void signUp(){
         SignupFrag signupFrag = new SignupFrag();
-        setFragmentView(signupFrag, R.id.container, "signupFrag", false);
+        setFragmentView(signupFrag, R.id.container, "signupFrag", true);
+    }
+    private void signupAlert(){
+        SignupAlert signupAlert = new SignupAlert();
+        setFragmentView(signupAlert, R.id.container, "signupAlert", true);
     }
 
     @Override
@@ -201,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("offerDetailsFrag")){
             OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
             //offerDetailsFrag.outletId = value;
-            Log.d(TAG, value);
+            Log.d(TAG, "value for offerDetailsF: "+ value);
             hideSoftKeyboard();
             try {
                 JSONObject offerOutletId = new JSONObject(value);
@@ -214,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
         if (fragName.equals("restaurantPin")){
             RestaurantPin restaurantPin = new RestaurantPin();
+            restaurantPin.jsonString = value;
             setFragmentView(restaurantPin, R.id.container, "offerDetailsFrag", true);
         }
         if (fragName.equals("homeFrag")){
@@ -222,9 +228,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("successFrag")){
             setFragmentView(successFrag, R.id.container, "successFrag", false);
         }
-        if (fragName.equals("signupFrag")){
-
-            signUp();
+        if (fragName.equals("signupAlert")){
+            signupAlert();
         }
         if (fragName.equals("otpVerify")){
             OtpVerifyFrag otpVerifyFrag = new OtpVerifyFrag();
@@ -235,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             SearchResult searchResult = new SearchResult();
             searchResult.offerUrl = value;
             setFragmentView(searchResult, R.id.container, "searchResult", true);
+        }
+        if (fragName.equals("signUp")){
+            signUp();
         }
     }
 
