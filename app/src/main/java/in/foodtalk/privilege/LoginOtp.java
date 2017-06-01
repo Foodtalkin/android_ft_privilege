@@ -108,8 +108,8 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             loginValue.sId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
             loginValue.rToken = response.getJSONObject("result").getJSONObject("session").getString("refresh_token");
             loginValue.uId = response.getJSONObject("result").getJSONObject("session").getString("user_id");
-            loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
-            loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
+            //loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
+            //loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
 
 
             JSONObject result = response.getJSONObject("result");

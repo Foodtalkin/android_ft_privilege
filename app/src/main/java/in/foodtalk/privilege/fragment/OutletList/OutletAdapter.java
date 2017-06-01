@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import in.foodtalk.privilege.R;
@@ -79,7 +82,14 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }else {
                                 Log.d(TAG, "goto offer details");
                                 //error with this
-                                callbackFragOpen.openFrag("offerDetailsFrag", "");
+                                JSONObject offerOutletId = new JSONObject();
+                                try {
+                                    offerOutletId.put("offerId", outletCardList.get(getAdapterPosition()).offerIds);
+                                    offerOutletId.put("outletId", outletCardList.get(getAdapterPosition()).id);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             }
                             break;
                     }

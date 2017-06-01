@@ -37,10 +37,10 @@ enter their PIN."
             android:layout_marginTop="38dp">
 
             <LinearLayout
+                android:id="@+id/pin_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/tv_otp1"
                     android:layout_width="47dp"
@@ -85,12 +85,13 @@ enter their PIN."
             </LinearLayout>
         </RelativeLayout>
         <TextView
+            android:id="@+id/tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CONFIRM"
+            android:text="Wrong Pin"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:textColor="@color/bright_sky_blue"
+            android:textColor="@color/colorAccent"
             android:layout_marginTop="40dp"/>
 
     </LinearLayout>

@@ -31,6 +31,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
@@ -56,10 +57,18 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
     ScrollView scrollView;
 
+    DatabaseHandler db;
+
+    TextView btnBuyNow;
+    TextView tvCoupons;
+    TextView btnReadmore;
+
 
 
     public String offerId;
     public String outletId;
+
+    public int purchaseLimit;
 
     List<ImagesObj> imagesList = new ArrayList<>();
 
@@ -85,8 +94,30 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
 
+        btnBuyNow = (TextView) layout.findViewById(R.id.btn_buy_now);
+        btnBuyNow.setOnTouchListener(this);
+
+        tvCoupons = (TextView) layout.findViewById(R.id.tv_coupons);
+
+        btnReadmore = (TextView) layout.findViewById(R.id.btn_readmore);
+        btnReadmore.setOnTouchListener(this);
+
+
+        db = new DatabaseHandler(getActivity());
+
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
+        if (db.getRowCount() > 0){
+            redeemBar.setVisibility(View.VISIBLE);
+            btnSlideUp.setVisibility(View.VISIBLE);
+            btnBuyNow.setVisibility(View.GONE);
+        }else {
+            redeemBar.setVisibility(View.GONE);
+            btnBuyNow.setVisibility(View.VISIBLE);
+            btnSlideUp.setVisibility(View.GONE);
+
+        }
 
         Log.d(TAG, "offerId: "+offerId+" outletId: "+outletId);
 
@@ -126,12 +157,15 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         tvAddress.setText(result.getString("address"));
         tvHours.setText(result.getString("work_hours"));
         tvDes.setText(result.getString("description"));
+        tvCoupons.setText(result.getString("purchase_limit")+" Coupons available");
+
+        purchaseLimit = Integer.parseInt(result.getString("purchase_limit"));
 
         ArrayList<String> stringArray = new ArrayList<String>();
 
         JSONArray jsonArray = result.getJSONArray("cuisine");
 
-        if (jsonArray != null){
+        if (jsonArray.length() > 0){
             StringBuilder cuisine = new StringBuilder(jsonArray.getJSONObject(0).getString("title"));
             for(int i = 1, count = jsonArray.length(); i< count; i++)
             {
@@ -140,7 +174,6 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             Log.d(TAG, "cuisine: "+cuisine);
             tvCuisine.setText(cuisine);
         }
-
         setImages(result.getJSONArray("images"));
     }
 
@@ -212,6 +245,34 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
+            case R.id.btn_readmore:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "readmore clicked: maxline "+ tvDes.getMaxLines());
+                        //tvDes.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+                        /*ViewGroup.LayoutParams params = tvDes.getLayoutParams();
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        tvDes.setLayoutParams(params);*/
+                        if (tvDes.getMaxLines() == 2){
+                            tvDes.setMaxLines(10);
+                        }else {
+                            tvDes.setMaxLines(2);
+                            Log.d(TAG,"set line 2");
+                        }
+
+                        break;
+                }
+                break;
+            case R.id.btn_buy_now:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        callbackFragOpen.openFrag("signupAlert","");
+                        Log.d(TAG, "btn buy now clicked");
+                        break;
+                }
+
+                break;
             case R.id.btn_cancel:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
@@ -258,7 +319,10 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn add clicked");
                         int currentCounter = Integer.parseInt(tvCounter.getText().toString());
-                        tvCounter.setText(String.valueOf(currentCounter+1));
+                        if (currentCounter < purchaseLimit){
+                            tvCounter.setText(String.valueOf(currentCounter+1));
+                        }
+
                         break;
                 }
                 break;
