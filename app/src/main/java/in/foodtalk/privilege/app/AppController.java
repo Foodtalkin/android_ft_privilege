@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.instamojo.android.Instamojo;
 
 /**
  * Created by RetailAdmin on 03-05-2017.
@@ -29,7 +30,7 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Instamojo.initialize(this);
         mInstance = this;
     }
 
