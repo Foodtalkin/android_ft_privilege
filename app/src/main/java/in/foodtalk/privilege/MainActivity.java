@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.fragment.AccountFrag;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
@@ -382,6 +383,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         webView("http://foodtalk.in/app/faq.html");
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
+            case R.id.nav_account:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        AccountFrag accountFrag = new AccountFrag();
+                        setFragmentView(accountFrag, R.id.container, "historyFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }
