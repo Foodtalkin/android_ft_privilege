@@ -31,6 +31,7 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         Instamojo.initialize(this);
+        Instamojo.setLogLevel(Log.DEBUG);
         mInstance = this;
     }
 

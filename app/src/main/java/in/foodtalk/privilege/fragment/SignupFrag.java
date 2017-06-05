@@ -63,8 +63,14 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
                     jsonObject.put("phone", phone);
                     jsonObject.put("signup","1");
                     ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), jsonObject, Url.GET_OTP, tag, this);
+                }else {
+                    Log.d(TAG, "phone number length");
                 }
+            }else {
+                Log.d(TAG, "email id problem");
             }
+        }else {
+            Log.d(TAG, "name length less then 2");
         }
     }
     private void gotoLogin(JSONObject response) throws JSONException {

@@ -1,12 +1,16 @@
 package in.foodtalk.privilege;
 
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +55,7 @@ import in.foodtalk.privilege.fragment.history.HistoryFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
 import in.foodtalk.privilege.fragment.search.SearchResult;
+import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.ToastShow;
 
 public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     DatabaseHandler db;
 
+    static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 32;
+
 
 
     @Override
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-
+        checkPermission();
 
         txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);
 
@@ -317,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
     private void paymentWithOrder(){
         // Good time to show dialog
-        Request request = new Request("accessToken", "orderID", new OrderRequestCallBack() {
+        Request request = new Request("sbG16udSk3CHYWNvHj9vi7xdi91sPw", "82aa5865-0ca6-4233-a66e-13d33a740ced", new OrderRequestCallBack() {
             @Override
             public void onFinish(final Order order, final Exception error) {
                 runOnUiThread(new Runnable() {
@@ -342,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                             }
                             return;
                         }
-
+                        Log.e(TAG,"startPreCreatedUI activity result");
                         startPreCreatedUI(order);
                     }
                 });
@@ -352,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         request.execute();
     }
     private void payment(){
-        Order order = new Order("k6cBh0Jk7c4XvY2Ho6kbph4p4oOeDv", "1c1aad6e07154789bb5b022604bc9c41", "Mandeep", "android@foodtalkindia.com", "8383083893", "10", "membership999");
+        Order order = new Order("laimaHthjsSC5USRQ05UGBrwsxs7B5", "288243bdc5b5463f90a589954b742642", "Mandeep", "android@foodtalkindia.com", "8383083893", "10", "membership999");
 
        //orderId: 016af1ae8c5744c1bbc59cfd0367ed39
         //transactionId: 72a8d3f8510a43628bf768d975108bce
@@ -476,6 +483,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG,"onActivityResult: "+requestCode+" : "+ resultCode);
         if (requestCode == Constants.REQUEST_CODE && data != null) {
             String orderID = data.getStringExtra(Constants.ORDER_ID);
             String transactionID = data.getStringExtra(Constants.TRANSACTION_ID);
@@ -490,6 +499,35 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             } else {
                 //Oops!! Payment was cancelled
             }
+        }
+
+        //--------
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_PHONE_STATE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Log.d(TAG,"permission was granted");
+
+                } else {
+                    Log.d(TAG,"permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
@@ -591,13 +629,48 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "click about nav");
-                        //payment();
-                        paymentWithOrder();
+                        PayNow payNow = new PayNow(this);
+                        //payNow.paymentWithOrder("FOZH5L9GZHHG4cSQDzuPIJyRPjlFs4","5efa71cc-da8f-4c2f-9195-075381af1bf9");
+                        //paymentWithOrder();
+                        //{"access_token":"FOZH5L9GZHHG4cSQDzuPIJyRPjlFs4","paymentid":"6ec55f4e77ff4f7a9cded4939e283b10","order":{"order_id":"5efa71cc-da8f-4c2f-9195-075381af1bf9","name":"hsus","email":"hsu@hsj.com","phone":"+915424542454","amount":"999.00"}},"api":"\/\/subscriptionPayment?sessionid=575b5a9e34db298ab736facc1940fffeaf590e2d"}
+                        payment();
+                        //paymentWithOrder();
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }
                 break;
         }
         return false;
+    }
+
+
+
+    private void checkPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_PHONE_STATE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+
+                // MY_PERMISSIONS_REQUEST_READ_PHONE_STATE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
     }
 }
