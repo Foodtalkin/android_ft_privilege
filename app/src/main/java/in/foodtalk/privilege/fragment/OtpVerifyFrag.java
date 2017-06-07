@@ -153,16 +153,17 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
         if (response != null){
             if (tag.equals("otpVerify")){
                 Log.d(TAG,"response: "+ response);
-                //callbackFragOpen.openFrag("paymentNowFrag","");
+
 
                 try {
                     userLogin(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                getInfoToPayent();
+                //getInfoToPayent();
+                callbackFragOpen.openFrag("paymentFlow","");
             }
-            if (tag.equals("subscriptionPayment")){
+            /*if (tag.equals("subscriptionPayment")){
                 Log.d(TAG, "response: "+ response);
                 try {
                     if (response.getString("status").equals("OK")){
@@ -171,7 +172,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
     }
 }

@@ -3,6 +3,7 @@ package in.foodtalk.privilege.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 
@@ -21,6 +23,7 @@ import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.ToastShow;
 
 /**
  * Created by RetailAdmin on 15-05-2017.
@@ -36,6 +39,10 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
     String email;
     String name;
     String phone;
+
+    RelativeLayout progressBar;
+
+    View lineName, lineEmail, linePhone;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +53,13 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnVerify = (LinearLayout) layout.findViewById(R.id.btn_verify);
         btnVerify.setOnTouchListener(this);
         callbackFragOpen = (CallbackFragOpen) getActivity();
+
+        progressBar = (RelativeLayout) layout.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+
+        lineName = layout.findViewById(R.id.line_name);
+        lineEmail = layout.findViewById(R.id.line_email);
+        linePhone = layout.findViewById(R.id.line_phone);
         return layout;
     }
 
@@ -63,20 +77,44 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
                     jsonObject.put("phone", phone);
                     jsonObject.put("signup","1");
                     ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), jsonObject, Url.GET_OTP, tag, this);
+                    progressBar.setVisibility(View.VISIBLE);
+                    linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
                 }else {
+                    linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
                     Log.d(TAG, "phone number length");
+                    lineName.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
+                    ToastShow.showToast(getActivity(), "Enter valid phone no.");
                 }
+                lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
             }else {
                 Log.d(TAG, "email id problem");
+                lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
+                ToastShow.showToast(getActivity(), "Enter valid email");
             }
+            lineName.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
         }else {
             Log.d(TAG, "name length less then 2");
+            lineName.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
+            ToastShow.showToast(getActivity(), "Enter valid name");
         }
     }
     private void gotoLogin(JSONObject response) throws JSONException {
+        progressBar.setVisibility(View.GONE);
         String message = response.getString("message");
-        if (message.equals("Success")){
+        String status = response.getString("status");
+        if (status.equals("OK")){
             callbackFragOpen.openFrag("otpVerify",phone);
+        }else {
+            String error = response.getJSONObject("result").getString("error");
+            if (error.equals("email")){
+                ToastShow.showToast(getActivity(), message);
+                lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
+                linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
+            }else if (error.equals("phone")){
+                ToastShow.showToast(getActivity(), message);
+                lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
+                linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
+            }
         }
     }
     @Override
@@ -105,6 +143,9 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }else {
+            progressBar.setVisibility(View.GONE);
+            ToastShow.showToast(getActivity(),"Check internet connection");
         }
     }
 }

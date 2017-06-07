@@ -25,7 +25,7 @@ public class PayNow {
         this.activity = activity;
         Instamojo.setBaseUrl("https://test.instamojo.com/");
     }
-    public   void paymentWithOrder(String accessToken, String orderId){
+    public  void paymentWithOrder(String accessToken, String orderId){
         // Good time to show dialog
         Request request = new Request(accessToken, orderId, new OrderRequestCallBack() {
             @Override
@@ -52,17 +52,17 @@ public class PayNow {
                             }
                             return;
                         }
-
                         startPreCreatedUI(order);
                     }
                 });
-
             }
         });
         request.execute();
     }
     public void payment(String accessToken, String transactionID, String name, String email, String phone, String amount, String purpose){
         Order order = new Order(accessToken, transactionID, name, email, phone, amount, purpose);
+
+        order.setWebhook("http://stg-api.foodtalk.in/webhook/instamojo");
 
         //orderId: 016af1ae8c5744c1bbc59cfd0367ed39
         //transactionId: 72a8d3f8510a43628bf768d975108bce
@@ -166,16 +166,15 @@ public class PayNow {
                     }
                     return;
                 }
-
                 startPreCreatedUI(order);
-
+                Log.d(TAG,"order: "+ order);
+                Log.d(TAG,"order: id "+ order.getId());
+                Log.d(TAG,"order: T id "+ order.getTransactionID());
             }
 
         });
         request.execute();
-
     }
-
     private void startPreCreatedUI(Order order){
         //Using Pre created UI
         Intent intent = new Intent(activity, PaymentDetailsActivity.class);

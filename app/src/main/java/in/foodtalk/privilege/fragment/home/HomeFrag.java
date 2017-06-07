@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,7 +35,9 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 import in.foodtalk.privilege.library.GridSpacingItemDecoration;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.OfferCardObj;
 
 /**
@@ -55,6 +58,12 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     TextView btnBuy, tvHeader;
     LinearLayout header;
     DatabaseHandler db;
+
+    RecyclerView.LayoutManager mLayoutManager;
+
+    LinearLayoutManager linearLayoutManager;
+
+    String nextUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,8 +86,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
 
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
+        linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -95,6 +104,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         loadData("loadOffers");
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
+        endlessScrolling();
 
 
 
@@ -118,12 +129,31 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     }
 
     private void loadData(String tag){
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS, tag, this);
+        if (tag.equals("loadOffersMore")){
+            if (!nextUrl.equals("")){
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, tag, this);
+                OfferCardObj offerCardObj = new OfferCardObj();
+                offerCardObj.type = "loader";
+                //offerCardList.add(offerCardObj);
+                Log.d(TAG, "load more");
+            }else {
+                Log.d(TAG, "No more offers");
+                ToastShow.showToast(getActivity(), "No more offers!");
+            }
+        }else if (tag.equals("loadOffers")){
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS, tag, this);
+        }
     }
 
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
-        offerCardList.clear();
+
+        if (tag.equals("loadOffers")){
+            offerCardList.clear();
+        }
+
+
+        nextUrl = response.getJSONObject("result").getString("next_page_url");
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
             offerCardObj.offerCount = listArray.getJSONObject(i).getString("offer_count");
@@ -135,12 +165,29 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             offerCardObj.cost = listArray.getJSONObject(i).getString("cost");
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
             offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
+            offerCardObj.type = "offer";
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
-            homeAdapter = new HomeAdapter(getActivity(), offerCardList);
-            recyclerView.setAdapter(homeAdapter);
+            if (tag.equals("loadOffers")){
+                homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+                recyclerView.setAdapter(homeAdapter);
+            }else if (tag.equals("loadOffersMore")){
+                homeAdapter.notifyDataSetChanged();
+            }
+
         }
+    }
+
+    private void endlessScrolling(){
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
+                loadData("loadOffersMore");
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -148,7 +195,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         Log.d(TAG, "response: "+ response);
         if (response != null){
             try {
-                if (tag.equals("loadOffers")){
+                if (tag.equals("loadOffers") || tag.equals("loadOffersMore")){
                     if (response.getString("status").equals("OK")){
                         sendToAdapter(response, tag);
                     }

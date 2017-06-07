@@ -43,6 +43,7 @@ import in.foodtalk.privilege.fragment.AccountFrag;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
+import in.foodtalk.privilege.fragment.PaymentFlow;
 import in.foodtalk.privilege.fragment.PaymentNowFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout;
 
     SuccessFrag successFrag = new SuccessFrag();
+    PaymentFlow paymentFlow = new PaymentFlow();
 
     DatabaseHandler db;
 
@@ -176,7 +178,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         View mCustomView = mInflater.inflate(R.layout.actionbar, null);
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
+
+
     }
+    private void onFragmentChange(Fragment currentFragment){
+        if (currentFragment == homeFrag){
+           // searchBtn.setVisibility(View.VISIBLE);
+        }else {
+           // searchBtn.setVisibility(View.GONE);
+        }
+    }
+
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
         /*if (tag.equals("successFrag")){
@@ -187,16 +199,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
            // mActionBar.setDisplayShowCustomEnabled(true);
         }*/
 
+        onFragmentChange(newFragment);
+
+
+
         String fragmentName = newFragment.getClass().getName();
         currentFragment = newFragment;
         FragmentManager manager = getFragmentManager();
+
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(container,newFragment,tag);
         if (bStack){
             transaction.addToBackStack(fragmentName);
         }
         transaction.commit();
+
+
+
+
     }
+
+
 
     private void signUp(){
         SignupFrag signupFrag = new SignupFrag();
@@ -206,6 +229,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         SignupAlert signupAlert = new SignupAlert();
         setFragmentView(signupAlert, R.id.container, "signupAlert", true);
     }
+
+
 
     @Override
     public void openFrag(String fragName, String value) {
@@ -265,6 +290,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("paymentNowFrag")){
             PaymentNowFrag paymentNowFrag = new PaymentNowFrag();
             setFragmentView(paymentNowFrag, R.id.container, "paymentNowFrag", true);
+        }
+        if (fragName.equals("paymentFlow")){
+
+            setFragmentView(paymentFlow, R.id.container, "paymentFlow", true);
         }
     }
 
@@ -496,12 +525,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 Log.d(TAG,"onActivityResult: orderId: "+ orderID);
                 Log.d(TAG,"onActivityResult: transactionId: "+ transactionID);
                 Log.d(TAG,"onActivityResult: paymentId: "+ paymentID);
+                if (currentFragment == paymentFlow){
+                    paymentFlow.instamojoResponse("ok", orderID, transactionID, paymentID);
+                }
             } else {
+                paymentFlow.instamojoResponse("error", orderID, transactionID, paymentID);
                 //Oops!! Payment was cancelled
             }
         }
 
         //--------
+
+    }
+    private void sendPaymentResponse(String status, String orderId, String transactionId, String paymentId){
 
     }
 

@@ -32,6 +32,10 @@ public class Url {
     public static String REDEEM = baseUrl+"/redeem";
 
     public static String SUBSCRIPTION_PYMENT = baseUrl+"/subscriptionPayment";
+
+    public static String SUBSCRIPTION = baseUrl+"/subscription";
+
+    //http://stg-api.foodtalk.in/subscription?sessionid=bca402b53b16cf9a5121331fecfadb075ed672ae
     //http://stg-api.foodtalk.in/subscriptionPayment?sessionid=127f112de61bb7261e3655917e6afd305ba06863
 
     //http://stg-api.foodtalk.in/redeem?sessionid=3c3ab93992fa3e583195003b54d8e5650a868954

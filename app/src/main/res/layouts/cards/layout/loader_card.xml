@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <com.github.silvestrpredko.dotprogressbar.DotProgressBar
+            android:id="@+id/dot_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            custom:amount="3"
+            custom:duration="@android:integer/config_mediumAnimTime"
+            custom:endColor="@color/light_blue_A400"
+            custom:startColor="@color/light_blue_A700"
+            custom:animationDirection="left"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

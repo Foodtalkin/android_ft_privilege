@@ -62,4 +62,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'com.instamojo:android-sdk:1.2.6'
+
+    compile 'com.github.silvestrpredko:dot-progress-bar:1.1'
 }
