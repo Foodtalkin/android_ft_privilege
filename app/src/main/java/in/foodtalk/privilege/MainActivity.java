@@ -135,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navAbout.setOnTouchListener(this);
 
 
-
-
         if (db.getRowCount() > 0){
             forLogin.setVisibility(View.VISIBLE);
             forLogin1.setVisibility(View.VISIBLE);
@@ -156,10 +154,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         searchBtn = (ImageView) findViewById(R.id.btn_search);
         searchBtn.setOnTouchListener(this);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            String frag = bundle.getString("fragment");
+            Log.d(TAG, "open frag: "+ frag);
+            if (frag.equals("signupFrag")){
+                signUp();
+                Log.d(TAG, "open signup fragment");
+            }
+        }else {
+            searchFrag = new SearchFrag();
+            homeFrag = new HomeFrag();
+            setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+        }
 
-        searchFrag = new SearchFrag();
-        homeFrag = new HomeFrag();
-        setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+
+
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
 
@@ -213,13 +223,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             transaction.addToBackStack(fragmentName);
         }
         transaction.commit();
-
-
-
-
     }
-
-
 
     private void signUp(){
         SignupFrag signupFrag = new SignupFrag();
@@ -229,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         SignupAlert signupAlert = new SignupAlert();
         setFragmentView(signupAlert, R.id.container, "signupAlert", true);
     }
-
 
 
     @Override

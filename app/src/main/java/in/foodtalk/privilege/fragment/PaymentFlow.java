@@ -41,6 +41,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
 
     DatabaseHandler db;
     CallbackFragOpen callbackFragOpen;
+    String paymentId;
 
     @Nullable
     @Override
@@ -75,7 +76,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         loaderView.setVisibility(View.GONE);
         if (status.equals("ok")){
            // setScreen("success");
-            checkPaymentStatus(transactionId);
+            checkPaymentStatus(this.paymentId);
         }else if (status.equals("error")){
             setScreen("retry");
         }
@@ -130,6 +131,8 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         String phone = response.getJSONObject("result").getJSONObject("transaction").getString("phone");
         String amount = response.getJSONObject("result").getJSONObject("transaction").getString("amount");
        // Log.d(TAG,"accessToken: "+accessToken+" orderId: "+orderId);
+
+        paymentId = paymentid;
         PayNow payNow = new PayNow(getActivity());
         payNow.paymentWithOrder(accessToken, orderId);
         //payNow.payment(accessToken, paymentid, name, email, phone, amount, "membership999FT");
@@ -148,8 +151,17 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                     e.printStackTrace();
                 }
             }
-            if (tag.equals("subscriptionPayment")){
+            if (tag.equals("subscription")){
                 Log.d(TAG, "response: "+ response);
+                try {
+                    if (response.getString("status").equals("OK")){
+                        setScreen("success");
+                    }else {
+                        setScreen("error");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }else{
             setScreen("retry");

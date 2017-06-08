@@ -1,14 +1,18 @@
 package in.foodtalk.privilege;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,6 +23,7 @@ import org.json.JSONObject;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.library.ToastShow;
 
 /**
  * Created by RetailAdmin on 27-04-2017.
@@ -29,7 +34,14 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
     final String TAG = "LoginPhone";
     TextView key1, key2, key3 ,key4, key5, key6, key7, key8, key9, key0;
     ImageView keyBack;
-    TextView tvPhone, tvNext;
+    TextView tvPhone, tvNext, tvNumber, tvMsg, tvPrice, tvBuy;
+
+    RelativeLayout alterWrongNo, progressBar;
+
+    LinearLayout btnBuy;
+    TextView btnBack;
+    View linePhone;
+
 
 
     @Override
@@ -48,6 +60,32 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
         key9 = (TextView) findViewById(R.id.key9);
         key0 = (TextView) findViewById(R.id.key0);
         keyBack = (ImageView) findViewById(R.id.key_back);
+
+        progressBar = (RelativeLayout) findViewById(R.id.progress_bar);
+
+        alterWrongNo = (RelativeLayout) findViewById(R.id.alter_wrong_no);
+
+        linePhone = findViewById(R.id.line_phone);
+
+        Typeface typefaceFutura = Typeface.createFromAsset(getAssets(), "fonts/futura_bold.otf");
+        Typeface typefaceFmedium= Typeface.createFromAsset(getAssets(), "fonts/futura_medium.ttf");
+
+        btnBuy = (LinearLayout) findViewById(R.id.btn_buy);
+        btnBack = (TextView) findViewById(R.id.btn_back);
+
+        btnBack.setOnTouchListener(this);
+        btnBuy.setOnTouchListener(this);
+
+        tvNumber = (TextView) findViewById(R.id.tv_number);
+        tvMsg = (TextView) findViewById(R.id.tv_msg);
+        tvPrice = (TextView) findViewById(R.id.tv_price);
+        tvBuy = (TextView) findViewById(R.id.tv_buy);
+
+        tvBuy.setTypeface(typefaceFutura);
+        tvPrice.setTypeface(typefaceFmedium);
+
+        tvNumber.setTypeface(typefaceFmedium);
+        tvMsg.setTypeface(typefaceFmedium);
 
         tvNext = (TextView) findViewById(R.id.tv_next);
         tvNext.setOnTouchListener(this);
@@ -85,9 +123,15 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
 
         if (tvPhone.getText().toString().length() == 10){
             ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.CHECK_USER+"/"+tvPhone.getText().toString(), "checkUser", this);
+            progressBar.setVisibility(View.VISIBLE);
+            linePhone.setBackgroundColor(ContextCompat.getColor(this, R.color.battleship_grey));
+        }else {
+            ToastShow.showToast(this, "Enter valid phone no.");
+            linePhone.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
         }
     }
     private void gotoOtp(JSONObject response){
+        progressBar.setVisibility(View.GONE);
         try {
             String status = response.getString("status");
             String message = response.getString("message");
@@ -98,6 +142,9 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
                 startActivity(intent);
             }else {
                 Log.e(TAG,"error Msg: "+ message);
+                String msg = "Uh oh!\nLooks like "+tvPhone.getText().toString()+" is not registered with us.";
+                tvNumber.setText(msg);
+                alterWrongNo.setVisibility(View.VISIBLE);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -155,6 +202,14 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
                         break;
                     case R.id.tv_next:
                         checkUser();
+                        break;
+                    case R.id.btn_back:
+                        alterWrongNo.setVisibility(View.GONE);
+                        break;
+                    case R.id.btn_buy:
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        intent.putExtra("fragment", "signupFrag");
+                        startActivity(intent);
                         break;
                 }
                 break;

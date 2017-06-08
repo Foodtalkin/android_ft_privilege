@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -58,6 +59,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     TextView btnBuy, tvHeader;
     LinearLayout header;
     DatabaseHandler db;
+
+    Boolean loadingMore = false;
 
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -134,7 +137,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
-                //offerCardList.add(offerCardObj);
+                offerCardList.add(offerCardObj);
+                homeAdapter.notifyItemInserted(offerCardList.size()-1);
                 Log.d(TAG, "load more");
             }else {
                 Log.d(TAG, "No more offers");
@@ -145,11 +149,27 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
     }
 
+    //-----remove function is used to remove progress bar using indexOf position of null objevt--------
+    public void remove() {
+        for (int i = 0; i < offerCardList.size(); i++){
+            if (offerCardList.get(i).type.equals("loader")){
+                offerCardList.remove(i);
+                homeAdapter.notifyItemRemoved(i);
+            }
+        }
+        //int position = offerCardList.indexOf(data);
+        //Log.d("position for remove", position+"");
+
+    }
+
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
 
         if (tag.equals("loadOffers")){
             offerCardList.clear();
+        }else {
+            loadingMore = false;
+            remove();
         }
 
 
@@ -184,7 +204,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.d(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
-                loadData("loadOffersMore");
+                if (loadingMore == false){
+                    loadData("loadOffersMore");
+                    loadingMore = true;
+                }
+
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
