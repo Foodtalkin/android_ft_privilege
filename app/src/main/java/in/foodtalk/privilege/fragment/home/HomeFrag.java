@@ -60,13 +60,20 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     LinearLayout header;
     DatabaseHandler db;
 
+
     Boolean loadingMore = false;
 
     RecyclerView.LayoutManager mLayoutManager;
 
     LinearLayoutManager linearLayoutManager;
 
+    LinearLayout progressBar;
+    LinearLayout placeholderInternet;
+    TextView btnRetry, tvMsg;
+
     String nextUrl;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,11 +81,36 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.home_frag, container, false);
 
+        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
+        placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
+        placeholderInternet.setVisibility(View.GONE);
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+        btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
+        btnRetry.setTypeface(typefaceFmedium);
+        tvMsg.setTypeface(typefaceFmedium);
+        btnRetry.setOnTouchListener(this);
+
+
+
         btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         header = (LinearLayout) layout.findViewById(R.id.header);
+
+
+
+
+
+
+
+
+
+
 
         db = new DatabaseHandler(getActivity());
 
@@ -94,8 +126,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
-        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
         tvHeader.setTypeface(typefaceFmedium);
         btnBuy.setTypeface(typefaceFutura);
 
@@ -145,7 +176,10 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 ToastShow.showToast(getActivity(), "No more offers!");
             }
         }else if (tag.equals("loadOffers")){
+            progressBar.setVisibility(View.VISIBLE);
+            placeholderInternet.setVisibility(View.GONE);
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS, tag, this);
+
         }
     }
 
@@ -164,6 +198,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
+
+        progressBar.setVisibility(View.GONE);
 
         if (tag.equals("loadOffers")){
             offerCardList.clear();
@@ -227,6 +263,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }else {
+            if (tag.equals("loadOffers")){
+                progressBar.setVisibility(View.GONE);
+                placeholderInternet.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -238,6 +279,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         callbackFragOpen.openFrag("signupAlert","");
+                        break;
+                }
+                break;
+            case R.id.btn_retry:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "retry click");
+                        loadData("loadOffers");
                         break;
                 }
                 break;

@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -34,7 +36,7 @@ import in.foodtalk.privilege.models.SelectOfferObj;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectOfferFrag extends Fragment implements ApiCallback {
+public class SelectOfferFrag extends Fragment implements ApiCallback, View.OnTouchListener {
 
     View layout;
     public String outletId;
@@ -49,6 +51,10 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
     List<SelectOfferObj> offerCardList = new ArrayList<>();
 
     OfferAdapter offerAdapter;
+
+    LinearLayout progressBar;
+    LinearLayout placeholderInternet;
+    TextView btnRetry, tvMsg;
 
 
     @Override
@@ -76,18 +82,33 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
         tvOfferLine.setTypeface(typefaceFutura);
         tvLocation.setTypeface(typefaceFutura);
 
+        //Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
+        placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
+        placeholderInternet.setVisibility(View.GONE);
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+        btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
+        btnRetry.setTypeface(typefaceFmedium);
+        tvMsg.setTypeface(typefaceFmedium);
+        btnRetry.setOnTouchListener(this);
+
 
         loadData("outletOffer");
         return layout;
     }
 
     private void loadData(String tag){
+        progressBar.setVisibility(View.VISIBLE);
+        placeholderInternet.setVisibility(View.GONE);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OUTLET_OFFER+"/"+outletId, tag, this);
     }
 
     private void sendToAdapter(JSONObject response, String tag)throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
-
+        progressBar.setVisibility(View.GONE);
         offerCardList.clear();
         for (int i = 0; i < listArray.length(); i++){
             SelectOfferObj selectOfferObj = new SelectOfferObj();
@@ -110,17 +131,31 @@ public class SelectOfferFrag extends Fragment implements ApiCallback {
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
-        if (tag.equals("outletOffer")){
-            if (response != null){
-                try {
-                    sendToAdapter(response, tag);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        if (response != null){
+            if (tag.equals("outletOffer")){
+
+                    try {
+                        sendToAdapter(response, tag);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
             }
-
-
+        }else {
+            progressBar.setVisibility(View.GONE);
+            placeholderInternet.setVisibility(View.VISIBLE);
         }
+
         Log.d(TAG,"response: "+ response);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (view.getId()){
+            case R.id.btn_retry:
+                loadData("outletOffer");
+                break;
+        }
+        return false;
     }
 }

@@ -1,14 +1,18 @@
 package in.foodtalk.privilege.fragment.favorites;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -24,24 +28,52 @@ import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.models.FavoriteObj;
 
 /**
  * Created by RetailAdmin on 15-05-2017.
  */
 
-public class FavoritesFrag extends Fragment implements ApiCallback {
+public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouchListener{
     View layout;
     DatabaseHandler db;
     String TAG = FavoritesFrag.class.getSimpleName();
     List<FavoriteObj> favList = new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+
+    CallbackFragOpen callbackFragOpen;
+
+    LinearLayout progressBar;
+    LinearLayout placeholderInternet, placeholderEmpty;
+    TextView btnRetry, tvMsg, btnOffers;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.favorites_frag, container, false);
         db = new DatabaseHandler(getActivity());
+
+        callbackFragOpen = (CallbackFragOpen) getActivity();
+
+        btnOffers = (TextView) layout.findViewById(R.id.btn_offers);
+        placeholderEmpty = (LinearLayout) layout.findViewById(R.id.placeholder_empty);
+        placeholderEmpty.setVisibility(View.GONE);
+        btnOffers.setOnTouchListener(this);
+
+        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
+        placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
+        placeholderInternet.setVisibility(View.GONE);
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+        btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
+        btnRetry.setTypeface(typefaceFmedium);
+        tvMsg.setTypeface(typefaceFmedium);
+        btnRetry.setOnTouchListener(this);
+
+
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -50,6 +82,8 @@ public class FavoritesFrag extends Fragment implements ApiCallback {
     }
     private void loadData(String tag){
         if (db.getRowCount() > 0){
+            progressBar.setVisibility(View.VISIBLE);
+            placeholderInternet.setVisibility(View.GONE);
             String sessionId = db.getUserDetails().get("sessionId");
             Log.d(TAG, "url: "+ Url.BOOKMARK+"?sessionid="+sessionId);
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.BOOKMARK+"?sessionid="+sessionId, tag, this);
@@ -60,7 +94,13 @@ public class FavoritesFrag extends Fragment implements ApiCallback {
 
     private void setAdapter(JSONObject response) throws JSONException {
         favList.clear();
+        progressBar.setVisibility(View.GONE);
         JSONArray result = response.getJSONArray("result");
+
+        if (result.length() == 0){
+            placeholderEmpty.setVisibility(View.VISIBLE);
+        }
+
         for (int i = 0; i < result.length(); i++){
             FavoriteObj favoriteObj = new FavoriteObj();
             favoriteObj.name = result.getJSONObject(i).getString("name");
@@ -87,6 +127,25 @@ public class FavoritesFrag extends Fragment implements ApiCallback {
                     e.printStackTrace();
                 }
             }
+        }else {
+            progressBar.setVisibility(View.GONE);
+            placeholderInternet.setVisibility(View.VISIBLE);
         }
+    }
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()){
+            case MotionEvent.ACTION_UP:
+                switch (view.getId()){
+                    case R.id.btn_retry:
+                        loadData("outletOffer");
+                        break;
+                    case R.id.btn_offers:
+                        callbackFragOpen.openFrag("homeFrag","");
+                        break;
+                }
+                break;
+        }
+        return false;
     }
 }
