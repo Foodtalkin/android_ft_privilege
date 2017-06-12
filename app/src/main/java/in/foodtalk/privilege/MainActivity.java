@@ -59,11 +59,12 @@ import in.foodtalk.privilege.fragment.search.SearchResult;
 import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.ToastShow;
 
-public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener {
+public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener, FragmentManager.OnBackStackChangedListener {
 
     NavigationView navigationView;
     Fragment currentFragment;
     SearchFrag searchFrag;
+
 
     String TAG = MainActivity.class.getSimpleName();
 
@@ -79,10 +80,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
+    OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
 
     DatabaseHandler db;
 
+    LinearLayout offerBarButtons;
+    ImageView btnBookmark, btnPhone, btnLocation;
+
     static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 32;
+    static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 14;
 
 
 
@@ -91,10 +97,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
 
         db = new DatabaseHandler(this);
 
@@ -154,6 +164,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         searchBtn = (ImageView) findViewById(R.id.btn_search);
         searchBtn.setOnTouchListener(this);
 
+        offerBarButtons = (LinearLayout) findViewById(R.id.offer_bar_buttons);
+
+
+
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             String frag = bundle.getString("fragment");
@@ -167,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             homeFrag = new HomeFrag();
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
         }
+
+        getFragmentManager().addOnBackStackChangedListener(this);
 
 
 
@@ -190,14 +207,25 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         mActionBar.setDisplayShowCustomEnabled(true);
 
 
+        //ImageView btnS = (ImageView) mActionBar.getCustomView().findViewById(R.id.btn_search);
+
+        //btnS.setScaleX(2);
+
+
     }
-    private void onFragmentChange(Fragment currentFragment){
-        if (currentFragment == homeFrag){
-           // searchBtn.setVisibility(View.VISIBLE);
+    private void onFragmentChange(Fragment fragment){
+        if (fragment == homeFrag){
+            searchBtn.setVisibility(View.VISIBLE);
         }else {
-           // searchBtn.setVisibility(View.GONE);
+            searchBtn.setVisibility(View.INVISIBLE);
+        }
+        if (fragment == offerDetailsFrag ){
+            offerBarButtons.setVisibility(View.VISIBLE);
+        }else {
+            offerBarButtons.setVisibility(View.INVISIBLE);
         }
     }
+
 
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
@@ -250,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             hideSoftKeyboard();
         }
         if (fragName.equals("offerDetailsFrag")){
-            OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
+            offerDetailsFrag = new OfferDetailsFrag();
             //offerDetailsFrag.outletId = value;
             Log.d(TAG, "value for offerDetailsF: "+ value);
             hideSoftKeyboard();
@@ -565,6 +593,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 return;
             }
 
+
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -711,5 +740,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 // result of the request.
             }
         }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        currentFragment = getFragmentManager().findFragmentById(R.id.container);
+        onFragmentChange(currentFragment);
     }
 }
