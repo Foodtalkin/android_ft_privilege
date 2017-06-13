@@ -48,6 +48,7 @@ import in.foodtalk.privilege.fragment.PaymentNowFrag;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
+import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
 import in.foodtalk.privilege.fragment.SuccessFrag;
@@ -707,11 +708,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         break;
                 }
                 break;
+            case R.id.nav_howitwork:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        HowItWorks howItWorks = new HowItWorks();
+                        setFragmentView(howItWorks, R.id.container, "historyFrag", true);
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
         }
         return false;
     }
-
-
 
     private void checkPermission() {
         // Here, thisActivity is the current activity
