@@ -43,6 +43,7 @@
     <style name="TextStyleThumbTitle">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="TextStyleThumbTxt">
         <item name="android:textSize">12sp</item>

@@ -53,7 +53,6 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         OfferCard offerCard = (OfferCard) holder;
         SelectOfferObj offerCardObj = offerCardList.get(position);
         offerCard.tvTitle.setText(offerCardObj.title);
-        offerCard.tvDes.setText(offerCardObj.shortDescription);
     }
 
     @Override
@@ -69,7 +68,6 @@ public class OfferAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             btnOffer = (LinearLayout) itemView.findViewById(R.id.btn_offer);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
-            tvDes = (TextView) itemView.findViewById(R.id.tv_des);
             btnOffer.setOnTouchListener(this);
         }
 

@@ -121,6 +121,12 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
 
+        redeemBar.setClickable(false);
+
+        /*redeemBar.setEnabled(false);
+        redeemBar.setClickable(false);
+        redeemBar.setVisibility(View.GONE);*/
+
         btnClose = (ImageView) layout.findViewById(R.id.btn_close);
         btnClose.setOnTouchListener(this);
 
@@ -169,7 +175,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         btnAdd.setOnTouchListener(this);
         btnCancel.setOnTouchListener(this);
         btnNext.setOnTouchListener(this);
-        btnRedeem.setOnTouchListener(this);
+        //btnRedeem.setOnTouchListener(this);
         btnSlideUp.setOnTouchListener(this);
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
@@ -431,6 +437,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         Log.d(TAG, "btn cancel clicked");
                         hideRedeemBar();
                         btnSlideUp.setVisibility(View.VISIBLE);
+                        redeemBar.setClickable(false);
                         break;
                 }
                 break;
@@ -463,6 +470,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                     case MotionEvent.ACTION_UP:
                         showRedeemBar();
                         btnSlideUp.setVisibility(View.GONE);
+                        redeemBar.setClickable(true);
                         break;
                 }
                 break;

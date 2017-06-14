@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.models.OfferCardObj;
 
@@ -68,14 +69,24 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return null;
         }
     }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof OfferCard){
             OfferCardObj offerCardObj = offerCardList.get(position);
             OfferCard offerCard = (OfferCard) holder;
             offerCard.tvTitle.setText(offerCardObj.name);
-            offerCard.tvPrice.setText(rs+" "+offerCardObj.cost);
+            int cost = Integer.valueOf(offerCardObj.cost);
+
+            String rs = context.getResources().getString(R.string.rs);
+            if (cost < 500){
+                offerCard.tvPrice.setText(rs);
+            }else if (cost < 999){
+                offerCard.tvPrice.setText(rs+rs);
+            }else {
+                offerCard.tvPrice.setText(rs+rs+rs);
+            }
+
+           // offerCard.tvPrice.setText(rs+" "+offerCardObj.cost);
             Log.d(TAG, "outletCount: "+ offerCardObj.outletCount);
             if (Integer.parseInt(offerCardObj.outletCount) > 1){
                 offerCard.tvLocation.setText("Location "+offerCardObj.outletCount);
@@ -171,6 +182,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 }
                                 callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             }
+
+                            AppController.getInstance().restaurantName = offerCardList.get(getAdapterPosition()).name;
+                            AppController.getInstance().rOneLiner = offerCardList.get(getAdapterPosition()).oneLiner;
+
+
                             break;
                     }
                     break;

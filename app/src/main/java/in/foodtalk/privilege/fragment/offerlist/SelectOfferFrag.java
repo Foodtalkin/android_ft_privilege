@@ -26,6 +26,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.fragment.OutletList.OutletAdapter;
@@ -82,6 +83,12 @@ public class SelectOfferFrag extends Fragment implements ApiCallback, View.OnTou
         tvOfferLine.setTypeface(typefaceFutura);
         tvLocation.setTypeface(typefaceFutura);
 
+        tvOfferName.setText("--");
+        tvLocation.setText("--");
+        tvOfferLine.setText("--");
+
+
+
         //Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
         Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
 
@@ -107,14 +114,21 @@ public class SelectOfferFrag extends Fragment implements ApiCallback, View.OnTou
     }
 
     private void sendToAdapter(JSONObject response, String tag)throws JSONException {
-        JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
+
+        JSONObject outlet = response.getJSONObject("result").getJSONObject("outlet");
+
+        tvOfferName.setText(outlet.getString("name"));
+        tvOfferLine.setText(AppController.getInstance().rOneLiner);
+        tvLocation.setText(outlet.getString("area"));
+
+
+        JSONArray listArray = response.getJSONObject("result").getJSONArray("offers");
         progressBar.setVisibility(View.GONE);
         offerCardList.clear();
         for (int i = 0; i < listArray.length(); i++){
             SelectOfferObj selectOfferObj = new SelectOfferObj();
             selectOfferObj.id = listArray.getJSONObject(i).getString("id");
             selectOfferObj.title = listArray.getJSONObject(i).getString("title");
-            selectOfferObj.shortDescription = listArray.getJSONObject(i).getString("short_description");
             selectOfferObj.offerId = listArray.getJSONObject(i).getString("offer_id");
             selectOfferObj.outletId = listArray.getJSONObject(i).getString("outlet_id");
             offerCardList.add(selectOfferObj);

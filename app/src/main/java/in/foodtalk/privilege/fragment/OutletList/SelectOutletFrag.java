@@ -26,6 +26,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.models.OutletCardObj;
@@ -65,6 +66,9 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
 
         tvOutletName = (TextView) layout.findViewById(R.id.tv_outlet_name);
         tvOutletLine = (TextView) layout.findViewById(R.id.tv_outlet_line);
+
+        tvOutletName.setText(AppController.getInstance().restaurantName);
+        tvOutletLine.setText(AppController.getInstance().rOneLiner);
 
 
         Typeface typefaceAbril = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");

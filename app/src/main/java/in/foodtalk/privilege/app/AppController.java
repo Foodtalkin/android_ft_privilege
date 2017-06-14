@@ -21,6 +21,10 @@ public class AppController extends Application {
     private RequestQueue mRequestQueue;
     private static AppController mInstance;
 
+    //-----global vars-------------
+    public String restaurantName;
+    public String rOneLiner;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
