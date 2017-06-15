@@ -58,11 +58,28 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
 
     public String offerUrl;
 
+    LinearLayout progressBar;
+    LinearLayout placeholderInternet;
+    TextView btnRetry, tvMsg;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.home_frag, container, false);
+
+        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
+        placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
+        placeholderInternet.setVisibility(View.GONE);
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+        btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
+        btnRetry.setTypeface(typefaceFmedium);
+        tvMsg.setTypeface(typefaceFmedium);
+        btnRetry.setOnTouchListener(this);
 
         btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
@@ -84,8 +101,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
-        Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+
         tvHeader.setTypeface(typefaceFmedium);
         btnBuy.setTypeface(typefaceFutura);
 
@@ -120,12 +136,16 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     }
 
     private void loadData(String tag){
+        progressBar.setVisibility(View.VISIBLE);
+        placeholderInternet.setVisibility(View.GONE);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, offerUrl, tag, this);
     }
 
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
         offerCardList.clear();
+
+        progressBar.setVisibility(View.GONE);
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
             offerCardObj.offerCount = listArray.getJSONObject(i).getString("offer_count");
@@ -137,6 +157,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             offerCardObj.cost = listArray.getJSONObject(i).getString("cost");
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
             offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
+            offerCardObj.type = "offer";
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
@@ -158,6 +179,9 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }else {
+            progressBar.setVisibility(View.GONE);
+            placeholderInternet.setVisibility(View.VISIBLE);
         }
 
     }
@@ -169,6 +193,14 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         callbackFragOpen.openFrag("signupFrag","");
+                        break;
+                }
+                break;
+            case R.id.btn_retry:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "retry click");
+                        loadData("searchResult");
                         break;
                 }
                 break;

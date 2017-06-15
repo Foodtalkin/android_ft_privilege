@@ -102,16 +102,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         header = (LinearLayout) layout.findViewById(R.id.header);
 
-
-
-
-
-
-
-
-
-
-
         db = new DatabaseHandler(getActivity());
 
         if (db.getRowCount() > 0){
@@ -269,7 +259,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 placeholderInternet.setVisibility(View.VISIBLE);
             }
         }
-
     }
 
     @Override

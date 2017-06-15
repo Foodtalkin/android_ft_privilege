@@ -164,6 +164,10 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
                         tvError.setVisibility(View.GONE);
                     }else {
                         ToastShow.showToast(getActivity(), "Invalid PIN");
+                        tvOtp1.setText("");
+                        tvOtp2.setText("");
+                        tvOtp3.setText("");
+                        tvOtp4.setText("");
                         tvError.setVisibility(View.VISIBLE);
                         animatePinHolder();
                     }

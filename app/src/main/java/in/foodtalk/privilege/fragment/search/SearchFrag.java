@@ -397,6 +397,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         etSearch.setText("");
+                        Log.d(TAG, "clear search");
                         break;
                 }
                 break;

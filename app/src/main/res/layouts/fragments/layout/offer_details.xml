@@ -147,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/warm_grey"
-                        android:text="Cuisines"/>
+                        android:text="Cuisine"/>
                     <TextView
                         android:id="@+id/tv_cuisine"
                         android:layout_width="wrap_content"
@@ -258,23 +258,11 @@
                         android:textColor="@color/warm_grey"
                         android:textSize="14sp"/>
                     <TextView
+                        android:id="@+id/tv_suggested_dish"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sushi Platter"
-                        android:textColor="@color/black1"
-                        android:textSize="16sp"
-                        android:layout_marginTop="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Brown Rice Puddings"
-                        android:textColor="@color/black1"
-                        android:textSize="16sp"
-                        android:layout_marginTop="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sushi Dimsums"
+                        android:text="Sushi Dimsums \ndfsd"
+                        android:lineSpacingExtra="5dp"
                         android:textColor="@color/black1"
                         android:textSize="16sp"
                         android:layout_marginTop="10dp"/>
@@ -320,7 +308,7 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_grey"
-        android:visibility="visible"
+        android:visibility="gone"
         android:clickable="true">
 
         <LinearLayout

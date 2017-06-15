@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);
 
+
         forLogin = (LinearLayout) findViewById(R.id.for_login);
         forLogin1 = (LinearLayout) findViewById(R.id.for_login1);
 
@@ -130,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navHistory = (LinearLayout) findViewById(R.id.nav_history);
         navFavourites = (LinearLayout) findViewById(R.id.nav_favourites);
         navLogout = (LinearLayout) findViewById(R.id.nav_logout);
+
+
 
         navAccount.setOnTouchListener(this);
         navHistory.setOnTouchListener(this);
@@ -147,15 +152,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
         if (db.getRowCount() > 0){
-            forLogin.setVisibility(View.VISIBLE);
-            forLogin1.setVisibility(View.VISIBLE);
-            navLogin.setVisibility(View.GONE);
-            navBuyNow.setVisibility(View.GONE);
+            loginView();
         }else {
-            forLogin.setVisibility(View.GONE);
-            forLogin1.setVisibility(View.GONE);
-            navLogin.setVisibility(View.VISIBLE);
-            navBuyNow.setVisibility(View.VISIBLE);
+            logoutView();
         }
         //container = (FrameLayout) findViewById(R.id.container);
         actionBar();
@@ -166,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         searchBtn.setOnTouchListener(this);
 
         offerBarButtons = (LinearLayout) findViewById(R.id.offer_bar_buttons);
+
+
 
 
 
@@ -194,6 +195,23 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         txtFoodtalkNav.setTypeface(typeface);
         txtTitle = (TextView) findViewById(R.id.title_text);
         txtTitle.setTypeface(typeface);
+    }
+
+    private void logoutView(){
+        forLogin.setVisibility(View.GONE);
+        forLogin1.setVisibility(View.GONE);
+        navLogin.setVisibility(View.VISIBLE);
+        navBuyNow.setVisibility(View.VISIBLE);
+        txtFoodtalkNav.setText("FOODTALK");
+
+    }
+    private void loginView(){
+        forLogin.setVisibility(View.VISIBLE);
+        forLogin1.setVisibility(View.VISIBLE);
+        navLogin.setVisibility(View.GONE);
+        navBuyNow.setVisibility(View.GONE);
+        txtFoodtalkNav.setText(db.getUserDetails().get("name"));
+
     }
     ActionBar mActionBar;
     private void actionBar(){
@@ -356,11 +374,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     public void logOut() {
         Log.e("Home","logOut function call");
+        //logoutView();
         db.resetTables();
         //LoginManager.getInstance().logOut();
         Intent i = new Intent(this, Splash_activity.class);
         startActivity(i);
         finish();
+
     }
 
     private void email(){

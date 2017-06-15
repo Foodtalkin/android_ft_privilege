@@ -41,6 +41,7 @@
             android:tint="@color/white"
             android:clickable="true"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             />
 
     </RelativeLayout>

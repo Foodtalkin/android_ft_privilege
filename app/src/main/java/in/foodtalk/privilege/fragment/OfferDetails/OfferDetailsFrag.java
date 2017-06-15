@@ -42,11 +42,13 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.ImagesObj;
 
 /**
@@ -55,7 +57,7 @@ import in.foodtalk.privilege.models.ImagesObj;
 
 public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, ApiCallback, ValueCallback {
     View layout;
-    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes, tvCuisine;
+    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes, tvCuisine, tvSuggestedDish;
     Animation slideUpAnimation, slideDownAnimation, slideUpAnimation1;
     LinearLayout redeemBar, btnRedeem, btnSlideUp;
     Boolean redeemBarVisible = false;
@@ -98,6 +100,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
     ImageView btnClose;
 
+    TextView tvName, tvArea;
+
 
     @Nullable
     @Override
@@ -120,6 +124,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
+
+        tvName = (TextView) layout.findViewById(R.id.tv_name);
+        tvArea = (TextView) layout.findViewById(R.id.tv_area);
+
+        tvSuggestedDish = (TextView) layout.findViewById(R.id.tv_suggested_dish);
+
+        tvName.setText("--");
+        tvAddress.setText("--");
 
         redeemBar.setClickable(false);
 
@@ -215,6 +227,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), null, Url.BOOKMARK+"/"+outletOfferId+"?sessionid="+sId, "addBookmark",this);
             btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(),R.color.green));
             isBookmarked = "1";
+            ToastShow.showToast(getActivity(), "Offer is bookmarked");
         }else if (isBookmarked.equals("1")){
             ApiCall.jsonObjRequest(Request.Method.DELETE, getActivity(), null, Url.BOOKMARK+"/"+outletOfferId+"?sessionid="+sId, "addBookmark",this);
             btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(),R.color.pale_grey_two));
@@ -223,6 +236,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     }
 
     private void setData(JSONObject response) throws JSONException {
+
+
+
         JSONObject result = response.getJSONObject("result");
         Picasso.with(getActivity())
                 .load(result.getString("cover_image"))
@@ -234,6 +250,11 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         outletOfferId = result.getString("outlet_offer_id");
         phone = result.getString("phone");
 
+        tvName.setText(AppController.getInstance().restaurantName);
+        tvArea.setText(result.getString("area"));
+
+        String dishList = result.getString("suggested_dishes").replaceAll(", ", "\n");
+        tvSuggestedDish.setText(dishList);
         if (result.getString("is_bookmarked").equals("1")){
             btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(),R.color.green));
             isBookmarked = "1";
@@ -414,7 +435,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         tvDes.setLayoutParams(params);*/
                         if (tvDes.getMaxLines() == 2){
                             tvDes.setMaxLines(10);
+                            btnReadmore.setText("Read less");
                         }else {
+                            btnReadmore.setText("Read more");
                             tvDes.setMaxLines(2);
                             Log.d(TAG,"set line 2");
                         }

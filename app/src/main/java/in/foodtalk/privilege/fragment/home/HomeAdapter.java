@@ -127,11 +127,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (offerCardList.get(position).type.equals("loader")){
-            return VIEW_LOADER;
+//        Log.d(TAG, "type: "+ offerCardList.get(position).type.equals("loader"));
+        if (offerCardList.get(position).type!= null){
+            if (offerCardList.get(position).type.equals("loader")){
+                return VIEW_LOADER;
+            }else {
+                return VIEW_OFFER;
+            }
         }else {
+            Log.d(TAG, "null type position is "+ position);
             return VIEW_OFFER;
         }
+
+
+
     }
 
     class LoaderCard extends RecyclerView.ViewHolder {
