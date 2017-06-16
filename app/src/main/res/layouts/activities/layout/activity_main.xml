@@ -43,15 +43,29 @@
                 android:orientation="vertical"
                 android:layout_marginTop="35dp"
                 android:paddingBottom="60dp">
-                <TextView
-                    android:id="@+id/txt_foodtalk"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FoodTalk"
-                    android:textAllCaps="true"
-                    style="@style/TextStyleActionbar"
-                    android:layout_marginLeft="@dimen/nav_icon_margin"
-                    android:paddingLeft="15dp"/>
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp">
+                    <TextView
+                        android:id="@+id/txt_foodtalk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FoodTalk"
+                        android:textAllCaps="true"
+                        style="@style/TextStyleActionbar"
+                        android:layout_marginLeft="@dimen/nav_icon_margin"
+                        />
+                    <TextView
+                        android:id="@+id/tv_pm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/pale_grey_two"
+                        android:textSize="14sp"
+                        android:layout_marginLeft="20dp"
+                        android:text="Privilege Member"/>
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/for_login"
                     android:layout_width="match_parent"

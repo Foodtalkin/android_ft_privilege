@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:calendarViewShown="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,12 +17,14 @@
             android:background="@color/dark_grey"
             android:padding="20dp">
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:text="Himanshu Vaishnav"
                 android:textColor="@color/white"/>
             <TextView
+                android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9899473982"
@@ -55,14 +58,15 @@
                 android:layout_marginTop="20dp"
                 >
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Name"
                     android:layout_marginLeft="5dp"
                     android:textSize="14sp"
                    />
-                <TextView
+                <EditText
+                    android:id="@+id/input_name"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,14 +87,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Email"
                     android:layout_marginLeft="5dp"
                     android:textSize="14sp"
                     />
-                <TextView
+                <EditText
+                    android:id="@+id/input_email"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -135,7 +140,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Date of Birth"
@@ -143,11 +148,13 @@
                     android:textSize="14sp"
                     />
                 <TextView
+                    android:id="@+id/tv_dob"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="DD/MM/YYYY"
                     android:textSize="14sp"
+                    android:clickable="true"
                     android:textColor="@color/dark_grey"
                     />
 
@@ -163,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gender"
@@ -171,6 +178,7 @@
                     android:textSize="14sp"
                     />
                 <TextView
+                    android:id="@+id/tv_gender"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Vegitarian"
@@ -199,6 +207,7 @@
                     android:textSize="14sp"
                     />
                 <TextView
+                    android:id="@+id/tv_veg"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,72 +223,6 @@
                 android:background="@color/warm_grey"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="20dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Your Privilege Membership"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Date of Birth"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    />
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="DD/MM/YYYY"
-                    android:textSize="14sp"
-                    android:textColor="@color/dark_grey"
-                    />
-
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/warm_grey"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="20dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Gender"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    />
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:textSize="14sp"
-                    android:textColor="@color/dark_grey"
-                    />
-
-            </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 

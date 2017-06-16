@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 32;
     static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 14;
 
+    TextView tvPm;
+
 
 
 
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         checkPermission();
 
         txtFoodtalkNav = (TextView) findViewById(R.id.txt_foodtalk);
+        tvPm = (TextView) findViewById(R.id.tv_pm);
 
 
         forLogin = (LinearLayout) findViewById(R.id.for_login);
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navLogin.setVisibility(View.VISIBLE);
         navBuyNow.setVisibility(View.VISIBLE);
         txtFoodtalkNav.setText("FOODTALK");
-
+        tvPm.setText("");
     }
     private void loginView(){
         forLogin.setVisibility(View.VISIBLE);
@@ -211,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navLogin.setVisibility(View.GONE);
         navBuyNow.setVisibility(View.GONE);
         txtFoodtalkNav.setText(db.getUserDetails().get("name"));
+        tvPm.setText("Privilege Member");
 
     }
     ActionBar mActionBar;

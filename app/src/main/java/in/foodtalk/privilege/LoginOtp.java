@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,12 +114,24 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
 
 
             JSONObject result = response.getJSONObject("result");
+            JSONArray subscription = result.getJSONArray("subscription");
+
+            if (subscription.length() > 0){
+                loginValue.subId = subscription.getJSONObject(0).getString("id");
+                loginValue.subCityId = subscription.getJSONObject(0).getString("city_id");
+                loginValue.subExpiry = subscription.getJSONObject(0).getString("expiry");
+                loginValue.subCreated = subscription.getJSONObject(0).getString("created_at");
+            }else {
+                loginValue.subId = "null";
+            }
 
             loginValue.name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
             loginValue.email = ((result.isNull("email")) ? "N/A" : result.getString("email"));
             loginValue.phone = ((result.isNull("phone")) ? "N/A" : result.getString("phone"));
             loginValue.gender = ((result.isNull("gender")) ? "N/A" : result.getString("gender"));
             loginValue.dob = ((result.isNull("dob")) ? "N/A" : result.getString("dob"));
+
+
             db.addUser(loginValue);
 
             //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
