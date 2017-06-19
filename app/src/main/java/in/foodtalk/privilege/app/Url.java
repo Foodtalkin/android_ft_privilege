@@ -35,6 +35,10 @@ public class Url {
 
     public static String SUBSCRIPTION = baseUrl+"/subscription";
 
+    public static String USER_UPDATE = baseUrl+"/user";
+
+    //
+
     //http://stg-api.foodtalk.in/subscription?sessionid=bca402b53b16cf9a5121331fecfadb075ed672ae
     //http://stg-api.foodtalk.in/subscriptionPayment?sessionid=127f112de61bb7261e3655917e6afd305ba06863
 

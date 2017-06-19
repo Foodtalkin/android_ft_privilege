@@ -33,6 +33,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PHONE = "phone";
     private static final String KEY_GENDER = "gender";
     private static final String KEY_DOB = "dob";
+    private static final String KEY_PREF = "pref";
+
+    private static final String KEY_SUBSCRIPTION = "subscription";
 
 
 
@@ -57,7 +60,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_PHONE + " TEXT,"
                 + KEY_GENDER + " TEXT,"
                 + KEY_DOB + " TEXT,"
-                + KEY_USERID +" TEXT"+ ")";
+                + KEY_USERID +" TEXT,"
+                + KEY_PREF +" TEXT,"
+                + KEY_SUBSCRIPTION +" TEXT"+ ")";
         db.execSQL(CREATE_LOGIN_TABLE);
     }
     @Override
@@ -75,8 +80,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_USERID, loginValue.updateAt);
         values.put(KEY_NAME, loginValue.name);
         values.put(KEY_EMAIL, loginValue.email);
+        values.put(KEY_PHONE, loginValue.phone);
         values.put(KEY_GENDER, loginValue.gender);
         values.put(KEY_DOB, loginValue.dob);
+        values.put(KEY_PREF, loginValue.pref);
+        values.put(KEY_SUBSCRIPTION, loginValue.subscription);
 
 
         db.insert(TABLE_LOGIN, null, values);
@@ -101,10 +109,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put("email", cursor.getString(cursor.getColumnIndex(KEY_EMAIL)));
             user.put("gender", cursor.getString(cursor.getColumnIndex(KEY_GENDER)));
             user.put("dob", cursor.getString(cursor.getColumnIndex(KEY_DOB)));
+            user.put("phone", cursor.getString(cursor.getColumnIndex(KEY_PHONE)));
+            user.put("pref", cursor.getString(cursor.getColumnIndex(KEY_PREF)));
+            user.put("subscription", cursor.getString(cursor.getColumnIndex(KEY_SUBSCRIPTION)));
         }
         cursor.close();
         db.close();
         return user;
+    }
+
+    public void updateUserInfo(String uId, LoginValue loginValue){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, loginValue.name);
+        values.put(KEY_EMAIL, loginValue.email);
+        values.put(KEY_PHONE, loginValue.phone);
+        values.put(KEY_GENDER, loginValue.gender);
+        values.put(KEY_PREF, loginValue.pref);
+        values.put(KEY_DOB, loginValue.dob);
+
+        db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
+        db.close();
     }
 
     public int getRowCount(){

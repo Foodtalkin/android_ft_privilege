@@ -24,6 +24,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
+                    'src/main/res/layouts/dialog',
                     'src/main/res/layouts/cards',
                     'src/main/res/layouts/fragments',
                     'src/main/res/layouts/custom',

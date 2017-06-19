@@ -23,6 +23,7 @@ import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.library.SaveLogin;
 import in.foodtalk.privilege.models.LoginValue;
 
 public class LoginOtp extends AppCompatActivity implements View.OnTouchListener, ApiCallback {
@@ -99,8 +100,9 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         title.setTypeface(typeface);
     }
     private void gotoHome(JSONObject response) throws JSONException {
+        SaveLogin.addUser(this, response);
 
-
+        /*
         String status = response.getString("status");
         String message = response.getString("message");
         if (status.equals("OK")){
@@ -116,22 +118,13 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             JSONObject result = response.getJSONObject("result");
             JSONArray subscription = result.getJSONArray("subscription");
 
-            if (subscription.length() > 0){
-                loginValue.subId = subscription.getJSONObject(0).getString("id");
-                loginValue.subCityId = subscription.getJSONObject(0).getString("city_id");
-                loginValue.subExpiry = subscription.getJSONObject(0).getString("expiry");
-                loginValue.subCreated = subscription.getJSONObject(0).getString("created_at");
-            }else {
-                loginValue.subId = "null";
-            }
-
             loginValue.name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
             loginValue.email = ((result.isNull("email")) ? "N/A" : result.getString("email"));
             loginValue.phone = ((result.isNull("phone")) ? "N/A" : result.getString("phone"));
             loginValue.gender = ((result.isNull("gender")) ? "N/A" : result.getString("gender"));
             loginValue.dob = ((result.isNull("dob")) ? "N/A" : result.getString("dob"));
 
-
+            loginValue.subscription = subscription.toString();
             db.addUser(loginValue);
 
             //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
@@ -140,7 +133,7 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             startActivity(intent);
         }else {
             Log.e(TAG, "message: "+ message);
-        }
+        }*/
     }
     private void getOtp(String tag) throws JSONException {
 

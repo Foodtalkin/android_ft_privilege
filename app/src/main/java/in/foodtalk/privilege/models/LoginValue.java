@@ -22,4 +22,6 @@ public class LoginValue {
     public String subCityId;
     public String subExpiry;
     public String subCreated;
+
+    public String subscription;
 }

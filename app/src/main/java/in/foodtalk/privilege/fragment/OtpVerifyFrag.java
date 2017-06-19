@@ -24,6 +24,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.CallbackKeypad;
 import in.foodtalk.privilege.library.Keypad;
 import in.foodtalk.privilege.library.PayNow;
+import in.foodtalk.privilege.library.SaveLogin;
 import in.foodtalk.privilege.models.LoginValue;
 
 /**
@@ -135,7 +136,9 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
     }
 
     private void userLogin(JSONObject response) throws JSONException {
-        String message = response.getString("message");
+
+        SaveLogin.addUser(getActivity(), response);
+        /*String message = response.getString("message");
         if (message.equals("OTP Accepted")){
             //callbackFragOpen.openFrag("homeFrag","");
             LoginValue loginValue = new LoginValue();
@@ -145,7 +148,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             //loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
 //            loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
             db.addUser(loginValue);
-        }
+        }*/
     }
 
     @Override
