@@ -77,7 +77,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_RTOKEN, loginValue.rToken);
         values.put(KEY_USERID, loginValue.uId);
         values.put(KEY_CREATE_AT, loginValue.updateAt);
-        values.put(KEY_USERID, loginValue.updateAt);
+        values.put(KEY_UPDATE_AT, loginValue.updateAt);
         values.put(KEY_NAME, loginValue.name);
         values.put(KEY_EMAIL, loginValue.email);
         values.put(KEY_PHONE, loginValue.phone);
@@ -132,6 +132,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
         db.close();
+
+        Log.d(TAG, "update userInfo");
     }
 
     public int getRowCount(){

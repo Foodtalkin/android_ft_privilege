@@ -164,6 +164,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                 }
             }
         }else{
+            Log.e(TAG, "retry");
             setScreen("retry");
         }
 

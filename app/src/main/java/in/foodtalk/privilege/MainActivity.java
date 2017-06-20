@@ -2,6 +2,7 @@ package in.foodtalk.privilege;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,6 +22,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -305,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             //offerDetailsFrag.outletId = value;
             Log.d(TAG, "value for offerDetailsF: "+ value);
             hideSoftKeyboard();
+
             try {
                 JSONObject offerOutletId = new JSONObject(value);
                 offerDetailsFrag.offerId = offerOutletId.getString("offerId");
@@ -346,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(paymentNowFrag, R.id.container, "paymentNowFrag", true);
         }
         if (fragName.equals("paymentFlow")){
-
             setFragmentView(paymentFlow, R.id.container, "paymentFlow", true);
         }
     }
@@ -664,7 +666,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG,"logout clicked");
                         drawerLayout.closeDrawer(Gravity.LEFT);
-                        logOut();
+                        //logOut();
+                        logoutDialog();
                         break;
                 }
                 break;
@@ -778,5 +781,35 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     public void onBackStackChanged() {
         currentFragment = getFragmentManager().findFragmentById(R.id.container);
         onFragmentChange(currentFragment);
+    }
+    Dialog dialogLogout;
+    private void logoutDialog(){
+        // custom dialog
+
+        dialogLogout = new Dialog(this);
+        dialogLogout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogLogout.setContentView(R.layout.logout_alert_dialog);
+
+
+        TextView cancel = (TextView) dialogLogout.findViewById(R.id.btn_cancel);
+        TextView logout = (TextView) dialogLogout.findViewById(R.id.btn_logout1);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLogout.dismiss();
+                //tvVeg.setText("No");
+            }
+        });
+        // if button is clicked, close the custom dialog
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogout.dismiss();
+                logOut();
+                //tvVeg.setText("Yes");
+            }
+        });
+
+        dialogLogout.show();
     }
 }

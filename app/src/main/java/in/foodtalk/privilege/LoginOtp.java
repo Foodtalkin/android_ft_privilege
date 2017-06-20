@@ -2,6 +2,7 @@ package in.foodtalk.privilege;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,6 +28,7 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.library.SaveLogin;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.LoginValue;
 
 public class LoginOtp extends AppCompatActivity implements View.OnTouchListener, ApiCallback {
@@ -36,6 +41,15 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
     DatabaseHandler db;
     final String TAG = "LoginOtp";
 
+    TextView btnResendOtp;
+
+    TextView tvTimer, tvMsg;
+
+    LinearLayout otpBox;
+
+    Animation shakingAni;
+
+
     String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +58,32 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
         actionBar();
 
+        shakingAni = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shaking_anim);
+        shakingAni.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        otpBox = (LinearLayout) findViewById(R.id.otp_box);
+
         db = new DatabaseHandler(this);
 
         phone = getIntent().getStringExtra("phone");
+        tvMsg = (TextView) findViewById(R.id.tv_msg);
+
+        tvMsg.setText("Please enter 4 digit OTP \n sent to "+phone);
 
         key1 = (TextView) findViewById(R.id.key1);
         key2 = (TextView) findViewById(R.id.key2);
@@ -77,11 +114,32 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         key0.setOnTouchListener(this);
         keyBack.setOnTouchListener(this);
 
+        btnResendOtp = (TextView) findViewById(R.id.btn_resend_otp);
+        btnResendOtp.setOnTouchListener(this);
+
+        tvTimer = (TextView) findViewById(R.id.tv_timer);
+
         try {
             getOtp("getOtp");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        countDown();
+    }
+
+    private void countDown(){
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                tvTimer.setVisibility(View.VISIBLE);
+                tvTimer.setText("Request another OTP in " + millisUntilFinished / 1000+" seconds");
+            }
+
+            public void onFinish() {
+                //mTextField.setText("done!");
+                tvTimer.setVisibility(View.GONE);
+            }
+        }.start();
     }
 
     private void actionBar(){
@@ -100,7 +158,21 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         title.setTypeface(typeface);
     }
     private void gotoHome(JSONObject response) throws JSONException {
-        SaveLogin.addUser(this, response);
+
+        String status = response.getString("status");
+        String message = response.getString("message");
+        if (status.equals("ERROR")){
+            otpBox.startAnimation(shakingAni);
+            ToastShow.showToast(this,"wrong OTP");
+            tvOtp1.setText("");
+            tvOtp2.setText("");
+            tvOtp3.setText("");
+            tvOtp4.setText("");
+        }else {
+            SaveLogin.addUser(this, response);
+        }
+
+
 
         /*
         String status = response.getString("status");
@@ -236,6 +308,15 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
                         typeOtpAdd("");
                         Log.d(TAG, "back");
                         break;
+                    case R.id.btn_resend_otp:
+                        Log.d(TAG, "resendOtp");
+                        try {
+                            getOtp("getOtp");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        countDown();
+                        break;
                 }
                 break;
         }
@@ -246,6 +327,7 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         if (response != null ){
             if (tag.equals("getOtp")){
                 Log.d(TAG, "response: "+ response);
+
             }
             if (tag.equals("sendOtp")){
                 try {
@@ -253,6 +335,10 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }else {
+            if (tag.equals("getOtp")){
+                Log.e(TAG,"check internet");
             }
         }
     }

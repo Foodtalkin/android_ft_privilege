@@ -32,7 +32,9 @@ import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.library.DateFunction;
 import in.foodtalk.privilege.library.StringCase;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.LoginValue;
 
 /**
@@ -128,6 +130,7 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
         }else if (veg.equals("No")){
             jsonObject.put("preference", "non vegetarian");
         }
+        Log.d(TAG, "json obj: "+jsonObject);
         ApiCall.jsonObjRequest(Request.Method.PUT, getActivity(), jsonObject, Url.USER_UPDATE+"?sessionid="+db.getUserDetails().get("sessionId"), "userUpdate", this);
     }
 
@@ -201,6 +204,8 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }else {
+            ToastShow.showToast(getActivity(),"Check internet connection");
         }
     }
     /*
@@ -222,8 +227,11 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
             loginValue.gender = response.getJSONObject("result").getString("gender");
             loginValue.pref = response.getJSONObject("result").getString("preference");
             loginValue.dob = response.getJSONObject("result").getString("dob");
+            loginValue.uId = response.getJSONObject("result").getString("id");
+            loginValue.email = response.getJSONObject("result").getString("email");
 
-            db.updateUserInfo(db.getUserDetails().get("userId"), loginValue);
+            Log.d(TAG, "check userId: "+ loginValue.uId + ": "+ db.getUserDetails().get("userId"));
+            db.updateUserInfo(loginValue.uId, loginValue);
 
             //setTextValue();
         }else {
@@ -249,7 +257,9 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
             populateSetDate(yy, mm+1, dd);
         }
         public void populateSetDate(int year, int month, int day) {
-            tvDob.setText(day+"/"+month+"/"+year);
+            //String date = DateFunction.convertFormat(day+"/"+month+"/"+year,"dd-MM-yyyy","d MMM yyyy");
+            String date = DateFunction.changeDateFormat(day+"-"+month+"-"+year,"dd-MM-yyyy","d MMM yyyy");
+            tvDob.setText(day+"-"+month+"-"+year);
         }
 
     }

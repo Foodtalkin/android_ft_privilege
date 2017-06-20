@@ -107,7 +107,8 @@ public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouch
             favoriteObj.area = result.getJSONObject(i).getString("area");
             favoriteObj.createdAt = result.getJSONObject(i).getString("created_at");
             favoriteObj.outletId = result.getJSONObject(i).getString("outlet_id");
-            favoriteObj.outletOfferId = result.getJSONObject(i).getString("outlet_offer_id");
+            //favoriteObj.outletOfferId = result.getJSONObject(i).getString("outlet_offer_id");
+            favoriteObj.offerId = result.getJSONObject(i).getString("offer_id");
             favList.add(favoriteObj);
         }
         if (getActivity() != null){

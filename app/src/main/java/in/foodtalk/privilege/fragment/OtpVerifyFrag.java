@@ -2,11 +2,16 @@ package in.foodtalk.privilege.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,13 +30,14 @@ import in.foodtalk.privilege.comm.CallbackKeypad;
 import in.foodtalk.privilege.library.Keypad;
 import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.SaveLogin;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.LoginValue;
 
 /**
  * Created by RetailAdmin on 18-05-2017.
  */
 
-public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallback {
+public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallback, View.OnTouchListener {
     View layout;
 
     TextView tvOtp1, tvOtp2, tvOtp3, tvOtp4;
@@ -43,23 +49,57 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
 
     DatabaseHandler db;
 
+    TextView btnResendOtp, tvTimer, tvMsg;
+
+    LinearLayout otpBox;
+    Animation shakingAni;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.otp_verify, container, false);
+
+        otpBox = (LinearLayout) layout.findViewById(R.id.otp_box);
 
         Keypad keypad = new Keypad(layout, this);
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         db = new DatabaseHandler(getActivity());
 
+        shakingAni = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.shaking_anim);
+        shakingAni.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        btnResendOtp = (TextView) layout.findViewById(R.id.btn_resend_otp);
+        tvTimer = (TextView) layout.findViewById(R.id.tv_timer);
+
+        tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
+
+        tvMsg.setText("Please enter 4 digit OTP \n sent to "+phone);
+
+        btnResendOtp.setOnTouchListener(this);
+
         tvOtp1 = (TextView) layout.findViewById(R.id.tv_otp1);
         tvOtp2 = (TextView) layout.findViewById(R.id.tv_otp2);
         tvOtp3 = (TextView) layout.findViewById(R.id.tv_otp3);
         tvOtp4 = (TextView) layout.findViewById(R.id.tv_otp4);
+        countDown();
         return layout;
     }
-
     @Override
     public void keyRead(String value) {
         typeOtpAdd(value);
@@ -94,6 +134,10 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                 tvOtp1.setText(value);
             }
         }
+    }
+
+    private void resendOtp(){
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.RESEND_OTP+"/"+phone, "resendOtp", this);
     }
 
     private void sendOtp(String tag) throws JSONException {
@@ -137,6 +181,20 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
 
     private void userLogin(JSONObject response) throws JSONException {
 
+
+        String status = response.getString("status");
+        String message = response.getString("message");
+        if (status.equals("ERROR")){
+            otpBox.startAnimation(shakingAni);
+            ToastShow.showToast(getActivity(),"wrong OTP");
+            tvOtp1.setText("");
+            tvOtp2.setText("");
+            tvOtp3.setText("");
+            tvOtp4.setText("");
+        }else {
+            SaveLogin.addUser(getActivity(), response);
+            callbackFragOpen.openFrag("paymentFlow","");
+        }
         SaveLogin.addUser(getActivity(), response);
         /*String message = response.getString("message");
         if (message.equals("OTP Accepted")){
@@ -164,7 +222,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                     e.printStackTrace();
                 }
                 //getInfoToPayent();
-                callbackFragOpen.openFrag("paymentFlow","");
+
             }
             /*if (tag.equals("subscriptionPayment")){
                 Log.d(TAG, "response: "+ response);
@@ -177,5 +235,36 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                 }
             }*/
         }
+    }
+
+    private void countDown(){
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                tvTimer.setVisibility(View.VISIBLE);
+                tvTimer.setText("Request another OTP in " + millisUntilFinished / 1000+" seconds");
+            }
+
+            public void onFinish() {
+                //mTextField.setText("done!");
+                tvTimer.setVisibility(View.GONE);
+            }
+        }.start();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()){
+            case MotionEvent.ACTION_UP:
+                switch (view.getId()){
+                    case R.id.btn_resend_otp:
+                        resendOtp();
+                        Log.d(TAG,"resend otp");
+                        countDown();
+                        break;
+                }
+                break;
+        }
+        return false;
     }
 }

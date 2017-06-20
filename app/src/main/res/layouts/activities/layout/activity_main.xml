@@ -350,6 +350,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/nav_item_top_margin"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"

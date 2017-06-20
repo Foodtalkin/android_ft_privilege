@@ -21,6 +21,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
             <TextView
+                android:id="@+id/tv_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -35,6 +36,7 @@
             android:layout_marginTop="38dp">
 
             <LinearLayout
+                android:id="@+id/otp_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -82,13 +84,31 @@
                     android:layout_marginLeft="10dp"/>
             </LinearLayout>
         </RelativeLayout>
-        <TextView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Resend OTP"
             android:layout_gravity="center"
-            android:textColor="@color/bright_sky_blue"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="20dp">
+            <TextView
+                android:id="@+id/btn_resend_otp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend OTP"
+                android:textColor="@color/bright_sky_blue"
+
+                android:clickable="true"
+                android:padding="10dp"/>
+            <TextView
+                android:id="@+id/tv_timer"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request another OTP in 22 seconds"
+                android:background="@color/dark_grey"
+                android:clickable="true"
+                android:textColor="@color/warm_grey"
+                android:padding="10dp"/>
+        </RelativeLayout>
 
     </LinearLayout>
     <LinearLayout

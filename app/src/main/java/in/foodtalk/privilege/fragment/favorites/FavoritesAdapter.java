@@ -91,6 +91,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            //Log.d(TAG, "json: "+offerOutletId.toString());
+                            //Log.d(TAG, "offer id "+favList.get(getAdapterPosition()).offerId+" outletId: "+favList.get(getAdapterPosition()).outletId);
                             callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             break;
                     }

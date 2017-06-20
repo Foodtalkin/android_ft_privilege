@@ -42,6 +42,7 @@ public class SaveLogin {
             loginValue.gender = ((result.isNull("gender")) ? "N/A" : result.getString("gender"));
             loginValue.dob = ((result.isNull("dob")) ? "N/A" : result.getString("dob"));
             loginValue.pref = result.getString("preference");
+            loginValue.uId = result.getString("id");
 
             loginValue.subscription = subscription.toString();
             db.addUser(loginValue);
