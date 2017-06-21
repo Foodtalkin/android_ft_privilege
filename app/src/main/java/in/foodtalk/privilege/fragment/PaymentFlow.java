@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -100,7 +101,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
 
     private void checkPaymentStatus(String paymentId){
         JSONObject jsonObject = new JSONObject();
-        String sId = db.getUserDetails().get("sessionId");
+        String sId = AppController.getInstance().sessionId;
         try {
             jsonObject.put("payment_id",paymentId);
         } catch (JSONException e) {
@@ -111,7 +112,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
 
     private void getInfoToPayent(){
         JSONObject jsonObject = new JSONObject();
-        String sId = db.getUserDetails().get("sessionId");
+        String sId = AppController.getInstance().sessionId;
         setScreen("loader");
         try {
             jsonObject.put("subscription_type_id", "1");

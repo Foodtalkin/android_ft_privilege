@@ -19,7 +19,7 @@ import in.foodtalk.privilege.models.LoginValue;
 
 public class SaveLogin {
 
-    public static void addUser (Context context, JSONObject response) throws JSONException{
+    public static void addUser (Context context, JSONObject response, String openFrag) throws JSONException{
         DatabaseHandler db = new DatabaseHandler(context);
         String status = response.getString("status");
         String message = response.getString("message");
@@ -49,8 +49,10 @@ public class SaveLogin {
 
             //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
 
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
+            if (openFrag.equals("homeFrag")){
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
         }else {
             Log.e("SaveLogin", "message: "+ message);
         }

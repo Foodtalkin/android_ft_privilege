@@ -39,6 +39,7 @@ import com.instamojo.android.network.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.AccountFrag;
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     ImageView searchBtn;
 
     DrawerLayout drawerLayout;
+
+
 
     LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout;
 
@@ -158,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         if (db.getRowCount() > 0){
             loginView();
+            AppController.getInstance().sessionId = db.getUserDetails().get("sessionId");
         }else {
             logoutView();
         }
@@ -183,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             if (frag.equals("signupFrag")){
                 signUp();
                 Log.d(TAG, "open signup fragment");
+            }else if (frag.equals("paymentFlow")){
+                startPaymentFlow();
             }
         }else {
             searchFrag = new SearchFrag();
@@ -263,8 +269,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }*/
 
         onFragmentChange(newFragment);
-
-
 
         String fragmentName = newFragment.getClass().getName();
         currentFragment = newFragment;
@@ -349,8 +353,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(paymentNowFrag, R.id.container, "paymentNowFrag", true);
         }
         if (fragName.equals("paymentFlow")){
-            setFragmentView(paymentFlow, R.id.container, "paymentFlow", true);
+            startPaymentFlow();
         }
+    }
+
+    private void startPaymentFlow(){
+        setFragmentView(paymentFlow, R.id.container, "paymentFlow", true);
     }
 
     @Override
@@ -648,7 +656,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             case R.id.nav_buynow:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        signUp();
+                        //signUp();
+                        signupAlert();
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }

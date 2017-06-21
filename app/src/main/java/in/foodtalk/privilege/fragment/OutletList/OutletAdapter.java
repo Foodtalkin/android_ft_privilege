@@ -50,7 +50,7 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OutletCardObj outletCardObj = outletCardList.get(position);
         OutletCard outletCard = (OutletCard) holder;
-        outletCard.tvTitle.setText(outletCardObj.name);
+        outletCard.tvTitle.setText(outletCardObj.address);
     }
 
     @Override
@@ -66,7 +66,6 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             btnOutlet = (LinearLayout) itemView.findViewById(R.id.btn_outlet);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             btnOutlet.setOnTouchListener(this);
-
         }
 
         @Override

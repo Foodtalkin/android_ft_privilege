@@ -11,6 +11,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.instamojo.android.Instamojo;
 
+import org.json.JSONObject;
+
 /**
  * Created by RetailAdmin on 03-05-2017.
  */
@@ -21,9 +23,14 @@ public class AppController extends Application {
     private RequestQueue mRequestQueue;
     private static AppController mInstance;
 
+
+
     //-----global vars-------------
     public String restaurantName;
     public String rOneLiner;
+
+    public String sessionId;
+    public JSONObject loginResponse;
 
     @Override
     protected void attachBaseContext(Context base) {

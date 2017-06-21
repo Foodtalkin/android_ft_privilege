@@ -89,7 +89,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
 
         tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
 
-        tvMsg.setText("Please enter 4 digit OTP \n sent to "+phone);
+        tvMsg.setText("Please enter 4 digit OTP\nsent to "+phone);
 
         btnResendOtp.setOnTouchListener(this);
 
@@ -192,10 +192,9 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             tvOtp3.setText("");
             tvOtp4.setText("");
         }else {
-            SaveLogin.addUser(getActivity(), response);
+            SaveLogin.addUser(getActivity(), response, "");
             callbackFragOpen.openFrag("paymentFlow","");
         }
-        SaveLogin.addUser(getActivity(), response);
         /*String message = response.getString("message");
         if (message.equals("OTP Accepted")){
             //callbackFragOpen.openFrag("homeFrag","");

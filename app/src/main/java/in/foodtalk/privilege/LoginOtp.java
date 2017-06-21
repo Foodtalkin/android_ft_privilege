@@ -1,5 +1,6 @@
 package in.foodtalk.privilege;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -18,12 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.instamojo.android.Instamojo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -161,6 +165,7 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
 
         String status = response.getString("status");
         String message = response.getString("message");
+        JSONArray subscription = response.getJSONObject("result").getJSONArray("subscription");
         if (status.equals("ERROR")){
             otpBox.startAnimation(shakingAni);
             ToastShow.showToast(this,"wrong OTP");
@@ -169,11 +174,14 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             tvOtp3.setText("");
             tvOtp4.setText("");
         }else {
-            SaveLogin.addUser(this, response);
+            if (subscription.length() > 0){
+                SaveLogin.addUser(this, response, "homeFrag");
+            }else {
+                AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+                AppController.getInstance().loginResponse = response;
+                paymentDueDialog();
+            }
         }
-
-
-
         /*
         String status = response.getString("status");
         String message = response.getString("message");
@@ -259,6 +267,45 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             }
         }
     }
+
+    Dialog dialog;
+    private void paymentDueDialog(){
+        // custom dialog
+
+        dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.payment_due_dialog);
+
+
+        TextView paynow = (TextView) dialog.findViewById(R.id.btn_paynow);
+        TextView logout = (TextView) dialog.findViewById(R.id.btn_logout);
+        paynow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(LoginOtp.this, MainActivity.class);
+                intent.putExtra("fragment", "paymentFlow");
+                startActivity(intent);
+                //tvVeg.setText("No");
+            }
+        });
+        // if button is clicked, close the custom dialog
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(LoginOtp.this, Splash_activity.class);
+                startActivity(intent);
+                //logOut();
+                //tvVeg.setText("Yes");
+            }
+        });
+
+        dialog.show();
+    }
+
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()){

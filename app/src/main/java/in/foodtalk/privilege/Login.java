@@ -1,5 +1,6 @@
 package in.foodtalk.privilege;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -144,7 +146,8 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
                 Log.e(TAG,"error Msg: "+ message);
                 String msg = "Uh oh!\nLooks like "+tvPhone.getText().toString()+" is not registered with us.";
                 tvNumber.setText(msg);
-                alterWrongNo.setVisibility(View.VISIBLE);
+                //alterWrongNo.setVisibility(View.VISIBLE);
+                numberNotRegisterDialog();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -217,6 +220,43 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
         return false;
     }
 
+    Dialog dialog;
+    private void numberNotRegisterDialog(){
+        // custom dialog
+
+        dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.number_not_register_dialog);
+
+
+        TextView paynow = (TextView) dialog.findViewById(R.id.btn_paynow);
+        TextView logout = (TextView) dialog.findViewById(R.id.btn_logout);
+        paynow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.putExtra("fragment", "signupFrag");
+                startActivity(intent);
+                //tvVeg.setText("No");
+            }
+        });
+        // if button is clicked, close the custom dialog
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(Login.this, Splash_activity.class);
+                startActivity(intent);
+                //logOut();
+                //tvVeg.setText("Yes");
+            }
+        });
+
+        dialog.show();
+    }
+
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (response != null){
@@ -224,6 +264,9 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
                 Log.d(TAG,"response: "+response);
                 gotoOtp(response);
             }
+        }else {
+            progressBar.setVisibility(View.GONE);
+            ToastShow.showToast(this,getResources().getString(R.string.error_internet));
         }
     }
 }
