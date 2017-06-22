@@ -308,7 +308,7 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:background="@color/dark_grey"
-        android:visibility="gone"
+        android:visibility="visible"
         android:clickable="true">
 
         <LinearLayout
@@ -387,6 +387,85 @@
                     android:scaleY="2"
                     android:layout_gravity="center"
                     android:clickable="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    >
+                    <TableRow>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Number of dinners"
+                            android:padding="6dip"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:background="@drawable/rect_teble"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="2-3"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="4-5"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="6+"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="Number of coupons"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="upto 1"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="upto 2"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="upto 3"
+                            android:padding="6dip"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/rect_teble1"
+                            android:textColor="@color/pale_grey"/>
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
