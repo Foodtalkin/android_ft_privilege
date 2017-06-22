@@ -69,6 +69,8 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
 
         linePhone = findViewById(R.id.line_phone);
 
+
+
         Typeface typefaceFutura = Typeface.createFromAsset(getAssets(), "fonts/futura_bold.otf");
         Typeface typefaceFmedium= Typeface.createFromAsset(getAssets(), "fonts/futura_medium.ttf");
 
@@ -105,6 +107,12 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
         keyBack.setOnTouchListener(this);
 
         tvPhone = (TextView) findViewById(R.id.tv_phone);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            String phone = bundle.getString("phone");
+            tvPhone.setText(phone);
+        }
     }
     private void typeOtpAdd(String value){
         if (!value.equals("")){
@@ -229,10 +237,13 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.number_not_register_dialog);
 
+        TextView msg = (TextView) dialog.findViewById(R.id.tv_msg);
+        msg.setText("Looks like "+ tvPhone.getText().toString()+" is not registered with us, would you like to sign-up for privilege now?");
 
-        TextView paynow = (TextView) dialog.findViewById(R.id.btn_paynow);
-        TextView logout = (TextView) dialog.findViewById(R.id.btn_logout);
-        paynow.setOnClickListener(new View.OnClickListener() {
+
+        TextView signup = (TextView) dialog.findViewById(R.id.btn_signup);
+        TextView cancel = (TextView) dialog.findViewById(R.id.btn_cancel);
+        signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
@@ -243,12 +254,12 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
             }
         });
         // if button is clicked, close the custom dialog
-        logout.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Intent intent = new Intent(Login.this, Splash_activity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(Login.this, Splash_activity.class);
+               // startActivity(intent);
                 //logOut();
                 //tvVeg.setText("Yes");
             }

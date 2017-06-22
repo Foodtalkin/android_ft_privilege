@@ -11,7 +11,7 @@
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Looks like 9899473982 is not registered with us, would you like to sign-up for privilege now?"
+            android:text="Looks like 9899473982 is already registered with us. Would you like to login?"
             android:layout_weight="1"
             android:textAlignment="center"
             android:padding="12dp"
@@ -31,17 +31,19 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center">
+
             <TextView
-                android:id="@+id/btn_signup"
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign up"
+                android:text="Login"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:padding="12dp"
                 android:textColor="@color/dark_grey"
                 android:textStyle="bold"
                 />
+
             <View
                 android:background="#000"
                 android:alpha="0.1"
@@ -61,6 +63,8 @@
                 android:textColor="@color/warm_grey"
                 android:textStyle="bold"
                 />
+
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

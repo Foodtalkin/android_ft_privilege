@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/dark_grey">
+    android:background="@color/dark_grey"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp">
     <RelativeLayout
         android:id="@+id/loader_view"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -19,7 +21,8 @@
         android:id="@+id/success_view"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
         <TextView
             android:id="@+id/txt_foodtalk"
             android:layout_width="wrap_content"
@@ -80,9 +83,9 @@ Food Talk Privilege for 1 year.  "
                 android:textColor="@color/dark_grey"
                 android:layout_weight="1"
                 android:padding="20dp"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="40dp"
                 android:gravity="center"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="40dp"
                 android:text="Start Redeeming"
                 android:textSize="15sp"
                 android:background="@drawable/btn_bg2"
@@ -92,9 +95,10 @@ Food Talk Privilege for 1 year.  "
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/error_view"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
         <TextView
             android:id="@+id/txt_foodtalk1"
             android:layout_width="wrap_content"
@@ -115,7 +119,7 @@ Food Talk Privilege for 1 year.  "
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/group_3"
+                android:src="@drawable/ic_cookie"
                 android:layout_marginTop="68dp"
                 android:id="@+id/imageView1" />
 
@@ -124,20 +128,14 @@ Food Talk Privilege for 1 year.  "
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:layout_marginTop="40dp"
-                android:text="Welcome aboard"
+                android:text="Something’s wrong"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You have succefully purchased
-Food Talk Privilege for 1 year.  "
+                android:text="The transaction couldn’t complete.
+Please try again or contact support."
                 android:layout_marginTop="20dp"
-                android:textColor="@color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thank you!"
-                android:layout_marginTop="16dp"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -155,9 +153,9 @@ Food Talk Privilege for 1 year.  "
                 android:textColor="@color/dark_grey"
                 android:layout_weight="1"
                 android:padding="20dp"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="40dp"
                 android:gravity="center"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="40dp"
                 android:text="Retry Payment"
                 android:textSize="15sp"
                 android:background="@drawable/btn_bg2"

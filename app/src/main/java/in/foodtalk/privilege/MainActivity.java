@@ -185,7 +185,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             String frag = bundle.getString("fragment");
             Log.d(TAG, "open frag: "+ frag);
             if (frag.equals("signupFrag")){
-                signUp();
+                //signUp();
+                signupAlert();
                 Log.d(TAG, "open signup fragment");
             }else if (frag.equals("paymentFlow")){
                 startPaymentFlow();
@@ -284,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     private void signUp(){
         SignupFrag signupFrag = new SignupFrag();
-        setFragmentView(signupFrag, R.id.container, "signupFrag", true);
+        setFragmentView(signupFrag, R.id.container, "signupFrag", false);
     }
     private void signupAlert(){
         SignupAlert signupAlert = new SignupAlert();
@@ -338,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("otpVerify")){
             OtpVerifyFrag otpVerifyFrag = new OtpVerifyFrag();
             otpVerifyFrag.phone = value;
-            setFragmentView(otpVerifyFrag, R.id.container, "otpVerify", false);
+            setFragmentView(otpVerifyFrag, R.id.container, "otpVerify", true);
         }
         if (fragName.equals("searchResult")){
             SearchResult searchResult = new SearchResult();
@@ -358,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
 
     private void startPaymentFlow(){
-        setFragmentView(paymentFlow, R.id.container, "paymentFlow", true);
+        setFragmentView(paymentFlow, R.id.container, "paymentFlow", false);
     }
 
     @Override

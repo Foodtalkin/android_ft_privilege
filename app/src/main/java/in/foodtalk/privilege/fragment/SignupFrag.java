@@ -1,6 +1,8 @@
 package in.foodtalk.privilege.fragment;
 
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -9,16 +11,21 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.Login;
+import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.Splash_activity;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -111,7 +118,8 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
                 lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
                 linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
             }else if (error.equals("phone")){
-                ToastShow.showToast(getActivity(), message);
+                //ToastShow.showToast(getActivity(), message);
+                numberAlreadyRegisterDialog();
                 lineEmail.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
                 linePhone.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red));
             }
@@ -147,5 +155,43 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
             progressBar.setVisibility(View.GONE);
             ToastShow.showToast(getActivity(),"Check internet connection");
         }
+    }
+
+    Dialog dialog;
+    private void numberAlreadyRegisterDialog(){
+        // custom dialog
+
+        dialog = new Dialog(getActivity());
+        //dialog.setCanceledOnTouchOutside(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.number_already_register_dialog);
+        TextView msg = (TextView) dialog.findViewById(R.id.tv_msg);
+        msg.setText("Looks like "+etPhone.getText().toString()+" is already registered with us. Would you like to login?");
+
+        TextView login = (TextView) dialog.findViewById(R.id.btn_login);
+        TextView cancel = (TextView) dialog.findViewById(R.id.btn_cancel);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(getActivity(), Login.class);
+                intent.putExtra("phone", etPhone.getText().toString());
+                startActivity(intent);
+                //tvVeg.setText("No");
+            }
+        });
+        // if button is clicked, close the custom dialog
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                //Intent intent = new Intent(getActivity(), Splash_activity.class);
+                //startActivity(intent);
+                //logOut();
+                //tvVeg.setText("Yes");
+            }
+        });
+
+        dialog.show();
     }
 }

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import in.foodtalk.privilege.Login;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -192,22 +193,12 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             tvOtp3.setText("");
             tvOtp4.setText("");
         }else {
-            SaveLogin.addUser(getActivity(), response, "");
+            //SaveLogin.addUser(getActivity(), response, "");
+            AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+            AppController.getInstance().loginResponse = response;
             callbackFragOpen.openFrag("paymentFlow","");
         }
-        /*String message = response.getString("message");
-        if (message.equals("OTP Accepted")){
-            //callbackFragOpen.openFrag("homeFrag","");
-            LoginValue loginValue = new LoginValue();
-            loginValue.sId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
-            loginValue.rToken = response.getJSONObject("result").getJSONObject("session").getString("refresh_token");
-            loginValue.uId = response.getJSONObject("result").getJSONObject("session").getString("user_id");
-            //loginValue.createAt = response.getJSONObject("result").getJSONObject("session").getString("created_at");
-//            loginValue.updateAt = response.getJSONObject("result").getJSONObject("session").getString("updated_at");
-            db.addUser(loginValue);
-        }*/
     }
-
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (response != null){

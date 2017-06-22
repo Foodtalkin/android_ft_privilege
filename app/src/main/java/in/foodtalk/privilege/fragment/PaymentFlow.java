@@ -26,6 +26,8 @@ import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.library.PayNow;
+import in.foodtalk.privilege.library.SaveLogin;
+import in.foodtalk.privilege.library.ToastShow;
 
 /**
  * Created by RetailAdmin on 06-06-2017.
@@ -55,6 +57,8 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         tvFoodtalk1 = (TextView) layout.findViewById(R.id.txt_foodtalk1);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
         btnDone = (TextView) layout.findViewById(R.id.btn_done);
+
+        btnRetry.setOnTouchListener(this);
 
         btnDone.setOnTouchListener(this);
         btnDone.setOnTouchListener(this);
@@ -104,9 +108,12 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         String sId = AppController.getInstance().sessionId;
         try {
             jsonObject.put("payment_id",paymentId);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
         ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), jsonObject, Url.SUBSCRIPTION+"?sessionid="+sId, "subscription", this);
     }
 
@@ -147,6 +154,9 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                 try {
                     if (response.getString("status").equals("OK")){
                         paymentProcess(response);
+                    }else {
+                        ToastShow.showToast(getActivity(), response.getJSONObject("result").getJSONArray("phone").getJSONArray(0).toString());
+                        getFragmentManager().popBackStack();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -157,6 +167,9 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                 try {
                     if (response.getString("status").equals("OK")){
                         setScreen("success");
+                        Log.d(TAG,"savedResponse: "+AppController.getInstance().loginResponse);
+                        //SaveLogin.addUser(getActivity(), response, "");
+                        saveUser(response);
                     }else {
                         setScreen("error");
                     }
@@ -171,6 +184,18 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
 
     }
 
+    private void saveUser(JSONObject response){
+        try {
+            JSONObject savedResponse = AppController.getInstance().loginResponse;
+            savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
+
+            SaveLogin.addUser(getActivity(), savedResponse, "");
+            Log.d(TAG, "updated response: " +savedResponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
@@ -178,6 +203,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         getInfoToPayent();
+                        Log.d(TAG, "payment retry");
                         break;
                 }
                 break;
