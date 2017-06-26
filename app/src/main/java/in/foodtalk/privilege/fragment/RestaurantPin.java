@@ -52,7 +52,7 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
 
     LinearLayout pinHolder;
 
-    TextView tvError;
+    TextView tvError, tvCouponInfo;
 
     @Nullable
     @Override
@@ -68,6 +68,8 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
         tvError = (TextView) layout.findViewById(R.id.tv_error);
         tvError.setVisibility(View.GONE);
 
+        tvCouponInfo = (TextView) layout.findViewById(R.id.tv_coupon_info);
+
 
         tvOtp1 = (TextView) layout.findViewById(R.id.tv_otp1);
         tvOtp2 = (TextView) layout.findViewById(R.id.tv_otp2);
@@ -76,12 +78,15 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
 
         pinHolder = (LinearLayout) layout.findViewById(R.id.pin_holder);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
         //Log.d(TAG, jsonString);
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             offerId = jsonObject.getString("offer_id");
             outletId = jsonObject.getString("outlet_id");
             offerRedeem = jsonObject.getString("offers_redeemed");
+            tvCouponInfo.setText("Redeeming "+offerRedeem+" Coupon");
         } catch (JSONException e) {
             e.printStackTrace();
         }

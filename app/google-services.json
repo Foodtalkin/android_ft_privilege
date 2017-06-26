@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "913949871369",
+    "firebase_url": "https://foodtalk-privilege.firebaseio.com",
+    "project_id": "foodtalk-privilege",
+    "storage_bucket": "foodtalk-privilege.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913949871369:android:010ff616c95de334",
+        "android_client_info": {
+          "package_name": "in.foodtalk.privilege"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913949871369-2qa6vgus1so1q1haq96s52udovhtmglp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvw72TpypRdqQ7LOJEosUxO-G6cNWG9lY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

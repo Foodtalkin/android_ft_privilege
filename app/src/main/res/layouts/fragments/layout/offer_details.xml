@@ -74,6 +74,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="20dp">
                     <TextView
+                        android:id="@+id/tv_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/rs"
@@ -321,15 +322,52 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:clickable="false">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="REDEEM"
-                android:textColor="@color/white"
-                android:textSize="16sp"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/bar_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_clear_black_24dp"
+                        android:tint="@color/pale_grey"
+                        android:padding="10dp"
+                        android:clickable="true"/>
+                    <TextView
+                        android:id="@+id/btn_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NEXT"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:padding="10dp"
+                        android:textColor="@color/bright_sky_blue"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"/>
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REDEEM"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    />
 
-                android:layout_gravity="center_horizontal"
-                />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_coupons"
                 android:layout_width="wrap_content"
@@ -389,15 +427,16 @@
                     android:clickable="true"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/table_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
                     >
                     <TableRow>
                         <TextView
+                            android:id="@+id/tv_table_head"
                             android:layout_weight="1"
                             android:text="Number of dinners"
                             android:padding="6dip"
@@ -406,6 +445,7 @@
                             android:background="@drawable/rect_teble"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_dinners1"
                             android:layout_weight="1"
                             android:text="2-3"
                             android:padding="6dip"
@@ -414,6 +454,7 @@
                             android:background="@drawable/rect_teble1"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_dinners2"
                             android:layout_weight="1"
                             android:text="4-5"
                             android:padding="6dip"
@@ -422,6 +463,7 @@
                             android:background="@drawable/rect_teble1"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_dinners3"
                             android:layout_weight="1"
                             android:text="6+"
                             android:padding="6dip"
@@ -433,6 +475,7 @@
 
                     <TableRow>
                         <TextView
+                            android:id="@+id/tv_table_head1"
                             android:layout_weight="1"
                             android:text="Number of coupons"
                             android:padding="6dip"
@@ -441,6 +484,7 @@
                             android:background="@drawable/rect_teble"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_coupon1"
                             android:layout_weight="1"
                             android:text="upto 1"
                             android:padding="6dip"
@@ -449,6 +493,7 @@
                             android:background="@drawable/rect_teble1"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_coupon2"
                             android:layout_weight="1"
                             android:text="upto 2"
                             android:padding="6dip"
@@ -457,6 +502,7 @@
                             android:background="@drawable/rect_teble1"
                             android:textColor="@color/pale_grey"/>
                         <TextView
+                            android:id="@+id/tv_coupon3"
                             android:layout_weight="1"
                             android:text="upto 3"
                             android:padding="6dip"
@@ -470,34 +516,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:layout_marginLeft="10dp"
                 >
                 <TextView
-                    android:id="@+id/btn_cancel"
+                    android:id="@+id/tv_line1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:padding="10dp"
-                    android:textColor="@color/warm_grey"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:text="- One coupon equals to one item"
+                    android:textColor="@color/pale_grey_two"
+                    android:textSize="12sp"/>
                 <TextView
-                    android:id="@+id/btn_next"
+                    android:id="@+id/tv_line2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NEXT"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:padding="10dp"
-                    android:textColor="@color/bright_sky_blue"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:clickable="true"/>
+                    android:text="- Valid on all days unless specified"
+                    android:textColor="@color/pale_grey_two"
+                    android:textSize="12sp"
+                    android:layout_marginTop="5dp"/>
+                <TextView
+                    android:id="@+id/tv_line3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- Cannot be clubed with any other offer"
+                    android:textColor="@color/pale_grey_two"
+                    android:layout_marginTop="5dp"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -523,9 +571,9 @@
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_clear_black_24dp"
             android:layout_alignParentRight="true"
-            android:padding="10dp"
+            android:padding="20dp"
             android:clickable="true"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view1"

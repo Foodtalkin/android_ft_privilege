@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="RID: 1335555"
+            android:visibility="gone"
             android:layout_marginTop="13dp"
             android:textColor="@color/white"/>
     </LinearLayout>

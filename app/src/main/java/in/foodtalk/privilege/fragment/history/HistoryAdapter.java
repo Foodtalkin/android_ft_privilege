@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.fragment.history;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.library.DateFunction;
 import in.foodtalk.privilege.models.HistoryObj;
 
 /**
@@ -41,9 +43,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         HistoryObj historyObj = historyList.get(position);
 
         historyCard.tvTitle.setText(historyObj.name);
-        historyCard.tvRid.setText(historyObj.offerRedeemed);
-        historyCard.tvCoupons.setText(historyObj.offerRedeemed);
-        historyCard.tvTime.setText(historyObj.createdAt);
+        historyCard.tvRid.setText("RID "+historyObj.offerRedeemed);
+        historyCard.tvCoupons.setText("Coupons used: "+historyObj.offerRedeemed);
+        historyCard.tvTime.setText(DateFunction.convertFormat(historyObj.createdAt, "yyyy-MM-dd HH:mm:ss",  "EEE, d MMM yyyy '-' hh:mm aaa"));
     }
 
     @Override
@@ -55,12 +57,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         TextView tvTitle, tvCoupons, tvRid, tvTime;
 
+        Typeface typefaceFutura = Typeface.createFromAsset(context.getAssets(), "fonts/futura_bold.otf");
+
+
         public HistoryCard(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvCoupons = (TextView) itemView.findViewById(R.id.tv_coupons);
             tvRid = (TextView) itemView.findViewById(R.id.tv_rid);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
+
+            tvTitle.setTypeface(typefaceFutura);
         }
 
         @Override

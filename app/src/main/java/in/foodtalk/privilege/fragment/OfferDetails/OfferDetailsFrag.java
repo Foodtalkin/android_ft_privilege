@@ -57,10 +57,12 @@ import in.foodtalk.privilege.models.ImagesObj;
 
 public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, ApiCallback, ValueCallback {
     View layout;
-    TextView tvCounter, btnCancel, btnNext, tvShortDes, tvAddress, tvHours, tvDes, tvCuisine, tvSuggestedDish;
+    TextView tvCounter, btnNext, tvShortDes, tvAddress, tvHours, tvDes, tvCuisine, tvSuggestedDish;
+    ImageView btnCancel;
     Animation slideUpAnimation, slideDownAnimation, slideUpAnimation1;
     LinearLayout redeemBar, btnRedeem, btnSlideUp;
-    Boolean redeemBarVisible = false;
+    public Boolean redeemBarVisible = false;
+    public Boolean imgSliderVisible = false;
     String TAG = OfferDetailsFrag.class.getSimpleName();
     ImageView btnRemove, btnAdd;
     CallbackFragOpen callbackFragOpen;
@@ -100,7 +102,16 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
     ImageView btnClose;
 
-    TextView tvName, tvArea;
+    TextView tvName, tvArea, tvPrice;
+
+    TextView tvDinner1, tvDinner2, tvDinner3, tvCoupon1, tvCoupon2, tvCoupon3, tvTableHead, tvTableHead1, tvLine1, tvLine2, tvLine3;
+
+
+    LinearLayout tableHolder;
+    RelativeLayout barButtons;
+
+
+
 
 
     @Nullable
@@ -110,7 +121,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         tvCounter = (TextView) layout.findViewById(R.id.tv_counter);
         redeemBar = (LinearLayout) layout.findViewById(R.id.redeem_bar);
         btnRedeem = (LinearLayout) layout.findViewById(R.id.btn_redeem);
-        btnCancel = (TextView) layout.findViewById(R.id.btn_cancel);
+        btnCancel = (ImageView) layout.findViewById(R.id.btn_cancel);
         btnNext = (TextView) layout.findViewById(R.id.btn_next);
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
         btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
@@ -124,6 +135,42 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
+
+        tvPrice = (TextView) layout.findViewById(R.id.tv_price);
+
+        tvDinner1 = (TextView) layout.findViewById(R.id.tv_dinners1);
+        tvDinner2 = (TextView) layout.findViewById(R.id.tv_dinners2);
+        tvDinner3 = (TextView) layout.findViewById(R.id.tv_dinners3);
+
+        tvCoupon1 = (TextView) layout.findViewById(R.id.tv_coupon1);
+        tvCoupon2 = (TextView) layout.findViewById(R.id.tv_coupon2);
+        tvCoupon3 = (TextView) layout.findViewById(R.id.tv_coupon3);
+
+        tvTableHead = (TextView) layout.findViewById(R.id.tv_table_head);
+        tvTableHead1 = (TextView) layout.findViewById(R.id.tv_table_head1);
+
+        tvLine1 = (TextView) layout.findViewById(R.id.tv_line1);
+        tvLine2 = (TextView) layout.findViewById(R.id.tv_line2);
+        tvLine3 = (TextView) layout.findViewById(R.id.tv_line3);
+
+        tableHolder = (LinearLayout) layout.findViewById(R.id.table_holder);
+
+        barButtons = (RelativeLayout) layout.findViewById(R.id.bar_buttons);
+        barButtons.setVisibility(View.INVISIBLE);
+
+
+
+
+        tvDinner1.setText("--");
+        tvDinner2.setText("--");
+        tvDinner3.setText("--");
+
+        tvCoupon1.setText("--");
+        tvCoupon2.setText("--");
+        tvCoupon3.setText("--");
+
+        tvTableHead.setText("--");
+        tvTableHead1.setText("--");
 
         tvName = (TextView) layout.findViewById(R.id.tv_name);
         tvArea = (TextView) layout.findViewById(R.id.tv_area);
@@ -155,6 +202,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView1 = (RecyclerView) layout.findViewById(R.id.recycler_view1);
 
+        redeemBar.setVisibility(View.GONE);
+        btnBuyNow.setVisibility(View.GONE);
+
 
         db = new DatabaseHandler(getActivity());
 
@@ -168,16 +218,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         recyclerView1.setOverScrollMode(1);
 
-        if (db.getRowCount() > 0){
-            redeemBar.setVisibility(View.VISIBLE);
-            btnSlideUp.setVisibility(View.VISIBLE);
-            btnBuyNow.setVisibility(View.GONE);
-        }else {
-            redeemBar.setVisibility(View.GONE);
-            btnBuyNow.setVisibility(View.VISIBLE);
-            btnSlideUp.setVisibility(View.GONE);
 
-        }
 
         Log.d(TAG, "offerId: "+offerId+" outletId: "+outletId);
 
@@ -207,7 +248,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
 
 
-        setAnimation();
+        //setAnimation();
         loadData("offerDetails");
         return layout;
     }
@@ -252,6 +293,64 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         tvName.setText(AppController.getInstance().restaurantName);
         tvArea.setText(result.getString("area"));
+
+        int cost = Integer.valueOf(result.getString("cost").toString());
+
+        String rs = getActivity().getResources().getString(R.string.rs);
+        if (cost < 500){
+            tvPrice.setText(rs);
+        }else if (cost < 999){
+            tvPrice.setText(rs+rs);
+        }else {
+            tvPrice.setText(rs+rs+rs);
+        }
+
+        if (result.getJSONObject("metadata").getJSONObject("rules").has("table")){
+            tableHolder.setVisibility(View.VISIBLE);
+            String numberOfDiners = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("head").getString(0);
+            String numberOfCoupons = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("head").getString(1);
+
+            String dinner1 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(0).getString(0);
+            String dinner2 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(0).getString(1);
+            String dinner3 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(0).getString(2);
+
+            String coupon1 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(0);
+            String coupon2 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(1);
+            String coupon3 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(2);
+
+            tvDinner1.setText(dinner1);
+            tvDinner2.setText(dinner2);
+            tvDinner3.setText(dinner3);
+
+            tvCoupon1.setText(coupon1);
+            tvCoupon2.setText(coupon2);
+            tvCoupon3.setText(coupon3);
+
+            tvTableHead.setText(numberOfDiners);
+            tvTableHead1.setText(numberOfCoupons);
+        }else {
+            tableHolder.setVisibility(View.GONE);
+            tvLine1.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(0).toString());
+            tvLine2.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(1).toString());
+            tvLine3.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(2).toString());
+
+        }
+
+        if (db.getRowCount() > 0){
+            redeemBar.setVisibility(View.VISIBLE);
+            btnSlideUp.setVisibility(View.VISIBLE);
+            btnBuyNow.setVisibility(View.GONE);
+        }else {
+            redeemBar.setVisibility(View.GONE);
+            btnBuyNow.setVisibility(View.VISIBLE);
+            btnSlideUp.setVisibility(View.GONE);
+        }
+       // redeemBar.setVisibility(View.INVISIBLE);
+       // btnBuyNow.setVisibility(View.INVISIBLE);
+        setAnimation();
+
+
+
 
         String dishList = result.getString("suggested_dishes").replaceAll(", ", "\n");
         tvSuggestedDish.setText(dishList);
@@ -314,6 +413,24 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         redeemBar.startAnimation(slideUpAnimation1);
 
+        slideUpAnimation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //redeemBar.setVisibility(View.VISIBLE);
+                //btnBuyNow.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
         slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -322,7 +439,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                barButtons.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -338,7 +455,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                barButtons.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -350,8 +467,10 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     }
     private void showRedeemBar(){
         redeemBar.startAnimation(slideDownAnimation);
+        redeemBarVisible = true;
     }
-    private void hideRedeemBar(){
+    public void hideRedeemBar(){
+        redeemBarVisible = false;
         redeemBar.startAnimation(slideUpAnimation);
     }
 
@@ -549,7 +668,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             case R.id.btn_close:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        imgSlider.setVisibility(View.GONE);
+                        hideImgSlider();
+
                         break;
                 }
                 break;
@@ -566,6 +686,13 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         return false;
     }
 
+    public void hideImgSlider(){
+        imgSlider.setVisibility(View.GONE);
+        imgSliderVisible = false;
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+    }
+
+
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (response != null){
@@ -580,13 +707,20 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         }
     }
 
+
+
+
     @Override
     public void setValue(String v1, String v2) {
         if (v1.equals("bigImg")){
             imgSlider.setVisibility(View.VISIBLE);
             recyclerView1.scrollToPosition(Integer.valueOf(v2));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            imgSliderVisible = true;
         }else if (v1.equals("close")){
             imgSlider.setVisibility(View.GONE);
+            imgSliderVisible = false;
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         }
 
     }

@@ -368,6 +368,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             //setFragmentView(homeFrag, R.id.container, "homeFrag", false);
             clearBackStack();
             //this.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }else if (this.getFragmentManager().findFragmentById(R.id.container) == offerDetailsFrag){
+            if (offerDetailsFrag.imgSliderVisible == true){
+                offerDetailsFrag.hideImgSlider();
+            }else if (offerDetailsFrag.redeemBarVisible == true){
+                offerDetailsFrag.hideRedeemBar();
+            }else {
+                super.onBackPressed();
+            }
+
         }else {
             super.onBackPressed();
         }
@@ -498,12 +507,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 //showToast("Webhook URL is invalid");
                 Log.e("App", "Webhook URL is invalid");
             }
-
             return;
         }
 
         //Validation is successful. Proceed
-
         // Good time to show progress dialog to user
         Request request = new Request(order, new OrderRequestCallBack() {
             @Override

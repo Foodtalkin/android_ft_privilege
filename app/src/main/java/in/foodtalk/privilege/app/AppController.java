@@ -13,6 +13,8 @@ import com.instamojo.android.Instamojo;
 
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.helper.ParseUtils;
+
 /**
  * Created by RetailAdmin on 03-05-2017.
  */
@@ -22,6 +24,8 @@ public class AppController extends Application {
 
     private RequestQueue mRequestQueue;
     private static AppController mInstance;
+
+    private ParseUtils parseUtils;
 
 
 
@@ -44,6 +48,8 @@ public class AppController extends Application {
         Instamojo.initialize(this);
         Instamojo.setLogLevel(Log.DEBUG);
         mInstance = this;
+
+        parseUtils.registerParse(this);
     }
 
     public static synchronized AppController getInstance() {
