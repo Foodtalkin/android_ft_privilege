@@ -2,23 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/dark_grey">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SELECT"
+                android:text="Search"
                 android:textColor="@color/light_gold"
                 android:textSize="18dp"
+                android:textAllCaps="true"
                 android:layout_gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -26,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Looking for something specific?\nSearch &amp; filter to narrow down coices."/>
+                android:text="Use filters to narrow down on a restaurant based on your prefrences."/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

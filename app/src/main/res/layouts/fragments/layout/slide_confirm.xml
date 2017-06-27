@@ -16,9 +16,10 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm"
+                android:text="Confirm offer"
                 android:textColor="@color/light_gold"
                 android:textSize="18dp"
                 android:textAllCaps="true"
@@ -29,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Ask merchant to enter the coupons and code to redeem the offer."/>
+                android:text="Present your app to the restaurant &amp; ask them to punch in the PIN  "/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

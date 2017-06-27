@@ -26,9 +26,10 @@ public class ParseUtils {
         //Parse.initialize(context, context.getString(R.string.parseAppID), context.getString(R.string.parseClientID));
         Parse.initialize(new Parse.Configuration.Builder(context)
                 .applicationId(context.getString(R.string.parseAppID))
-
                 //.clientKey(null)
-                .server("http://foodtalk.in:1337/parse")
+                //http://52.74.136.146:1337/parse
+                //.server("http://52.74.136.146:1337/parse")
+                .server("http://52.74.136.146:1337/parse/")
                 //.server("http://api.parse.com/parse/")
                // .addNetworkInterceptor(new ParseStethoInterceptor())
                 //.server("http://192.168.1.5:1337/parse/")
@@ -41,7 +42,7 @@ public class ParseUtils {
 
         ParseUser.enableAutomaticUser();
 
-        Parse.setLogLevel(Parse.LOG_LEVEL_ERROR);
+        Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
 //        ParseInstallation.getCurrentInstallation().deleteInBackground(new DeleteCallback() {
 //            @Override
@@ -59,8 +60,8 @@ public class ParseUtils {
             @Override
             public void done(ParseException e) {
                 Log.e(TAG, "Successfully subscribed to Parse!");
-                //String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
-                //Log.d("ParseUtils","deviceToken: "+deviceToken);
+                String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
+                Log.d("ParseUtils","deviceToken: "+deviceToken);
                 if (e != null){
                     Log.e("ParseException", e.toString()+" done");
                 }

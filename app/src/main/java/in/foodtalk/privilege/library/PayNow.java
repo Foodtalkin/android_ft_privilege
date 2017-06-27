@@ -23,7 +23,8 @@ public class PayNow {
     Activity activity;
     public PayNow(Activity activity){
         this.activity = activity;
-        Instamojo.setBaseUrl("https://test.instamojo.com/");
+        Instamojo.setBaseUrl("https://www.instamojo.com/");
+        //Instamojo.setBaseUrl("http://api.foodtalk.in/");
     }
     public  void paymentWithOrder(String accessToken, String orderId){
         // Good time to show dialog

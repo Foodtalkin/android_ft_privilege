@@ -2,6 +2,7 @@ package in.foodtalk.privilege;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -65,16 +66,19 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
     private void initViewPager(){
         fragments.add(new SplashSlide());
         fragments.add(new ExplorSlide());
-        fragments.add(new PurchaseSlide());
         fragments.add(new SelectSlide());
         fragments.add(new DineSlide());
         fragments.add(new ConfirmSlide());
+        fragments.add(new PurchaseSlide());
 
         fm = getSupportFragmentManager();
 
         //mPager = (ViewPager) layout.findViewById(R.id.viewpager);
         mPagerAdapter = new HWPagerAdapter(fm, fragments);
         viewPager.setAdapter(mPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager, true);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

@@ -16,9 +16,10 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dine &amp; Save"
+                android:text="Explore"
                 android:textColor="@color/light_gold"
                 android:textSize="18dp"
                 android:textAllCaps="true"
@@ -29,12 +30,12 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Select &amp; redeem your offer."/>
+                android:text="Browse through our list of hand picked restaurants to find a deal"/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/phone_explore"
+            android:src="@drawable/phone_explore1"
             android:layout_gravity="center"/>
     </LinearLayout>
 </RelativeLayout>

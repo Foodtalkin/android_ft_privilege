@@ -13,9 +13,10 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="55dp"
-            android:layout_marginRight="55dp">
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Purchase"
@@ -29,12 +30,12 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Buy Food Talk privilege once for \u20B91200 and enjoy all the peks for one year."/>
+                android:text="Purchase Food Talk Privilege for Rs 1,200 only to enjoy deals and more for 1 full year."/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/phone_purchase"
+            android:src="@drawable/phone_purchase1"
             android:layout_gravity="center"/>
     </LinearLayout>
 </RelativeLayout>

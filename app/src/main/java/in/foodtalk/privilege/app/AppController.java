@@ -47,6 +47,7 @@ public class AppController extends Application {
         super.onCreate();
         Instamojo.initialize(this);
         Instamojo.setLogLevel(Log.DEBUG);
+
         mInstance = this;
 
         parseUtils.registerParse(this);

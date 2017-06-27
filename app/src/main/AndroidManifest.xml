@@ -17,7 +17,6 @@
     <permission
         android:name="in.foodtalk.privilege.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="in.foodtalk.privilege.permission.C2D_MESSAGE" />
 
     <application
@@ -56,6 +55,17 @@
         <service android:name="com.parse.PushService" />
 
         <receiver
+            android:name=".receiver.CustomPushReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver
             android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
@@ -65,6 +75,19 @@
                 <category android:name="in.foodtalk.privilege" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
