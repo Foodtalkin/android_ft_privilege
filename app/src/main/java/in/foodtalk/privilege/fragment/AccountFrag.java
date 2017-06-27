@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
 
     String TAG = AccountFrag.class.getSimpleName();
 
-    TextView tvGender, tvVeg, tvName, tvPhone;
+    TextView tvGender, tvVeg, tvName, tvPhone, tvMembership;
 
     EditText inputName, inputEmail;
 
@@ -70,6 +71,8 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
         inputEmail = (EditText) layout.findViewById(R.id.input_email);
         tvGender = (TextView) layout.findViewById(R.id.tv_gender);
         tvVeg = (TextView) layout.findViewById(R.id.tv_veg);
+
+        tvMembership = (TextView) layout.findViewById(R.id.tv_membership);
 
         progressBar = (RelativeLayout) layout.findViewById(R.id.progress_bar);
         btnSave = (LinearLayout) layout.findViewById(R.id.btn_save);
@@ -135,6 +138,21 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
     }
 
     public void setTextValue(){
+
+        Log.d(TAG, "subscription: "+ db.getUserDetails().get("subscription"));
+
+        try {
+            JSONArray subscritionArray = new JSONArray(db.getUserDetails().get("subscription"));
+            String date = subscritionArray.getJSONObject(0).getString("expiry");
+            date = DateFunction.convertFormat(date, "yyyy-MM-dd HH:mm:ss", "d MMM yyyy");
+            tvMembership.setText("Membership valid till "+ date);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
         inputName.setText(StringCase.caseSensitive(db.getUserDetails().get("name")));
         inputEmail.setText(db.getUserDetails().get("email"));
 

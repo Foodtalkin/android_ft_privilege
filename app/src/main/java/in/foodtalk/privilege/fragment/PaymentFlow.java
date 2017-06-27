@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
@@ -62,6 +64,8 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
 
         btnDone.setOnTouchListener(this);
         btnDone.setOnTouchListener(this);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
@@ -164,6 +168,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
             }
             if (tag.equals("subscription")){
                 Log.d(TAG, "response: "+ response);
+
                 try {
                     if (response.getString("status").equals("OK")){
                         setScreen("success");
@@ -211,6 +216,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         callbackFragOpen.openFrag("homeFrag","");
+                        //((MainActivity)getActivity()).refreshUI();
                         break;
                 }
                 break;
