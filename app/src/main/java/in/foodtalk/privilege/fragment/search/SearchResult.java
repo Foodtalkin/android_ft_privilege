@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,7 +35,9 @@ import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.home.HomeAdapter;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
+import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 import in.foodtalk.privilege.library.GridSpacingItemDecoration;
+import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.OfferCardObj;
 
 /**
@@ -62,6 +65,15 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     LinearLayout placeholderInternet;
     TextView btnRetry, tvMsg;
 
+    LinearLayout emptyPlaceholder;
+
+    TextView btnEditFilter;
+
+    Boolean loadingMore = false;
+    String nextUrl;
+
+    LinearLayoutManager linearLayoutManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,6 +93,12 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
 
+        btnEditFilter = (TextView) layout.findViewById(R.id.btn_edit_filter);
+        btnEditFilter.setOnTouchListener(this);
+
+        emptyPlaceholder = (LinearLayout) layout.findViewById(R.id.empty_placeholder);
+        emptyPlaceholder.setVisibility(View.GONE);
+
         btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
 
@@ -96,8 +114,8 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }
 
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
+        linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -110,9 +128,11 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
-        loadData("searchResult");
+        loadData("loadOffers");
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
+        endlessScrolling();
 
 
 
@@ -135,17 +155,59 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void loadData(String tag){
+    /*private void loadData(String tag){
         progressBar.setVisibility(View.VISIBLE);
         placeholderInternet.setVisibility(View.GONE);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, offerUrl, tag, this);
+    }*/
+    private void loadData(String tag){
+        if (tag.equals("loadOffersMore")){
+            if (!nextUrl.equals("")){
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, tag, this);
+                OfferCardObj offerCardObj = new OfferCardObj();
+                offerCardObj.type = "loader";
+                offerCardList.add(offerCardObj);
+                homeAdapter.notifyItemInserted(offerCardList.size()-1);
+                Log.d(TAG, "load more");
+            }else {
+                Log.d(TAG, "No more offers");
+                ToastShow.showToast(getActivity(), "No more offers!");
+            }
+        }else if (tag.equals("loadOffers")){
+            progressBar.setVisibility(View.VISIBLE);
+            placeholderInternet.setVisibility(View.GONE);
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, offerUrl, tag, this);
+
+        }
+    }
+
+    //-----remove function is used to remove progress bar using indexOf position of null objevt--------
+    public void remove() {
+        for (int i = 0; i < offerCardList.size(); i++){
+            if (offerCardList.get(i).type.equals("loader")){
+                offerCardList.remove(i);
+                homeAdapter.notifyItemRemoved(i);
+            }
+        }
+        //int position = offerCardList.indexOf(data);
+        //Log.d("position for remove", position+"");
+
     }
 
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
-        offerCardList.clear();
 
         progressBar.setVisibility(View.GONE);
+
+        if (tag.equals("loadOffers")){
+            offerCardList.clear();
+        }else {
+            loadingMore = false;
+            remove();
+        }
+
+
+        nextUrl = response.getJSONObject("result").getString("next_page_url");
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
             offerCardObj.offerCount = listArray.getJSONObject(i).getString("offer_count");
@@ -161,15 +223,35 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
-            homeAdapter = new HomeAdapter(getActivity(), offerCardList);
-            recyclerView.setAdapter(homeAdapter);
+            if (tag.equals("loadOffers")){
+                homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+                recyclerView.setAdapter(homeAdapter);
+            }else if (tag.equals("loadOffersMore")){
+                homeAdapter.notifyDataSetChanged();
+            }
+
         }
+    }
+
+    private void endlessScrolling(){
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
+                if (loadingMore == false){
+                    loadData("loadOffersMore");
+                    loadingMore = true;
+                }
+
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
         Log.d(TAG, "response: "+ response);
-        if (response != null){
+        /*if (response != null){
             try {
                 if (tag.equals("searchResult")){
                     if (response.getString("status").equals("OK")){
@@ -182,8 +264,24 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }else {
             progressBar.setVisibility(View.GONE);
             placeholderInternet.setVisibility(View.VISIBLE);
-        }
+        }*/
 
+        if (response != null){
+            try {
+                if (tag.equals("loadOffers") || tag.equals("loadOffersMore")){
+                    if (response.getString("status").equals("OK")){
+                        sendToAdapter(response, tag);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            if (tag.equals("loadOffers")){
+                progressBar.setVisibility(View.GONE);
+                placeholderInternet.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -201,6 +299,13 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "retry click");
                         loadData("searchResult");
+                        break;
+                }
+                break;
+            case R.id.btn_edit_filter:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        callbackFragOpen.openFrag("searchFrag","");
                         break;
                 }
                 break;

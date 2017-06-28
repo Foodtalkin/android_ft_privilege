@@ -61,13 +61,13 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
         String jsonData = intent.getExtras().getString("com.parse.Data");
         JSONObject jsonObject = null;
         String screenName = "_";
-        try {
+        /*try {
             jsonObject = new JSONObject(jsonData);
             screenName = jsonObject.getString("class");
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         //AppController.getInstance().trackEvent("Notification","Dismiss", screenName);
     }
 

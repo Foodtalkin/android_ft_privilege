@@ -356,6 +356,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("paymentFlow")){
             startPaymentFlow();
         }
+
+        if (fragName.equals("searchFrag")){
+            setFragmentView(searchFrag, R.id.container, "searchFrag", true);
+        }
     }
 
     private void startPaymentFlow(){

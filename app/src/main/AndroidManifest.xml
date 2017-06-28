@@ -50,7 +50,7 @@
 
         <meta-data
             android:name="com.parse.push.notification_icon"
-            android:resource="@drawable/ic_clear_black_24dp" />
+            android:resource="@mipmap/ic_launcher" />
 
         <service android:name="com.parse.PushService" />
 

@@ -49,7 +49,7 @@
                         android:id="@+id/tv_rs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="₹ 999"
+                        android:text="₹ 1200"
                         android:layout_marginTop="10dp"
                         android:textSize="36sp"
                         android:textColor="@color/dark_grey"/>
@@ -81,7 +81,7 @@
             android:id="@+id/btn_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SIGN UP"
+            android:text="BUY NOW"
             android:textStyle="bold"
             android:background="@drawable/btn_bg2"
             android:layout_gravity="center"

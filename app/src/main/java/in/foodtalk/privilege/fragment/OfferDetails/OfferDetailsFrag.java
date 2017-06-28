@@ -260,19 +260,27 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     String lat = "46.414382";
     String lon = "10.013988";
     private void loadData(String tag){
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFER_DETAILS+"outlet/"+outletId+"/offer/"+offerId, tag, this);
+        if (db.getRowCount() > 0) {
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFER_DETAILS + "outlet/" + outletId + "/offer/" + offerId+ "/?sessionid="+sId, tag, this);
+        }else {
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFER_DETAILS + "outlet/" + outletId + "/offer/" + offerId, tag, this);
+        }
     }
     private void bookmark(){
         Log.d(TAG, "sId: "+ sId);
-        if (isBookmarked.equals("0")){
-            ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), null, Url.BOOKMARK+"/"+outletOfferId+"?sessionid="+sId, "addBookmark",this);
-            btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(),R.color.green));
-            isBookmarked = "1";
-            ToastShow.showToast(getActivity(), "Offer is bookmarked");
-        }else if (isBookmarked.equals("1")){
-            ApiCall.jsonObjRequest(Request.Method.DELETE, getActivity(), null, Url.BOOKMARK+"/"+outletOfferId+"?sessionid="+sId, "addBookmark",this);
-            btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(),R.color.pale_grey_two));
-            isBookmarked = "0";
+        if (db.getRowCount() > 0) {
+            if (isBookmarked.equals("0")) {
+                ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), null, Url.BOOKMARK + "/" + outletOfferId + "?sessionid=" + sId, "addBookmark", this);
+                btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(), R.color.green));
+                isBookmarked = "1";
+                ToastShow.showToast(getActivity(), "Offer is bookmarked");
+            } else if (isBookmarked.equals("1")) {
+                ApiCall.jsonObjRequest(Request.Method.DELETE, getActivity(), null, Url.BOOKMARK + "/" + outletOfferId + "?sessionid=" + sId, "addBookmark", this);
+                btnBookmark.setColorFilter(ContextCompat.getColor(getActivity(), R.color.pale_grey_two));
+                isBookmarked = "0";
+            }
+        }else {
+            callbackFragOpen.openFrag("signupAlert","");
         }
     }
 
@@ -659,7 +667,12 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                             callIntent.setData(Uri.parse("tel:"+phone));//change the number
                             startActivity(callIntent);*/
                             Log.d(TAG, "btn phone clicked");
-                            makePhoneCall();
+                            if (db.getRowCount() > 0){
+                                makePhoneCall();
+                            }else {
+                                callbackFragOpen.openFrag("signupAlert","");
+                            }
+
                         }
 
                         break;
@@ -669,7 +682,6 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         hideImgSlider();
-
                         break;
                 }
                 break;
@@ -677,11 +689,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn location clicked");
-                        openMap(lat, lon);
+                        if (db.getRowCount() > 0){
+                            openMap(lat, lon);
+                        }else {
+                            callbackFragOpen.openFrag("signupAlert","");
+                        }
                         break;
                 }
                 break;
-
         }
         return false;
     }

@@ -74,6 +74,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     CallbackFragOpen callbackFragOpen;
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +88,11 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnLocation5 = (LinearLayout) layout.findViewById(R.id.btn_location5);
         btnLocation6 = (LinearLayout) layout.findViewById(R.id.btn_location6);
         btnLocation7 = (LinearLayout) layout.findViewById(R.id.btn_location7);
+
+        cityZoneIds.clear();
+        cuisineIds.clear();
+        cost.clear();
+
 
         btnApplyFilters = (LinearLayout) layout.findViewById(R.id.btn_apply_filters);
         btnApplyFilters.setOnTouchListener(this);
@@ -369,23 +376,32 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             urlParams = "city_zone_id="+urlParams.substring(1, urlParams.length()-1);
             //urlParams = urlParams.replaceAll("]","");
         }else {
-            urlParams = "city_zone_id=";
+            //urlParams = "city_zone_id=";
         }
         if (cuisineIds.size() > 0){
             String cIds = cuisineIds.toString();
             cIds = cIds.replaceAll("\\s","");
-            cIds = "&cuisine="+cIds.substring(1, cIds.length()-1);
+            if (urlParams.equals("")){
+                cIds = "cuisine="+cIds.substring(1, cIds.length()-1);
+            }else {
+                cIds = "&cuisine="+cIds.substring(1, cIds.length()-1);
+            }
             urlParams = urlParams+cIds;
         }else {
-            urlParams = urlParams+"&cuisine=";
+            //urlParams = urlParams+"&cuisine=";
         }
         if (cost.size() > 0){
             String cost1 = cost.toString();
             cost1 = cost1.replaceAll("\\s","");
-            cost1 = "&cost="+cost1.substring(1, cost1.length()-1);
+            if (urlParams.equals("")){
+                cost1 = "cost="+cost1.substring(1, cost1.length()-1);
+            }else {
+                cost1 = "&cost="+cost1.substring(1, cost1.length()-1);
+            }
+
             urlParams = urlParams+cost1;
         }
-        Log.d(TAG, urlParams);
+        Log.d(TAG, "url param: "+urlParams);
         callbackFragOpen.openFrag("searchResult", Url.OFFERS+"?"+urlParams);
 
     }
