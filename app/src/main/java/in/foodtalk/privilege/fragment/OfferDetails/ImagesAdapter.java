@@ -51,7 +51,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 .load(imagesObj.url)
                 .fit().centerCrop()
                 //.fit()
-                .placeholder(R.drawable.bitmap)
+                .placeholder(R.drawable.ic_placeholder)
                 .into(imageCard.imgView);
     }
 

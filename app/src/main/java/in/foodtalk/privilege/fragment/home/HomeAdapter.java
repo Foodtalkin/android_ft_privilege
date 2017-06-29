@@ -2,16 +2,19 @@ package in.foodtalk.privilege.fragment.home;
 
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Point;
 import android.nfc.Tag;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,12 +49,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     String rs;
 
+    int imgSize;
+
     public HomeAdapter(Context context, List<OfferCardObj> offerCardList){
         this.context = context;
         this.offerCardList = offerCardList;
         layoutInflater = LayoutInflater.from(context);
 
         callbackFragOpen = (CallbackFragOpen) context;
+
+        //------------
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        imgSize = size.x/2;
 
         rs = context.getResources().getString(R.string.rs);
     }
@@ -96,11 +108,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 offerCard.tvLocation.setText("Offer "+offerCardObj.offerCount);
             }
 
+            offerCard.imgView.getLayoutParams().width = imgSize;
+            offerCard.imgView.getLayoutParams().height = imgSize;
+
             Picasso.with(context)
                     .load(offerCardObj.cardImage)
-                    .fit().centerCrop()
+
                     //.fit()
-                    .placeholder(R.drawable.bitmap)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .fit().centerCrop()
                     .into(offerCard.imgView);
         }else if (holder instanceof LoaderCard){
             Log.d(TAG, "loader view");

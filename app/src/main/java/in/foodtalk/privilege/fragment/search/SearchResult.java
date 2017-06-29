@@ -194,6 +194,8 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
 
     }
 
+    //
+
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
 
@@ -204,6 +206,10 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }else {
             loadingMore = false;
             remove();
+        }
+
+        if (listArray.length() == 0){
+            emptyPlaceholder.setVisibility(View.VISIBLE);
         }
 
 
@@ -229,7 +235,6 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             }else if (tag.equals("loadOffersMore")){
                 homeAdapter.notifyDataSetChanged();
             }
-
         }
     }
 

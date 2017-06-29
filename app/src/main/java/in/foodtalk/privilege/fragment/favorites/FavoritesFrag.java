@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -72,6 +73,8 @@ public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouch
         btnRetry.setTypeface(typefaceFmedium);
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);

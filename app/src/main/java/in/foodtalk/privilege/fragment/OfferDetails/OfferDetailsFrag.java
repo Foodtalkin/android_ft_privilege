@@ -82,6 +82,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     TextView tvCoupons;
     TextView btnReadmore;
 
+    TextView rulesOfUse;
+
 
 
     public String offerId;
@@ -135,6 +137,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
+
+        rulesOfUse = (TextView) layout.findViewById(R.id.rulesofuse);
+        rulesOfUse.setOnTouchListener(this);
 
         tvPrice = (TextView) layout.findViewById(R.id.tv_price);
 
@@ -293,11 +298,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                 .load(result.getString("cover_image"))
                 .fit().centerCrop()
                 //.fit()
-                .placeholder(R.drawable.bitmap)
+                .placeholder(R.drawable.ic_placeholder)
                 .into(imgView);
 
         outletOfferId = result.getString("outlet_offer_id");
         phone = result.getString("phone");
+
+        lat = result.getString("latitude");
+        lon = result.getString("longitude");
 
         tvName.setText(AppController.getInstance().restaurantName);
         tvArea.setText(result.getString("area"));
@@ -325,6 +333,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             String coupon1 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(0);
             String coupon2 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(1);
             String coupon3 = result.getJSONObject("metadata").getJSONObject("rules").getJSONObject("table").getJSONArray("body").getJSONArray(1).getString(2);
+
 
             tvDinner1.setText(dinner1);
             tvDinner2.setText(dinner2);
@@ -694,6 +703,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         }else {
                             callbackFragOpen.openFrag("signupAlert","");
                         }
+                        break;
+                }
+                break;
+            case R.id.rulesofuse:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "rules of use clicked");
+                        callbackFragOpen.openFrag("webViewFrag", "http://foodtalk.in/app/rules.html");
                         break;
                 }
                 break;

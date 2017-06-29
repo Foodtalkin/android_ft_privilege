@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navAbout.setOnTouchListener(this);
 
 
+        Log.d(TAG,"check login status: "+ db.getRowCount());
         if (db.getRowCount() > 0){
             loginView();
             AppController.getInstance().sessionId = db.getUserDetails().get("sessionId");
@@ -359,6 +360,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         if (fragName.equals("searchFrag")){
             setFragmentView(searchFrag, R.id.container, "searchFrag", true);
+        }
+        if (fragName.equals("webViewFrag")){
+            webView(value);
         }
     }
 

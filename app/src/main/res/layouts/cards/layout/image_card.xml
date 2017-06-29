@@ -6,7 +6,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/mask_copy"
+        android:src="@drawable/ic_placeholder"
         android:layout_marginRight="10dp"
         android:clickable="true"/>
 </RelativeLayout>

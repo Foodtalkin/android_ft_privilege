@@ -34,9 +34,8 @@
                         android:id="@+id/img_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/bitmap"
+                        android:src="@drawable/ic_placeholder"
                         android:layout_centerHorizontal="true"
-                        android:scaleType="centerCrop"
                         />
                     <View
                         android:layout_width="match_parent"
@@ -275,10 +274,13 @@
                     android:alpha=".3"
                     android:layout_marginTop="10dp"/>
                 <TextView
+                    android:id="@+id/rulesofuse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RULES OF USE"
+                    android:padding="5dp"
                     android:textStyle="bold"
+                    android:clickable="true"
                     android:textColor="@color/bright_sky_blue"
                     android:textSize="14sp"
                     android:layout_margin="25dp"/>
