@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.fragment.home;
 
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.EndlessRecyclerOnScrollListener;
 import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 import in.foodtalk.privilege.library.GridSpacingItemDecoration;
 import in.foodtalk.privilege.library.ToastShow;
@@ -67,11 +69,15 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     LinearLayoutManager linearLayoutManager;
 
+   // GridLayoutManager linearLayoutManager;
+
     LinearLayout progressBar;
     LinearLayout placeholderInternet;
     TextView btnRetry, tvMsg;
 
     String nextUrl;
+
+    Boolean saveState = false;
 
 
 
@@ -104,6 +110,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
         db = new DatabaseHandler(getActivity());
 
+
+
         if (db.getRowCount() > 0){
             header.setVisibility(View.GONE);
         }else {
@@ -111,10 +119,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
 
 
-        linearLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
 
         tvHeader.setTypeface(typefaceFmedium);
@@ -125,11 +130,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
-        loadData("loadOffers");
+
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
-        endlessScrolling();
+
 
 
 
@@ -141,7 +146,33 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 callbackFragOpen.openFrag("selectOfferFrag","");
             }
         });*/
+        Log.e(TAG,"check saveSate: "+ saveState);
         return layout;
+    }
+
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        loadData("loadOffers");
+
+
+
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveState = true;
+        //Save the fragment's state here
     }
 
     /**
@@ -159,11 +190,20 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
                 offerCardList.add(offerCardObj);
-                homeAdapter.notifyItemInserted(offerCardList.size()-1);
-                Log.d(TAG, "load more");
+
+                recyclerView.post(new Runnable() {
+                    public void run() {
+                        homeAdapter.notifyItemInserted(offerCardList.size()-1);
+                    }
+                });
+                Log.e(TAG, "load more");
             }else {
-                Log.d(TAG, "No more offers");
+                Log.e(TAG, "No more offers");
                 ToastShow.showToast(getActivity(), "No more offers!");
+
+                //scrollListener.resetState();
+
+
             }
         }else if (tag.equals("loadOffers")){
             progressBar.setVisibility(View.VISIBLE);
@@ -199,7 +239,10 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
 
 
+
         nextUrl = response.getJSONObject("result").getString("next_page_url");
+
+
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
             offerCardObj.offerCount = listArray.getJSONObject(i).getString("offer_count");
@@ -221,23 +264,59 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }else if (tag.equals("loadOffersMore")){
                 homeAdapter.notifyDataSetChanged();
             }
-
         }
+        endlessScrolling();
     }
-
+    EndlessRecyclerViewScrollListener scrollListener;
     private void endlessScrolling(){
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        Log.e(TAG,"set endlessScrolling");
+        /*scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.d(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
+                Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
                 if (loadingMore == false){
                     loadData("loadOffersMore");
                     loadingMore = true;
                 }
+            }
+        };*/
+        //scrollListener.resetState();
+        //recyclerView.setOnScrollListener(scrollListener);
+        recyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager, null) {
+            @Override
+            public void onLoadMore(int current_page) {
+                //Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
+                if (loadingMore == false){
+                    loadData("loadOffersMore");
+                    loadingMore = true;
+                }
+            }
+
+            @Override
+            public void onScrolled1(int dx, int dy, int firstVisibleItem, int lastVisibleItem) {
+
+            }
+
+
+        });
+
+
+        /*scrollListener1 = new EndlessRecyclerOnScrollListener(linearLayoutManager, null) {
+            @Override
+            public void onLoadMore(int current_page) {
+                //Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
+                if (loadingMore == false){
+                    loadData("loadOffersMore");
+                    loadingMore = true;
+                }
+            }
+
+            @Override
+            public void onScrolled1(int dx, int dy, int firstVisibleItem, int lastVisibleItem) {
 
             }
         };
-        recyclerView.addOnScrollListener(scrollListener);
+        recyclerView.addOnScrollListener(scrollListener1);*/
     }
 
     @Override

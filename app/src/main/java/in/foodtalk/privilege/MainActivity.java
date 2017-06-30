@@ -43,6 +43,7 @@ import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.fragment.AccountFrag;
+import in.foodtalk.privilege.fragment.BlankFrag;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
@@ -806,6 +807,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     public void onBackStackChanged() {
         currentFragment = getFragmentManager().findFragmentById(R.id.container);
         onFragmentChange(currentFragment);
+
+        /*if (currentFragment == homeFrag){
+            //finish();
+            //startActivity(getIntent());
+            BlankFrag blankFrag = new BlankFrag();
+            setFragmentView(blankFrag, R.id.container, "blankFrag", false);
+
+            navContact.post(new Runnable() {
+                public void run() {
+                    setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+                }
+            });
+
+
+        }*/
     }
     Dialog dialogLogout;
     private void logoutDialog(){

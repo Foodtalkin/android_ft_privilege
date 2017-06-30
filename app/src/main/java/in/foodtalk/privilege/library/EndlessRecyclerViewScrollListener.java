@@ -4,6 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
 /**
  * Created by RetailAdmin on 07-06-2017.
@@ -25,6 +26,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     RecyclerView.LayoutManager mLayoutManager;
 
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
+        Log.e("EndLess","new start");
         this.mLayoutManager = layoutManager;
     }
 
@@ -58,7 +60,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     public void onScrolled(RecyclerView view, int dx, int dy) {
         int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
-
         if (mLayoutManager instanceof StaggeredGridLayoutManager) {
             int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
             // get maximum element within the list
@@ -81,6 +82,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
         // number and total item count.
+        Log.e("EndLess","totalItemCount :pC "+ totalItemCount +">"+ previousTotalItemCount);
         if (loading && (totalItemCount > previousTotalItemCount)) {
             loading = false;
             previousTotalItemCount = totalItemCount;
@@ -90,10 +92,13 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         // threshold should reflect how many total columns there are too
+        Log.e("EndLess","loading: "+ loading);
+        Log.e("EndLess","totalItemCount : "+ (lastVisibleItemPosition + visibleThreshold) +">" +totalItemCount);
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
             onLoadMore(currentPage, totalItemCount, view);
             loading = true;
+            Log.d("EndLess", " loadmore");
         }
     }
 

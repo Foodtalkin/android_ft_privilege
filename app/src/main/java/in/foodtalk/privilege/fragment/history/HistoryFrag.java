@@ -82,7 +82,6 @@ public class HistoryFrag extends Fragment implements ApiCallback, View.OnTouchLi
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         loadData("redeemHistory");
-
         return layout;
     }
 
