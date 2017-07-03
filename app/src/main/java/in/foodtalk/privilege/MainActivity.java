@@ -819,8 +819,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     setFragmentView(homeFrag, R.id.container, "homeFrag", false);
                 }
             });
-
-
         }*/
     }
     Dialog dialogLogout;

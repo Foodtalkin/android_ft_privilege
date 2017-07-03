@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
@@ -106,10 +108,10 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
     TextView tvName, tvArea, tvPrice;
 
-    TextView tvDinner1, tvDinner2, tvDinner3, tvCoupon1, tvCoupon2, tvCoupon3, tvTableHead, tvTableHead1, tvLine1, tvLine2, tvLine3;
+    TextView tvDinner1, tvDinner2, tvDinner3, tvCoupon1, tvCoupon2, tvCoupon3, tvTableHead, tvTableHead1, tvLine1, tvLine2, tvLine3, tvCouponLine;
 
 
-    LinearLayout tableHolder;
+    LinearLayout tableHolder, offerDetailsHolder, blackLayer;
     RelativeLayout barButtons;
 
 
@@ -137,6 +139,12 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
+
+        blackLayer = (LinearLayout) layout.findViewById(R.id.black_layer);
+
+        offerDetailsHolder = (LinearLayout) layout.findViewById(R.id.offer_details_holder);
+
+        tvCouponLine = (TextView) layout.findViewById(R.id.tv_coupons_line);
 
         rulesOfUse = (TextView) layout.findViewById(R.id.rulesofuse);
         rulesOfUse.setOnTouchListener(this);
@@ -345,7 +353,15 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
             tvTableHead.setText(numberOfDiners);
             tvTableHead1.setText(numberOfCoupons);
+            setAnimation("onePlus");
+            tvCouponLine.setText("Select number of coupons to use");
+            btnRemove.setVisibility(View.VISIBLE);
+            btnAdd.setVisibility(View.VISIBLE);
         }else {
+            tvCouponLine.setText("You can only use one coupon at a time");
+            btnRemove.setVisibility(View.GONE);
+            btnAdd.setVisibility(View.GONE);
+            setAnimation("percent");
             tableHolder.setVisibility(View.GONE);
             tvLine1.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(0).toString());
             tvLine2.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(1).toString());
@@ -364,7 +380,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         }
        // redeemBar.setVisibility(View.INVISIBLE);
        // btnBuyNow.setVisibility(View.INVISIBLE);
-        setAnimation();
+
 
 
 
@@ -418,15 +434,27 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         }
     }
 
-    private void setAnimation(){
-        slideUpAnimation = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.slide_up_animation);
+    private void setAnimation(String offerType){
+        if (offerType.equals("onePlus")){
+            slideUpAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation);
 
-        slideDownAnimation = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.slide_down_animation);
+            slideDownAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_down_animation);
 
-        slideUpAnimation1 = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.slide_up_animation1);
+            slideUpAnimation1 = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation1);
+        }else {
+            slideUpAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation_p);
+
+            slideDownAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_down_animation_p);
+
+            slideUpAnimation1 = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation1_p);
+        }
+
 
         redeemBar.startAnimation(slideUpAnimation1);
 
@@ -485,8 +513,11 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     private void showRedeemBar(){
         redeemBar.startAnimation(slideDownAnimation);
         redeemBarVisible = true;
+        blackLayer.setAlpha(.5f);
     }
+
     public void hideRedeemBar(){
+        blackLayer.setAlpha(0);
         redeemBarVisible = false;
         redeemBar.startAnimation(slideUpAnimation);
     }
@@ -546,15 +577,23 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
     private void openMap(String lat, String lon){
         // Create a Uri from an intent string. Use the result to create an Intent.
-        Uri gmmIntentUri = Uri.parse("google.streetview:cbll="+lat+","+lon);
+        //Uri gmmIntentUri = Uri.parse("google.streetview:cbll="+lat+","+lon);
+       // String uri = String.format(Locale.ENGLISH, "geo:0,0", lat, lon);
+        /*Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lon);
+        //Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
 
-// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-// Make the Intent explicit by setting the Google Maps package
         mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }*/
 
-// Attempt to start an activity that can handle the Intent
-        startActivity(mapIntent);
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("https://www.google.com/maps/search/?api=1&query="+lat+","+lon));
+        startActivity(intent);
+
+
+
     }
 
     @Override

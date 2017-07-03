@@ -270,53 +270,19 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     EndlessRecyclerViewScrollListener scrollListener;
     private void endlessScrolling(){
         Log.e(TAG,"set endlessScrolling");
-        /*scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
                 if (loadingMore == false){
-                    loadData("loadOffersMore");
-                    loadingMore = true;
+                    if (!nextUrl.equals("")){
+                        loadData("loadOffersMore");
+                        loadingMore = true;
+                    }
                 }
-            }
-        };*/
-        //scrollListener.resetState();
-        //recyclerView.setOnScrollListener(scrollListener);
-        recyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager, null) {
-            @Override
-            public void onLoadMore(int current_page) {
-                //Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
-                if (loadingMore == false){
-                    loadData("loadOffersMore");
-                    loadingMore = true;
-                }
-            }
-
-            @Override
-            public void onScrolled1(int dx, int dy, int firstVisibleItem, int lastVisibleItem) {
-
-            }
-
-
-        });
-
-
-        /*scrollListener1 = new EndlessRecyclerOnScrollListener(linearLayoutManager, null) {
-            @Override
-            public void onLoadMore(int current_page) {
-                //Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
-                if (loadingMore == false){
-                    loadData("loadOffersMore");
-                    loadingMore = true;
-                }
-            }
-
-            @Override
-            public void onScrolled1(int dx, int dy, int firstVisibleItem, int lastVisibleItem) {
-
             }
         };
-        recyclerView.addOnScrollListener(scrollListener1);*/
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
     @Override

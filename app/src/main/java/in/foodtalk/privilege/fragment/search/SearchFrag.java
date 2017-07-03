@@ -73,6 +73,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
     CallbackFragOpen callbackFragOpen;
 
+    LinearLayout progressBar;
+
 
 
 
@@ -88,6 +90,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnLocation5 = (LinearLayout) layout.findViewById(R.id.btn_location5);
         btnLocation6 = (LinearLayout) layout.findViewById(R.id.btn_location6);
         btnLocation7 = (LinearLayout) layout.findViewById(R.id.btn_location7);
+
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
 
         cityZoneIds.clear();
         cuisineIds.clear();
@@ -164,7 +168,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 Log.d(TAG,"key: "+ charSequence.toString());
-                if (charSequence.length() > 2){
+                if (charSequence.length() > 1){
                     loadData(charSequence.toString());
                     searchHolder.setVisibility(View.VISIBLE);
                 }else {
@@ -188,15 +192,16 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }
         Log.d(TAG, "key: "+ query);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.SEARCH_TEXT+"/"+query, "search", this);
-
     }
     private void loadCuisineData (){
+        progressBar.setVisibility(View.VISIBLE);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.GET_CUISINE,"getCuisine", this);
     }
 
     private void setCuisineAdapter(JSONObject response) throws JSONException {
         String status = response.getString("status");
         JSONArray list = response.getJSONArray("result");
+        progressBar.setVisibility(View.GONE);
         if (status.equals("OK")){
             SearchFilterAdapter searchFilterAdapter = new SearchFilterAdapter(getActivity(), this, list);
             recyclerViewFilters.setAdapter(searchFilterAdapter);
@@ -204,8 +209,11 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     }
 
     private void setAdapter(JSONObject response) throws JSONException {
+
+
         searchList.clear();
         JSONArray jsonArray = response.getJSONObject("result").getJSONArray("hits");
+        Log.d(TAG, "jsonArray length: "+ jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++){
             SearchObj searchObj = new SearchObj();
             /*searchObj._index = jsonArray.getJSONObject(i).getString("_intex");
@@ -220,11 +228,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             searchObj.id = jsonArray.getJSONObject(i).getJSONObject("_source").getString("rid");
             searchObj.name = jsonArray.getJSONObject(i).getJSONObject("_source").getString("name");
             searchObj.cost = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cost");
-            searchObj.description = jsonArray.getJSONObject(i).getJSONObject("_source").getString("description");
-            searchObj.coverImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cover_image");
+//            searchObj.description = jsonArray.getJSONObject(i).getJSONObject("_source").getString("description");
+//            searchObj.coverImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cover_image");
             searchObj.cardImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("card_image");
 
             searchList.add(searchObj);
+            Log.d(TAG,"add to search list: "+i);
 
             if (getActivity() != null){
                 SearchAdapter searchAdapter = new SearchAdapter(getActivity(), searchList);

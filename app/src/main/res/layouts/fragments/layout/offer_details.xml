@@ -13,7 +13,7 @@
         android:fillViewport="true"
         android:layout_marginBottom="58dp">
         <LinearLayout
-            android:id="@+id/offer_details"
+            android:id="@+id/offer_details_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -289,6 +289,15 @@
         </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/black_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:alpha="0"
+        android:clickable="false"
+        android:orientation="horizontal"></LinearLayout>
+
         <TextView
             android:id="@+id/btn_buy_now"
             android:layout_width="match_parent"
@@ -388,14 +397,17 @@
             android:orientation="vertical"
             android:layout_marginTop="10dp">
             <TextView
+                android:id="@+id/tv_coupons_line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="Select number of coupons to use"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
 
                 android:layout_margin="20dp">
                 <ImageView
@@ -428,14 +440,19 @@
                     android:layout_gravity="center"
                     android:clickable="true"/>
             </LinearLayout>
+
+
+
             <LinearLayout
                 android:id="@+id/table_holder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
+
                     <TableRow>
                         <TextView
                             android:id="@+id/tv_table_head"
