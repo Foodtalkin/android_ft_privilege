@@ -217,6 +217,7 @@
                             android:textSize="14sp"
                             android:layout_marginLeft="25dp"/>
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="View all"

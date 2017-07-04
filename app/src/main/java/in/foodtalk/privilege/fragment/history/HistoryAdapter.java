@@ -43,7 +43,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         HistoryObj historyObj = historyList.get(position);
 
         historyCard.tvTitle.setText(historyObj.name);
-        historyCard.tvRid.setText("RID "+historyObj.offerRedeemed);
+        historyCard.tvRid.setText("RID "+historyObj.id);
         historyCard.tvCoupons.setText("Coupons used: "+historyObj.offerRedeemed);
         historyCard.tvTime.setText(DateFunction.convertFormat(historyObj.createdAt, "yyyy-MM-dd HH:mm:ss",  "EEE, d MMM yyyy '-' hh:mm aaa"));
     }

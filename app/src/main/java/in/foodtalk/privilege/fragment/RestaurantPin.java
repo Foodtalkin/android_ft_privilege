@@ -165,7 +165,7 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
             if (tag.equals("redeem")){
                 try {
                     if (response.getString("status").equals("OK")){
-                        callbackFragOpen.openFrag("successFrag", "");
+                        callbackFragOpen.openFrag("successFrag", response.getJSONObject("result").getString("id"));
                         tvError.setVisibility(View.GONE);
                     }else {
                         ToastShow.showToast(getActivity(), "Invalid PIN");

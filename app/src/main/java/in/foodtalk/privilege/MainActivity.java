@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         txtFoodtalkNav.setText("FOODTALK");
         tvPm.setText("");
     }
-    private void loginView(){
+    public void loginView(){
         forLogin.setVisibility(View.VISIBLE);
         forLogin1.setVisibility(View.VISIBLE);
         navLogin.setVisibility(View.GONE);
@@ -330,9 +330,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(restaurantPin, R.id.container, "offerDetailsFrag", true);
         }
         if (fragName.equals("homeFrag")){
+            HomeFrag homeFrag = new HomeFrag();
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
         }
         if (fragName.equals("successFrag")){
+
+            successFrag.rId = value;
             setFragmentView(successFrag, R.id.container, "successFrag", false);
         }
         if (fragName.equals("signupAlert")){
@@ -422,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 /* Fill it with Data */
         emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"info@foodtalkindia.com"});
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"contact@foodtalkindia.com"});
         //emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
         //emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
 

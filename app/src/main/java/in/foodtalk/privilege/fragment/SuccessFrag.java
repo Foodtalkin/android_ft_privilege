@@ -27,12 +27,20 @@ public class SuccessFrag extends Fragment implements View.OnTouchListener {
     String TAG = SuccessFrag.class.getSimpleName();
     CallbackFragOpen callbackFragOpen;
 
+    public String rId;
+
+    TextView tvRid;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.success_frag, container, false);
         btnDone = (TextView) layout.findViewById(R.id.btn_done);
         callbackFragOpen = (CallbackFragOpen) getActivity();
+
+        tvRid = (TextView) layout.findViewById(R.id.tv_rid);
+
+        tvRid.setText("RID : "+rId);
 
         TextView txtFoodtalk = (TextView) layout.findViewById(R.id.txt_foodtalk);
 

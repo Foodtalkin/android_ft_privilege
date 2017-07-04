@@ -193,14 +193,13 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         try {
             JSONObject savedResponse = AppController.getInstance().loginResponse;
             savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
-
             SaveLogin.addUser(getActivity(), savedResponse, "");
             Log.d(TAG, "updated response: " +savedResponse);
+            ((MainActivity)getActivity()).loginView();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){

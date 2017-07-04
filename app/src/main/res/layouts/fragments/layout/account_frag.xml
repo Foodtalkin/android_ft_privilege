@@ -217,7 +217,7 @@
                     android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vegitarian"
+                    android:text="Vegetarian"
                     android:layout_marginLeft="5dp"
                     android:textSize="14sp"
                     />
