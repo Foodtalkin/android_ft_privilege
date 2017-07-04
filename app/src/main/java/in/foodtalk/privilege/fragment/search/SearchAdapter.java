@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.models.SearchObj;
 
@@ -58,10 +59,20 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SearchCard searchCard = (SearchCard) holder;
         searchCard.tvName.setText(searchObj.name);
         int offerCount = Integer.parseInt(searchObj.offerCount);
-        if (offerCount > 1){
+        /*if (offerCount > 1){
             searchCard.tvCount.setText(searchObj.offerCount+" offers");
         }else {
             searchCard.tvCount.setText(searchObj.offerCount+" offer");
+        }*/
+        String rs = context.getResources().getString(R.string.rs);
+
+        int cost = Integer.valueOf(searchObj.cost);
+        if (cost < 500){
+            searchCard.tvCount.setText(rs);
+        }else if (cost < 999){
+            searchCard.tvCount.setText(rs+rs);
+        }else {
+            searchCard.tvCount.setText(rs+rs+rs);
         }
     }
 
@@ -109,6 +120,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 }
                                 callbackFragOpen.openFrag("offerDetailsFrag", offerOutletId.toString());
                             }
+
+                            AppController.getInstance().restaurantName = searchList.get(getAdapterPosition()).name;
+                            AppController.getInstance().rOneLiner = searchList.get(getAdapterPosition()).oneLiner;
 
                             break;
                     }

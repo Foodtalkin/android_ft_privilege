@@ -228,6 +228,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             searchObj.id = jsonArray.getJSONObject(i).getJSONObject("_source").getString("rid");
             searchObj.name = jsonArray.getJSONObject(i).getJSONObject("_source").getString("name");
             searchObj.cost = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cost");
+            searchObj.oneLiner = jsonArray.getJSONObject(i).getJSONObject("_source").getString("one_liner");
 //            searchObj.description = jsonArray.getJSONObject(i).getJSONObject("_source").getString("description");
 //            searchObj.coverImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cover_image");
             searchObj.cardImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("card_image");

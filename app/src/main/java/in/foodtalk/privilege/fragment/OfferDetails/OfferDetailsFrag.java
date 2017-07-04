@@ -116,8 +116,6 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -403,6 +401,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         purchaseLimit = Integer.parseInt(result.getString("purchase_limit"));
 
+        if (purchaseLimit == 0){
+            btnNext.setTextColor(ContextCompat.getColor(getActivity(), R.color.warm_grey));
+            tvCounter.setText("0");
+        }else {
+            tvCounter.setText("1");
+            btnNext.setTextColor(ContextCompat.getColor(getActivity(), R.color.bright_sky_blue));
+        }
+
         ArrayList<String> stringArray = new ArrayList<String>();
 
         JSONArray jsonArray = result.getJSONArray("cuisine");
@@ -576,24 +582,10 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     }
 
     private void openMap(String lat, String lon){
-        // Create a Uri from an intent string. Use the result to create an Intent.
-        //Uri gmmIntentUri = Uri.parse("google.streetview:cbll="+lat+","+lon);
-       // String uri = String.format(Locale.ENGLISH, "geo:0,0", lat, lon);
-        /*Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lon);
-        //Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }*/
 
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("https://www.google.com/maps/search/?api=1&query="+lat+","+lon));
         startActivity(intent);
-
-
-
     }
 
     @Override
@@ -644,14 +636,19 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn next clicked");
                         JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("outlet_id",outletId);
-                            jsonObject.put("offer_id",offerId);
-                            jsonObject.put("offers_redeemed", tvCounter.getText().toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (purchaseLimit > 0){
+                            try {
+                                jsonObject.put("outlet_id",outletId);
+                                jsonObject.put("offer_id",offerId);
+                                jsonObject.put("offers_redeemed", tvCounter.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            callbackFragOpen.openFrag("restaurantPin", jsonObject.toString());
+                        }else {
+                            ToastShow.showToast(getActivity(),"Coupon not available");
                         }
-                        callbackFragOpen.openFrag("restaurantPin", jsonObject.toString());
+
                         break;
                 }
                 break;

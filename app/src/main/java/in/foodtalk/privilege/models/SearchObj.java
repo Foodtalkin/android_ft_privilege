@@ -20,4 +20,5 @@ public class SearchObj {
     public String description;
     public String coverImage;
     public String cardImage;
+    public String oneLiner;
 }
