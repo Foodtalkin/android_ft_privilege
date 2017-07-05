@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.instamojo.android.Instamojo;
 import com.instamojo.android.activities.PaymentDetailsActivity;
 import com.instamojo.android.callbacks.OrderRequestCallBack;
@@ -99,6 +101,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     TextView tvPm;
 
+    String versionName;
+    TextView txtVersion;
+
+    private FirebaseAnalytics firebaseAnalytics;
 
 
 
@@ -143,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navFavourites = (LinearLayout) findViewById(R.id.nav_favourites);
         navLogout = (LinearLayout) findViewById(R.id.nav_logout);
 
+        txtVersion = (TextView) findViewById(R.id.txt_version);
 
 
         navAccount.setOnTouchListener(this);
@@ -209,6 +216,55 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         txtFoodtalkNav.setTypeface(typeface);
         txtTitle = (TextView) findViewById(R.id.title_text);
         txtTitle.setTypeface(typeface);
+
+        checkVersion();
+
+        setAnalytics();
+
+        //---------------
+
+    }
+
+    private void setAnalytics(){
+        // Obtain the Firebase Analytics instance.
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, 1);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "test");
+
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+    }
+
+    private void checkVersion(){
+        PackageManager manager = getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(
+                    getPackageName(), 0);
+            versionName = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (versionName != null){
+            if (BuildConfig.BUILD_TYPE.equals("debug")){
+                txtVersion.setText("Version "+versionName+" "+BuildConfig.BUILD_TYPE);
+            }
+            else {
+                txtVersion.setText("Version "+versionName);
+            }
+        }
     }
 
     private void logoutView(){

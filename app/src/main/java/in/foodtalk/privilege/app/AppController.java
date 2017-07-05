@@ -2,6 +2,7 @@ package in.foodtalk.privilege.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +30,8 @@ public class AppController extends Application {
 
 
 
+
+
     //-----global vars-------------
     public String restaurantName;
     public String rOneLiner;
@@ -40,6 +43,8 @@ public class AppController extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+
+
     }
 
     @Override
@@ -51,7 +56,10 @@ public class AppController extends Application {
         mInstance = this;
 
         parseUtils.registerParse(this);
+
     }
+
+
 
     public static synchronized AppController getInstance() {
         return mInstance;
