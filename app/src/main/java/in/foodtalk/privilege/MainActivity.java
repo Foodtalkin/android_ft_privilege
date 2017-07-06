@@ -219,19 +219,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         checkVersion();
 
-        setAnalytics();
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //---------------
 
     }
 
-    private void setAnalytics(){
+    private void logEvent(int id, String name, String type){
         // Obtain the Firebase Analytics instance.
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
 
         Bundle bundle = new Bundle();
-        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, 1);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "test");
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
 
         //Logs an app event.
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
@@ -240,10 +242,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
         //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
-        firebaseAnalytics.setMinimumSessionDuration(20000);
+        //firebaseAnalytics.setMinimumSessionDuration(20000);
 
         //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
-        firebaseAnalytics.setSessionTimeoutDuration(500);
+       // firebaseAnalytics.setSessionTimeoutDuration(500);
     }
 
     private void checkVersion(){
@@ -353,6 +355,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     @Override
     public void openFrag(String fragName, String value) {
+        logEvent(1, fragName, "Screen");
         if (fragName.equals("selectOfferFrag")){
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
             selectOfferFrag.outletId = value;

@@ -23,8 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="Signup &amp; buy Food Talk Privilege for ₹999 to
-get access to privilege for a year."
+                android:text="Signup &amp; buy Food Talk Privilege for ₹1200 to get access to privilege for a year."
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout
