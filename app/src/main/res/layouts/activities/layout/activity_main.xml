@@ -88,7 +88,8 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_account_24"/>
+                                android:src="@drawable/ic_account_24"
+                                android:tint="@color/light_gold"/>
                         </LinearLayout>
 
                         <TextView
@@ -118,7 +119,8 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_nav_history"/>
+                                android:src="@drawable/ic_nav_history"
+                                android:tint="@color/light_gold"/>
                         </LinearLayout>
 
                         <TextView
@@ -148,7 +150,8 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_nav_fav"/>
+                                android:src="@drawable/ic_nav_fav"
+                                android:tint="@color/light_gold"/>
                         </LinearLayout>
 
                         <TextView
@@ -180,7 +183,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_login_24"/>
+                            android:src="@drawable/ic_login_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
 
                     <TextView
@@ -211,7 +215,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_buynow_24"/>
+                            android:src="@drawable/ic_buynow_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -241,7 +246,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_howitwork_24"/>
+                            android:src="@drawable/ic_howitwork_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -271,7 +277,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_rules_24"/>
+                            android:src="@drawable/ic_rules_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -301,7 +308,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_legal_24"/>
+                            android:src="@drawable/ic_legal_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -331,7 +339,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_contact_24"/>
+                            android:src="@drawable/ic_contact_24"
+                            android:tint="@color/light_gold"/>
                     </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
@@ -396,7 +405,8 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_login_24"/>
+                                android:src="@drawable/ic_login_24"
+                                android:tint="@color/light_gold"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="wrap_content"
