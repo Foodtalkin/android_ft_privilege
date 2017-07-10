@@ -115,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         setContentView(R.layout.activity_main);
 
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
@@ -220,10 +223,39 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         checkVersion();
 
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
 
         //---------------
+        setUserProperty();
 
+    }
+
+    private void setUserProperty(){
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        //firebaseAnalytics.setMinimumSessionDuration(20000);
+
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        // firebaseAnalytics.setSessionTimeoutDuration(500);
+
+        //Sets the user ID property.
+        //Sets a user property to a given value.
+        if (db.getRowCount() > 0){
+            Log.e(TAG, "set User paid");
+            firebaseAnalytics.setUserProperty("User", "Paid");
+            if (!db.getUserDetails().get("gender").equals("")){
+                firebaseAnalytics.setUserProperty("gender", db.getUserDetails().get("gender"));
+                Log.e(TAG, "set user pro gender");
+            }
+            //Log.i(TAG, "set user gender: "+db.getUserDetails().get("gender"));
+            firebaseAnalytics.setUserId(db.getUserDetails().get("userId"));
+        }else {
+            Log.e(TAG, "set User unpaid");
+            firebaseAnalytics.setUserProperty("User", "Unpaid");
+            firebaseAnalytics.setUserId("Guest");
+        }
     }
 
     private void logEvent(int id, String name, String type){
@@ -238,14 +270,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         //Logs an app event.
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
-        //Sets whether analytics collection is enabled for this app on this device.
-        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
-        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
-        //firebaseAnalytics.setMinimumSessionDuration(20000);
-
-        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
-       // firebaseAnalytics.setSessionTimeoutDuration(500);
     }
 
     private void checkVersion(){
@@ -329,9 +354,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
            // mActionBar.setDisplayShowCustomEnabled(true);
         }*/
 
+
+
         onFragmentChange(newFragment);
 
         String fragmentName = newFragment.getClass().getName();
+
+        //--logEvent---
+        logEvent(1, fragmentName, "Screen");
+        //-------------------
         currentFragment = newFragment;
         FragmentManager manager = getFragmentManager();
 
@@ -355,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     @Override
     public void openFrag(String fragName, String value) {
-        logEvent(1, fragName, "Screen");
+
         if (fragName.equals("selectOfferFrag")){
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
             selectOfferFrag.outletId = value;
