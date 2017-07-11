@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAlignment="center"
-                android:text="Please ask merchent to\nenter their PIN."
+                android:text="Please ask restaurant to\nenter their PIN."
                 android:textColor="@color/warm_grey"/>
         </LinearLayout>
 

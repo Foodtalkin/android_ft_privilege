@@ -117,14 +117,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
 
         db = new DatabaseHandler(this);
 

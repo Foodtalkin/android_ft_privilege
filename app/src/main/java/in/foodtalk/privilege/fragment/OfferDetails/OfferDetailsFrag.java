@@ -296,9 +296,6 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     }
 
     private void setData(JSONObject response) throws JSONException {
-
-
-
         JSONObject result = response.getJSONObject("result");
         Picasso.with(getActivity())
                 .load(result.getString("cover_image"))

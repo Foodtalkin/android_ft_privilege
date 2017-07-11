@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
 
-            android:text="Get access to all these offers\nfor one year at ₹1200 Only."/>
+            android:text="Get access to all these offers for one year at ₹1200 Only."/>
         <TextView
             android:id="@+id/btn_buy"
             android:layout_width="wrap_content"

@@ -158,7 +158,7 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         mActionBar.setDisplayShowCustomEnabled(true);
 
         TextView title = (TextView) mCustomView.findViewById(R.id.title_text);
-        title.setText("LoginOtp");
+        title.setText("Login");
         title.setTypeface(typeface);
     }
     private void gotoHome(JSONObject response) throws JSONException {

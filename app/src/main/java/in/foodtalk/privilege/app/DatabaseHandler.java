@@ -136,6 +136,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d(TAG, "update userInfo");
     }
 
+    public void updateTokens(String uId, String sId, String rToken){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SID, sId);
+        values.put(KEY_RTOKEN, rToken);
+
+        db.update(TABLE_LOGIN, values, KEY_RTOKEN + " = '" + uId + "'", null);
+        db.close(); // Closing database connection
+
+    }
+
     public int getRowCount(){
         String countQuery = "SELECT  * FROM " + TABLE_LOGIN;
         SQLiteDatabase db = this.getReadableDatabase();
