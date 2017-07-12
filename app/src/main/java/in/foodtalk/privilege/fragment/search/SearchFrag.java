@@ -47,11 +47,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     String TAG = SearchFrag.class.getSimpleName();
 
     LinearLayout btnLocation1, btnLocation2, btnLocation3, btnLocation4, btnLocation5, btnLocation6, btnLocation7,
-            btnCost1, btnCost2, btnCost3;
+            btnCost1, btnCost2, btnCost3, btnOffer1, btnOffer2, btnOffer3, btnOffer4, btnOffer5, btnOffer6;
 
     EditText etSearch;
 
-    View circleL1, circleL2, circleL3, circleL4, circleL5, circleL6, circleL7, circleCost1, circleCost2, circleCost3;
+    View circleL1, circleL2, circleL3, circleL4, circleL5, circleL6, circleL7, circleCost1, circleCost2, circleCost3,
+    circleOffer1, circleOffer2, circleOffer3, circleOffer4, circleOffer5, circleOffer6;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -70,6 +71,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     List<String> cityZoneIds = new ArrayList<>();
     List<String> cuisineIds = new ArrayList<>();
     List<String> cost = new ArrayList<>();
+    List<String> offer = new ArrayList<>();
 
     CallbackFragOpen callbackFragOpen;
 
@@ -96,6 +98,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         cityZoneIds.clear();
         cuisineIds.clear();
         cost.clear();
+        offer.clear();
 
 
         btnApplyFilters = (LinearLayout) layout.findViewById(R.id.btn_apply_filters);
@@ -120,6 +123,27 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         circleCost1 = layout.findViewById(R.id.circle_cost1);
         circleCost2 = layout.findViewById(R.id.circle_cost2);
         circleCost3 = layout.findViewById(R.id.circle_cost3);
+
+        circleOffer1 = layout.findViewById(R.id.circle_offer1);
+        circleOffer2 = layout.findViewById(R.id.circle_offer2);
+        circleOffer3 = layout.findViewById(R.id.circle_offer3);
+        circleOffer4 = layout.findViewById(R.id.circle_offer4);
+        circleOffer5 = layout.findViewById(R.id.circle_offer5);
+        circleOffer6 = layout.findViewById(R.id.circle_offer6);
+
+        btnOffer1 = (LinearLayout) layout.findViewById(R.id.btn_offer1);
+        btnOffer2 = (LinearLayout) layout.findViewById(R.id.btn_offer2);
+        btnOffer3 = (LinearLayout) layout.findViewById(R.id.btn_offer3);
+        btnOffer4 = (LinearLayout) layout.findViewById(R.id.btn_offer4);
+        btnOffer5 = (LinearLayout) layout.findViewById(R.id.btn_offer5);
+        btnOffer6 = (LinearLayout) layout.findViewById(R.id.btn_offer6);
+
+        btnOffer1.setOnTouchListener(this);
+        btnOffer2.setOnTouchListener(this);
+        btnOffer3.setOnTouchListener(this);
+        btnOffer4.setOnTouchListener(this);
+        btnOffer5.setOnTouchListener(this);
+        btnOffer6.setOnTouchListener(this);
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
@@ -246,6 +270,79 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     Boolean location4 = false; Boolean location5 = false; Boolean location6 = false;
     Boolean location7 = false;
     Boolean cost1 = false; Boolean cost2 = false; Boolean cost3 = false;
+
+    Boolean offer1 = false; Boolean offer2 = false; Boolean offer3 = false;
+    Boolean offer4 = false; Boolean offer5 = false; Boolean offer6 = false;
+
+    private void offerFilter(String offerV){
+        if (offerV.equals("1")){
+            if (offer1 == false){
+                offer1 = true;
+                circleOffer1.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("1");
+            }else {
+                offer1 = false;
+                circleOffer1.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("1");
+            }
+        }
+        if (offerV.equals("2")){
+            if (offer2 == false){
+                offer2 = true;
+                circleOffer2.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("2");
+            }else {
+                offer2 = false;
+                circleOffer2.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("2");
+            }
+        }
+        if (offerV.equals("3")){
+            if (offer3 == false){
+                offer3 = true;
+                circleOffer3.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("3");
+            }else {
+                offer3 = false;
+                circleOffer3.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("3");
+            }
+        }
+        if (offerV.equals("4")){
+            if (offer4 == false){
+                offer4 = true;
+                circleOffer4.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("4");
+            }else {
+                offer4 = false;
+                circleOffer4.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("4");
+            }
+        }
+        if (offerV.equals("5")){
+            if (offer5 == false){
+                offer5 = true;
+                circleOffer5.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("5");
+            }else {
+                offer5 = false;
+                circleOffer5.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("5");
+            }
+        }
+        if (offerV.equals("6")){
+            if (offer6 == false){
+                offer6 = true;
+                circleOffer6.setBackgroundResource(R.drawable.circle_selected);
+                offer.add("6");
+            }else {
+                offer6 = false;
+                circleOffer6.setBackgroundResource(R.drawable.circle_select);
+                offer.remove("6");
+            }
+        }
+    }
+
     private void costFilter(String costP){
         if (costP.equals("1")){
             if (cost1 == false){
@@ -411,8 +508,19 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
             urlParams = urlParams+cost1;
         }
+        if (offer.size() > 0){
+            String offerIds = offer.toString();
+            offerIds = offerIds.replaceAll("\\s","");
+            if (urlParams.equals("")){
+                offerIds = "cost="+offerIds.substring(1, offerIds.length()-1);
+            }else {
+                offerIds = "&cost="+offerIds.substring(1, offerIds.length()-1);
+            }
+
+            urlParams = urlParams+offerIds;
+        }
         Log.d(TAG, "url param: "+urlParams);
-        callbackFragOpen.openFrag("searchResult", Url.OFFERS+"?"+urlParams);
+        callbackFragOpen.openFrag("searchResult", urlParams);
 
     }
 
@@ -504,6 +612,49 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                         break;
                 }
                 break;
+            case R.id.btn_offer1:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("1");
+                        break;
+                }
+                break;
+            case R.id.btn_offer2:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("2");
+                        break;
+                }
+                break;
+            case R.id.btn_offer3:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("3");
+                        break;
+                }
+                break;
+            case R.id.btn_offer4:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("4");
+                        break;
+                }
+                break;
+            case R.id.btn_offer5:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("5");
+                        break;
+                }
+                break;
+            case R.id.btn_offer6:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        offerFilter("6");
+                        break;
+                }
+                break;
+
         }
         return false;
     }

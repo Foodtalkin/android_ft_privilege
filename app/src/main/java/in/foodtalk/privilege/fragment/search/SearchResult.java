@@ -163,7 +163,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     private void loadData(String tag){
         if (tag.equals("loadOffersMore")){
             if (!nextUrl.equals("")){
-                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, tag, this);
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl+"&"+offerUrl, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
                 offerCardList.add(offerCardObj);
@@ -176,7 +176,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }else if (tag.equals("loadOffers")){
             progressBar.setVisibility(View.VISIBLE);
             placeholderInternet.setVisibility(View.GONE);
-            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, offerUrl, tag, this);
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS+"?"+offerUrl, tag, this);
 
         }
     }

@@ -502,9 +502,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         Intent i = new Intent(this, Splash_activity.class);
         startActivity(i);
         finish();
-
     }
-
     private void email(){
         /* Create the Intent */
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
