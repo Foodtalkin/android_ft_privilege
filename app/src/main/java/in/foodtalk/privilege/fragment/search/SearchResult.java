@@ -177,7 +177,6 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             progressBar.setVisibility(View.VISIBLE);
             placeholderInternet.setVisibility(View.GONE);
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS+"?"+offerUrl, tag, this);
-
         }
     }
 

@@ -62,7 +62,7 @@ public class SuccessFrag extends Fragment implements View.OnTouchListener {
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn done clicked");
-                        callbackFragOpen.openFrag("homeFrag","");
+                        callbackFragOpen.openFrag("homeFrag","fromRedeemSuccess");
                         break;
                 }
                 break;
