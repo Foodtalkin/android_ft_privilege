@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout;
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome;
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
@@ -107,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     TextView txtVersion;
 
     private FirebaseAnalytics firebaseAnalytics;
+
+    String MY_PREFS_NAME = "MyPrefsFile";
+
+    int bExitCount = 0;
 
 
 
@@ -149,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navHistory = (LinearLayout) findViewById(R.id.nav_history);
         navFavourites = (LinearLayout) findViewById(R.id.nav_favourites);
         navLogout = (LinearLayout) findViewById(R.id.nav_logout);
+        navHome = (LinearLayout) findViewById(R.id.nav_home);
 
         txtVersion = (TextView) findViewById(R.id.txt_version);
 
@@ -166,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navLegal.setOnTouchListener(this);
         navContact.setOnTouchListener(this);
         navAbout.setOnTouchListener(this);
+        navHome.setOnTouchListener(this);
 
 
         Log.d(TAG,"check login status: "+ db.getRowCount());
@@ -225,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         //---------------
         setUserProperty();
+
+        checkAndOpenPlayStore();
 
     }
 
@@ -341,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
     }
 
-
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
         /*if (tag.equals("successFrag")){
@@ -352,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
            // mActionBar.setDisplayShowCustomEnabled(true);
         }*/
 
-
+        bExitCount = 0;
 
         onFragmentChange(newFragment);
 
@@ -422,8 +430,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
 
             if (value.equals("fromRedeemSuccess")){
-                ratingDialog();
+
+                checkAndOpenPlayStore();
             }
+            clearBackStack();
         }
         if (fragName.equals("successFrag")){
 
@@ -466,8 +476,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         setFragmentView(paymentFlow, R.id.container, "paymentFlow", false);
     }
 
+
+
     @Override
     public void onBackPressed() {
+
+        int totalBS = getFragmentManager().getBackStackEntryCount();
         if (this.getFragmentManager().findFragmentById(R.id.container) == successFrag ){
             //setFragmentView(homeFrag, R.id.container, "homeFrag", false);
             clearBackStack();
@@ -478,11 +492,29 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             }else if (offerDetailsFrag.redeemBarVisible == true){
                 offerDetailsFrag.hideRedeemBar();
             }else {
+                if (totalBS < 1){
+                    if (bExitCount > 0){
+                        super.onBackPressed();
+                    }else {
+                        bExitCount++;
+                        ToastShow.showToast(this,"Press again to exit");
+                    }
+                }else {
+                    super.onBackPressed();
+                }
+            }
+        }else {
+            if (totalBS < 1){
+                if (bExitCount > 0){
+                    super.onBackPressed();
+                }else {
+                    bExitCount++;
+                    ToastShow.showToast(this,"Press again to exit");
+                }
+            }else {
                 super.onBackPressed();
             }
 
-        }else {
-            super.onBackPressed();
         }
     }
     private void clearBackStack() {
@@ -863,10 +895,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         break;
                 }
                 break;
+            case R.id.nav_home:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        HomeFrag homeFrag = new HomeFrag();
+                        setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+                        clearBackStack();
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        break;
+                }
+                break;
         }
         return false;
     }
-
     private void checkPermission() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -964,6 +1005,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             }
         });
         // if button is clicked, close the custom dialog
+
         rateNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -975,8 +1017,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 //tvVeg.setText("Yes");
             }
         });
-
         dialogRating.show();
+    }
+
+    private void checkAndOpenPlayStore(){
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("text", null);
+        if (restoredText != null) {
+            String ratingPopup = prefs.getString("ratingPopup", "No name defined");//"No name defined" is the default value.
+            //int idName = prefs.getInt("idName", 0); //0 is the default value.
+            Log.d(TAG, "sp name is: "+ ratingPopup);
+            if (ratingPopup.equals("1")){
+                ratingDialog();
+            }
+        }else {
+            Log.d(TAG, "restoredText is null");
+        }
     }
 
     private void openPlayStore(){
@@ -993,5 +1049,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
         }
+
+        // MY_PREFS_NAME - a static String variable like:
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("ratingPopup", "1");
+        //editor.putInt("idName", 12);
+        editor.apply();
     }
 }

@@ -50,17 +50,16 @@
                 android:layout_centerVertical ="true"
                 android:layout_alignParentTop="true"
                 />
-
             <TextView
                 android:id="@+id/btn_letter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="12dp"
-                android:text="Letter"
+                android:text="Later"
                 android:textAlignment="center"
                 android:textColor="@color/warm_grey"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
