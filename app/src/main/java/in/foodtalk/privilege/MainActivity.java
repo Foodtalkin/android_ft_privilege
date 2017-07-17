@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     String versionName;
     TextView txtVersion;
 
-    private FirebaseAnalytics firebaseAnalytics;
+    //private FirebaseAnalytics firebaseAnalytics;
 
     String MY_PREFS_NAME = "MyPrefsFile";
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         setContentView(R.layout.activity_main);
 
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        //firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     private void setUserProperty(){
         //Sets whether analytics collection is enabled for this app on this device.
-        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        AppController.getInstance().firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
         //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
         //firebaseAnalytics.setMinimumSessionDuration(20000);
@@ -251,34 +251,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         //Sets a user property to a given value.
         if (db.getRowCount() > 0){
             Log.e(TAG, "set User paid");
-            firebaseAnalytics.setUserProperty("User", "Paid");
+            AppController.getInstance().firebaseAnalytics.setUserProperty("User", "Paid");
             if (!db.getUserDetails().get("gender").equals("")){
-                firebaseAnalytics.setUserProperty("gender", db.getUserDetails().get("gender"));
+                AppController.getInstance().firebaseAnalytics.setUserProperty("gender", db.getUserDetails().get("gender"));
                 Log.e(TAG, "set user pro gender");
             }
             //Log.i(TAG, "set user gender: "+db.getUserDetails().get("gender"));
-            firebaseAnalytics.setUserId(db.getUserDetails().get("userId"));
+            AppController.getInstance().firebaseAnalytics.setUserId(db.getUserDetails().get("userId"));
         }else {
             Log.e(TAG, "set User unpaid");
-            firebaseAnalytics.setUserProperty("User", "Unpaid");
-            firebaseAnalytics.setUserId("Guest");
+            AppController.getInstance().firebaseAnalytics.setUserProperty("User", "Unpaid");
+            AppController.getInstance().firebaseAnalytics.setUserId("Guest");
         }
     }
 
-    private void logEvent(int id, String name, String type){
-        // Obtain the Firebase Analytics instance.
 
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
-
-        //Logs an app event.
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-
-
-    }
 
     private void checkVersion(){
         PackageManager manager = getPackageManager();
@@ -367,7 +354,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         String fragmentName = newFragment.getClass().getName();
 
         //--logEvent---
-        logEvent(1, fragmentName, "Screen");
+        //AppController.getInstance().logEvent(1, fragmentName, "Screen");
+        AppController.getInstance().firebaseAnalytics.setCurrentScreen(this, "cScreen", newFragment.getClass().getSimpleName());
         //-------------------
         currentFragment = newFragment;
         FragmentManager manager = getFragmentManager();

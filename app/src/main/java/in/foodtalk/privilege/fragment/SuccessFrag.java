@@ -1,11 +1,13 @@
 package in.foodtalk.privilege.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,6 +30,7 @@ public class SuccessFrag extends Fragment implements View.OnTouchListener {
     CallbackFragOpen callbackFragOpen;
 
     public String rId;
+    TextView tvSuccess;
 
     TextView tvRid;
 
@@ -39,6 +42,13 @@ public class SuccessFrag extends Fragment implements View.OnTouchListener {
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         tvRid = (TextView) layout.findViewById(R.id.tv_rid);
+
+        tvSuccess  = (TextView) layout.findViewById(R.id.tv_success);
+
+        tvSuccess.setText(Html.fromHtml(getString(R.string.successCopy)));
+
+        tvSuccess.setOnTouchListener(this);
+
 
         tvRid.setText("RID : "+rId);
 
@@ -66,7 +76,29 @@ public class SuccessFrag extends Fragment implements View.OnTouchListener {
                         break;
                 }
                 break;
+            case R.id.tv_success:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        email();
+                        break;
+
+                }
+                break;
         }
         return false;
+    }
+
+    private void email(){
+        /* Create the Intent */
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+/* Fill it with Data */
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"contact@foodtalkindia.com"});
+        //emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
+        //emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+
+/* Send it off to the Activity-Chooser */
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.instamojo.android.Instamojo;
 
 import org.json.JSONObject;
@@ -27,6 +28,8 @@ public class AppController extends Application {
     private static AppController mInstance;
 
     private ParseUtils parseUtils;
+
+    public FirebaseAnalytics firebaseAnalytics;
 
 
 
@@ -55,8 +58,23 @@ public class AppController extends Application {
 
         mInstance = this;
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         parseUtils.registerParse(this);
 
+    }
+
+    public void logEvent(int id, String name, String type){
+        // Obtain the Firebase Analytics instance.
+
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
+
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
 

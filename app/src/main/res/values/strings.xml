@@ -5,4 +5,10 @@
     <string name="error_internet">Internet is not working</string>
 
     <string name="parseAppID">ftp</string>
+    <string name="successCopy">
+        <![CDATA[
+        Offer redemption successful, Please <font color="#1fb6ff">contact us</font> for any queries.
+        ]]>
+
+    </string>
 </resources>
