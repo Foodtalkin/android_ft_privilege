@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.parse.ParseInstallation;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +13,7 @@ import org.json.JSONObject;
 import in.foodtalk.privilege.LoginOtp;
 import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.app.DatabaseHandler;
+import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.models.LoginValue;
 
 /**
@@ -47,6 +50,19 @@ public class SaveLogin {
             loginValue.subscription = subscription.toString();
             db.addUser(loginValue);
 
+            JSONArray subArray = new JSONArray(loginValue.subscription);
+
+           /* ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+
+
+            //JSONObject sub = new JSONObject();
+            installation.put("userId", loginValue.uId);
+            installation.put("expiry", subArray.getJSONObject(0).getString("expiry"));
+            installation.saveInBackground();*/
+
+            ParseUtils.sendInfoToParse(loginValue.uId, subArray.getJSONObject(0).getString("expiry"));
+
+            Log.d("SaveLogin","done");
             //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));
 
             if (openFrag.equals("homeFrag")){

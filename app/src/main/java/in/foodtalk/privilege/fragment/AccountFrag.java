@@ -140,7 +140,6 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
     public void setTextValue(){
 
         Log.d(TAG, "subscription: "+ db.getUserDetails().get("subscription"));
-
         try {
             JSONArray subscritionArray = new JSONArray(db.getUserDetails().get("subscription"));
             String date = subscritionArray.getJSONObject(0).getString("expiry");

@@ -66,6 +66,7 @@ import in.foodtalk.privilege.fragment.history.HistoryFrag;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.fragment.offerlist.SelectOfferFrag;
 import in.foodtalk.privilege.fragment.search.SearchResult;
+import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.ToastShow;
 
@@ -820,6 +821,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             case R.id.nav_favourites:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
+                        ParseUtils.sendInfoToParse("01test","02test");
                         FavoritesFrag favoritesFrag = new FavoritesFrag();
                         setFragmentView(favoritesFrag, R.id.container, "favoritesFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);

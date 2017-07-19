@@ -10,6 +10,10 @@ import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.app.AppController;
 
@@ -29,7 +33,7 @@ public class ParseUtils {
                 //.clientKey(null)
                 //http://52.74.136.146:1337/parse
                 //.server("http://52.74.136.146:1337/parse")
-                .server("http://52.74.136.146:1337/parse/")
+                .server("http://52.74.136.146:1337/parse")
                 //.server("http://api.parse.com/parse/")
                // .addNetworkInterceptor(new ParseStethoInterceptor())
                 //.server("http://192.168.1.5:1337/parse/")
@@ -75,6 +79,53 @@ public class ParseUtils {
             }
         });*/
     }
+
+    public static void sendInfoToParse(String userId, String expiry){
+        if (ParseUser.getCurrentUser() == null) {
+            ParseUser.enableAutomaticUser();
+            Log.d("getCurrentUser","currentuser null");
+        }
+        ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            AppController appController = new AppController();
+            @Override
+            public void done(ParseException e) {
+                String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
+                String userId = ParseInstallation.getCurrentInstallation().get("userId").toString();
+
+                //Map<String, String>map = ParseInstallation.getCurrentInstallation();
+                Log.d("userIdP", userId);
+                Log.e("deviceToken callback", deviceToken+" ");
+
+                if (e!= null){
+                    Log.e("ParseException", e.toString()+" done");
+                }
+                //appController.deviceToken = deviceToken;
+            }
+        });
+
+        //2018-06-26 23:59:59
+
+        String dtStart = expiry;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date date = null;
+        try {
+            date = format.parse(dtStart);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.d("ParseUtils", userId+" : "+expiry);
+       // Date date = new Date();
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("userId", userId);
+        installation.put("expiry", date);
+
+
+        installation.saveInBackground();
+    }
+
     public static void subscribeWithInfo(String userId, String locationIdentifire, String work,
                                          String cityId, String stateId, String countryId, String regionId) {
 

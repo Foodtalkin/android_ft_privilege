@@ -62,6 +62,7 @@ public class AppController extends Application {
 
         parseUtils.registerParse(this);
 
+
     }
 
     public void logEvent(int id, String name, String type){
