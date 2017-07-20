@@ -137,6 +137,66 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="20dp"/>
             <LinearLayout
+                android:id="@+id/btn_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_grey"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:layout_margin="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="VERIFY NUMBER"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="WE WILL SEND YOU AN OTP"
+                            android:textColor="@color/pale_grey_two"
+                            android:textSize="10sp"/>
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:visibility="visible"
+                        android:layout_centerInParent="true"
+                        android:background="@color/dark_grey">
+                        <com.github.silvestrpredko.dotprogressbar.DotProgressBar
+                            android:id="@+id/dot_progress_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            custom:amount="3"
+                            custom:duration="@android:integer/config_mediumAnimTime"
+                            custom:endColor="@color/light_blue_A400"
+                            custom:startColor="@color/light_blue_A700"
+                            custom:animationDirection="left"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -161,66 +221,5 @@ number above. You’ll need to enter the OTP in next step."/>
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/btn_verify"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/dark_grey"
 
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginTop="40dp"
-        android:clickable="true"
-        >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:layout_margin="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="VERIFY NUMBER"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="WE WILL SEND YOU AN OTP"
-                    android:textColor="@color/pale_grey_two"
-                    android:textSize="10sp"/>
-            </LinearLayout>
-            <RelativeLayout
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:visibility="visible"
-                android:layout_centerInParent="true"
-                android:background="@color/dark_grey">
-                <com.github.silvestrpredko.dotprogressbar.DotProgressBar
-                    android:id="@+id/dot_progress_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    custom:amount="3"
-                    custom:duration="@android:integer/config_mediumAnimTime"
-                    custom:endColor="@color/light_blue_A400"
-                    custom:startColor="@color/light_blue_A700"
-                    custom:animationDirection="left"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-        </RelativeLayout>
-    </LinearLayout>
 </RelativeLayout>

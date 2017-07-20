@@ -318,12 +318,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
 
-
         //ImageView btnS = (ImageView) mActionBar.getCustomView().findViewById(R.id.btn_search);
-
         //btnS.setScaleX(2);
-
-
     }
     private void onFragmentChange(Fragment fragment){
         if (fragment == homeFrag){
@@ -337,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             offerBarButtons.setVisibility(View.INVISIBLE);
         }
     }
-
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
         /*if (tag.equals("successFrag")){
@@ -355,12 +350,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         String fragmentName = newFragment.getClass().getName();
 
         //--logEvent---
-        //AppController.getInstance().logEvent(1, fragmentName, "Screen");
-        AppController.getInstance().firebaseAnalytics.setCurrentScreen(this, "cScreen", newFragment.getClass().getSimpleName());
+        AppController.getInstance().logEvent(1, newFragment.getClass().getSimpleName(), "Screen");
+        //AppController.getInstance().firebaseAnalytics.setCurrentScreen(this, "cScreen", newFragment.getClass().getSimpleName());
         //-------------------
         currentFragment = newFragment;
         FragmentManager manager = getFragmentManager();
-
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(container,newFragment,tag);
         if (bStack){
@@ -399,7 +393,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             //offerDetailsFrag.outletId = value;
             Log.d(TAG, "value for offerDetailsF: "+ value);
             hideSoftKeyboard();
-
             try {
                 JSONObject offerOutletId = new JSONObject(value);
                 offerDetailsFrag.offerId = offerOutletId.getString("offerId");
@@ -419,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
 
             if (value.equals("fromRedeemSuccess")){
-
                 checkAndOpenPlayStore();
             }
             clearBackStack();
@@ -464,8 +456,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     private void startPaymentFlow(){
         setFragmentView(paymentFlow, R.id.container, "paymentFlow", false);
     }
-
-
 
     @Override
     public void onBackPressed() {
