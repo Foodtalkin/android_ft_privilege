@@ -114,9 +114,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     int bExitCount = 0;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

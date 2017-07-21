@@ -142,7 +142,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_SID, sId);
         values.put(KEY_RTOKEN, rToken);
-        db.update(TABLE_LOGIN, values, KEY_RTOKEN + " = '" + uId + "'", null);
+        db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
         db.close(); //Closing database connection
 
     }

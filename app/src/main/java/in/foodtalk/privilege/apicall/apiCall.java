@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.apicall;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.app.AppController;
@@ -48,11 +50,12 @@ public class ApiCall {
                         //msgResponse.setText(response.toString());
                         Log.d("ApiCall", response.toString());
                         if (apiCallback1 != null){
-                            apiCallback1.apiResponse(response, tag);
+                            //apiCallback1.apiResponse(response, tag);
                         }
                         try {
                             String status = response.getString("status");
-                            if (!status.equals("error")){
+                            if (!status.equals("ERROR")){
+                                apiCallback1.apiResponse(response, tag);
                                 //-- getAndSave(response);
                                 //loadDataIntoView(response);
                                 if(tag.equals("userReport") || tag.equals("restaurantReport")){
@@ -64,7 +67,7 @@ public class ApiCall {
                                 }
                             }else {
                                 String errorCode = response.getString("code");
-                                if(errorCode.equals("104")){
+                                if(errorCode.equals("401")){
                                     Log.e("Response error", "Session has expired");
                                     getSessionToken(requestType, context, obj, url, tag, apiCallback);
                                     //logOut();
@@ -119,11 +122,12 @@ public class ApiCall {
     public static void getSessionToken(final int requestType, final Context context, final JSONObject obj, final String url, final String tag, final ApiCallback apiCallback){
 
 
-        String refreshToken = db.getUserDetails().get("refreshtoken");
+        final String refreshToken = db.getUserDetails().get("refreshToken");
         String sessionId = db.getUserDetails().get("sessionId");
         JSONObject obj1 = new JSONObject();
         try {
-            obj1.put("refreshToken", refreshToken);
+            obj1.put("refresh_token", refreshToken);
+            //Log.d("refreshToken", refreshToken);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -138,11 +142,27 @@ public class ApiCall {
                             if (!status.equals("error")){
                                 //-- getAndSave(response);
                                 //loadDataIntoView(response);
-                                db.updateTokens(db.getUserDetails().get("userId"), response.getString("sessionId"), response.getString("refreshToken"));
-                                obj.put("sessionId", db.getUserDetails().get("sessionId"));
-                                Log.d("ApiCall","new sessionId: "+ db.getUserDetails().get("sessionId"));
+                                ///db.updateTokens(db.getUserDetails().get("userId"), response.getJSONObject("result").getString("session_id"), response.getJSONObject("result").getString("refresh_token"));
+                                //obj.put("session_id", db.getUserDetails().get("sessionId"));
+                                ///Log.d("ApiCall","new sessionId: "+ db.getUserDetails().get("sessionId"));
                                 //jsonObjRequest(context, obj, url, tag, apiCallback);
-                                jsonObjRequest(requestType, context, obj, url,tag, apiCallback);
+                                Log.d("apicall", "db old sessionId: "+ db.getUserDetails().get("sessionId"));
+                                Log.d("apicall", "get new sessionId: "+ response.getJSONObject("result").getString("session_id"));
+                                db.updateTokens(db.getUserDetails().get("userId"), response.getJSONObject("result").getString("session_id"), response.getJSONObject("result").getString("refresh_token"));
+                                Log.d("apicall", "db new sessionId: "+ db.getUserDetails().get("sessionId"));
+                               // String url1 = url.replace(/("sessionid=")[^\&]+/, "$1" + db.getUserDetails().get("sessionId"))
+
+                                if (requestType == Request.Method.GET){
+                                    Uri uri =  Uri.parse(url);
+                                    String newUrl = replaceUriParameter(uri, "sessionid", db.getUserDetails().get("sessionId")).toString();
+                                    Log.e("updated url", newUrl);
+                                    jsonObjRequest(requestType, context, obj, newUrl,tag, apiCallback);
+                                }else {
+                                    obj.put("session_id", db.getUserDetails().get("sessionId"));
+                                    jsonObjRequest(requestType, context, obj, url,tag, apiCallback);
+                                }
+
+
                             }else {
                                 String errorCode = response.getString("errorCode");
                                 if(errorCode.equals("404")){
@@ -191,5 +211,22 @@ public class ApiCall {
         // Adding request to request queue
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DEFAULT_TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag);
+    }
+
+    private static Uri replaceUriParameter(Uri uri, String key, String newValue) {
+        final Set<String> params = uri.getQueryParameterNames();
+        final Uri.Builder newUri = uri.buildUpon().clearQuery();
+        for (String param : params) {
+            String value;
+            if (param.equals(key)) {
+                value = newValue;
+            } else {
+                value = uri.getQueryParameter(param);
+            }
+
+            newUri.appendQueryParameter(param, value);
+        }
+
+        return newUri.build();
     }
 }
