@@ -89,11 +89,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome;
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines;
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
     OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
+    WebViewFrag webViewFrag;
 
     DatabaseHandler db;
 
@@ -108,11 +109,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     String versionName;
     TextView txtVersion;
 
+
+
     //private FirebaseAnalytics firebaseAnalytics;
 
     String MY_PREFS_NAME = "MyPrefsFile";
 
     int bExitCount = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +159,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navLogout = (LinearLayout) findViewById(R.id.nav_logout);
         navHome = (LinearLayout) findViewById(R.id.nav_home);
 
+        navExperines = (LinearLayout) findViewById(R.id.nav_experines);
+
         txtVersion = (TextView) findViewById(R.id.txt_version);
 
+        navExperines.setOnTouchListener(this);
 
         navAccount.setOnTouchListener(this);
         navHistory.setOnTouchListener(this);
@@ -262,9 +270,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             AppController.getInstance().firebaseAnalytics.setUserId("Guest");
         }
     }
-
-
-
     private void checkVersion(){
         PackageManager manager = getPackageManager();
         PackageInfo info = null;
@@ -329,6 +334,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }else {
             offerBarButtons.setVisibility(View.INVISIBLE);
         }
+        if (fragment == webViewFrag){
+
+        }
+
     }
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
 
@@ -532,7 +541,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
 
     private void webView(String url){
-        WebViewFrag webViewFrag = new WebViewFrag();
+        webViewFrag = new WebViewFrag();
         webViewFrag.url = url;
         setFragmentView(webViewFrag, R.id.container, "webViewLegal", true);
         drawerLayout.closeDrawer(Gravity.LEFT);
@@ -853,11 +862,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "click about nav");
-                        PayNow payNow = new PayNow(this);
+                        //PayNow payNow = new PayNow(this);
                         //payNow.paymentWithOrder("FOZH5L9GZHHG4cSQDzuPIJyRPjlFs4","5efa71cc-da8f-4c2f-9195-075381af1bf9");
                         //paymentWithOrder();
                         //{"access_token":"FOZH5L9GZHHG4cSQDzuPIJyRPjlFs4","paymentid":"6ec55f4e77ff4f7a9cded4939e283b10","order":{"order_id":"5efa71cc-da8f-4c2f-9195-075381af1bf9","name":"hsus","email":"hsu@hsj.com","phone":"+915424542454","amount":"999.00"}},"api":"\/\/subscriptionPayment?sessionid=575b5a9e34db298ab736facc1940fffeaf590e2d"}
-                        payment();
                         //paymentWithOrder();
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
@@ -882,8 +890,25 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         break;
                 }
                 break;
+            case R.id.nav_experines:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        Log.d(TAG, "nav exprines");
+                        experines();
+                        break;
+                }
+                break;
         }
         return false;
+    }
+    private void experines(){
+        if (db.getRowCount() > 0){
+            String url = "http://foodtalk.in/pe/#!/app/"+db.getUserDetails().get("sessionId");
+            webView(url);
+        }else {
+            signupAlert();
+        }
     }
     private void checkPermission() {
         // Here, thisActivity is the current activity

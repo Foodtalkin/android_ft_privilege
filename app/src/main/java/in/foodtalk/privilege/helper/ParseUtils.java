@@ -122,7 +122,6 @@ public class ParseUtils {
         installation.put("userId", userId);
         installation.put("expiry", date);
 
-
         installation.saveInBackground();
     }
 

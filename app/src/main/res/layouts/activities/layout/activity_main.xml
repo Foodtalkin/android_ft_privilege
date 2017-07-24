@@ -99,6 +99,36 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/nav_experines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_marginLeft="@dimen/nav_icon_margin"
+                    android:clickable="true"
+                    android:background="@drawable/ripple_effect">
+                    <LinearLayout
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_home_black_24dp"
+                            android:tint="@color/light_gold"/>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Experiences"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/nav_text_margin"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+                <LinearLayout
                     android:id="@+id/for_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
