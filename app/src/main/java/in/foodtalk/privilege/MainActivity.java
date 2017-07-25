@@ -905,6 +905,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     private void experines(){
         if (db.getRowCount() > 0){
             String url = "http://foodtalk.in/pe/#!/app/"+db.getUserDetails().get("sessionId");
+            Log.d(TAG, url);
             webView(url);
         }else {
             signupAlert();
@@ -923,11 +924,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
             } else {
-
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
                         MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);

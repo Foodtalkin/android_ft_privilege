@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/dark_grey">
+    android:background="@drawable/landing">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,7 +12,7 @@
             android:id="@+id/txt_foodtalk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FOOD TALK\nPRIVILEGE"
+            android:text="FOOD TALK PRIVILEGE"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:layout_gravity="center"
@@ -69,9 +71,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Access to all offers \n\nInvites to members only events \n\nAccess to monthly benifits via mailing list"
+                        android:text="Handpicked 100 best restaurants in Delhi NCR \n\n 1+1 Deals and Discounts at the 100 best \n \n Access to exclusive experiences"
                         android:textSize="18sp"
-                        android:padding="35dp"
+                        android:padding="25dp"
                         android:textColor="@color/dark_grey"
                         android:textAlignment="center"/>
                 </LinearLayout>
