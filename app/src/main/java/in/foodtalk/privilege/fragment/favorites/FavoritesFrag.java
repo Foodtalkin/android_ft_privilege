@@ -99,7 +99,7 @@ public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouch
         favList.clear();
         progressBar.setVisibility(View.GONE);
         JSONArray result = response.getJSONArray("result");
-
+        Log.d(TAG,"result: " +result);
         if (result.length() == 0){
             placeholderEmpty.setVisibility(View.VISIBLE);
         }
@@ -124,7 +124,7 @@ public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouch
     public void apiResponse(JSONObject response, String tag) {
         if (response != null){
             if (tag.equals("getFavorites")){
-                Log.d(TAG, "response: "+ response);
+                Log.e(TAG, "response: "+ response);
                 try {
                     setAdapter(response);
                 } catch (JSONException e) {

@@ -55,7 +55,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     HomeAdapter homeAdapter;
 
     RecyclerView recyclerView;
-    TextView btnBuy, tvHeader;
+    TextView btnBuy, tvHeader, tvHeader1;
     LinearLayout header;
     DatabaseHandler db;
 
@@ -78,7 +78,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.home_frag, container, false);
+        layout = inflater.inflate(R.layout.search_result_frag, container, false);
 
         Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
         Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
@@ -99,19 +99,20 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         emptyPlaceholder = (LinearLayout) layout.findViewById(R.id.empty_placeholder);
         emptyPlaceholder.setVisibility(View.GONE);
 
-        btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
+        //btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
+        tvHeader1 = (TextView) layout.findViewById(R.id.tv_header1);
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         header = (LinearLayout) layout.findViewById(R.id.header);
 
         db = new DatabaseHandler(getActivity());
 
-        if (db.getRowCount() > 0){
+        /*if (db.getRowCount() > 0){
             header.setVisibility(View.GONE);
         }else {
             header.setVisibility(View.VISIBLE);
-        }
+        }*/
 
 
         linearLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -120,10 +121,11 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        tvHeader.setTypeface(typefaceFmedium);
-        btnBuy.setTypeface(typefaceFutura);
+        tvHeader.setTypeface(typefaceFutura);
+        tvHeader1.setTypeface(typefaceFmedium);
+        //btnBuy.setTypeface(typefaceFutura);
 
-        btnBuy.setOnTouchListener(this);
+        //btnBuy.setOnTouchListener(this);
 
 
         callbackFragOpen = (CallbackFragOpen) getActivity();

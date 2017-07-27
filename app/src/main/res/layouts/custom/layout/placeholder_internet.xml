@@ -32,9 +32,13 @@
             android:text="Retry"
             android:layout_marginTop="20dp"
             android:textSize="18sp"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
             android:clickable="true"
-            android:textColor="@color/bright_sky_blue"/>
+            android:background="@drawable/btn_bg2"
+            android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/progress_bar"

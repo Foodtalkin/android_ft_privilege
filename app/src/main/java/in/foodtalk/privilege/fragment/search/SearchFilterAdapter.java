@@ -55,7 +55,6 @@ public class SearchFilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -74,7 +73,6 @@ public class SearchFilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             btnFilter = (LinearLayout) itemView.findViewById(R.id.btn_filter);
             tvFilter = (TextView) itemView.findViewById(R.id.tv_filter);
             filterCircle = itemView.findViewById(R.id.filter_circle);
-
             btnFilter.setOnTouchListener(this);
         }
 

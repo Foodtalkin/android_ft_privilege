@@ -73,6 +73,10 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     List<String> cost = new ArrayList<>();
     List<String> offer = new ArrayList<>();
 
+    String[] cityZone = {"Gurgaon", "Noida", "South Delhi", "North Delhi", "East Delhi", "West Delhi", "Central Delhi"};
+
+
+
     CallbackFragOpen callbackFragOpen;
 
     LinearLayout progressBar;
@@ -92,7 +96,6 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnLocation5 = (LinearLayout) layout.findViewById(R.id.btn_location5);
         btnLocation6 = (LinearLayout) layout.findViewById(R.id.btn_location6);
         btnLocation7 = (LinearLayout) layout.findViewById(R.id.btn_location7);
-
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
 
         cityZoneIds.clear();

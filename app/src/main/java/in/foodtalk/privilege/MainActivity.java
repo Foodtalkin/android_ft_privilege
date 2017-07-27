@@ -817,7 +817,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             case R.id.nav_favourites:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        ParseUtils.sendInfoToParse("01test","02test");
                         FavoritesFrag favoritesFrag = new FavoritesFrag();
                         setFragmentView(favoritesFrag, R.id.container, "favoritesFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
