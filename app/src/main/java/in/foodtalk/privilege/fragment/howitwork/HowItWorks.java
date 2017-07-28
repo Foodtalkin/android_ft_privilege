@@ -62,6 +62,7 @@ public class HowItWorks extends android.app.Fragment {
         fragments.add(new ConfirmSlide());
         fragments.add(new PurchaseSlide());
 
+
         mPager = (ViewPager) layout.findViewById(R.id.viewpager);
         mPagerAdapter = new HWPagerAdapter(fm, fragments);
         mPager.setAdapter(mPagerAdapter);

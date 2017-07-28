@@ -14,20 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/gradient_black_trans"></LinearLayout>
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:tabBackground="@drawable/tab_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"/>
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,43 +44,94 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_grey_two"
+        android:padding="15dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/explore_holder"
                 android:visibility="gone"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:text="Login"
-                android:padding="20dp"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_bg1"
-                android:id="@+id/txt_login"
-                android:textSize="15sp"
-                android:clickable="true"
-                />
+                android:orientation="vertical"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp">
+                <TextView
+                    android:id="@+id/txt_explore"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:textColor="@color/dark_grey"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:padding="15dp"
+                    android:layout_marginRight="100dp"
+                    android:gravity="center"
+                    android:layout_marginLeft="100dp"
+                    android:text="Enter"
+                    android:textSize="15sp"
+                    android:background="@drawable/btn_bg2"
+                    android:clickable="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pale_grey"
+                    android:text="Press 'ENTER' to start exploring offers. Signup when you are ready"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/txt_explore"
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/pale_grey"
+                android:text="Redeem on an offer of your choice. Ask the Restaurant to enter their PIN."/>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
-                android:textColor="@color/dark_grey"
-                android:layout_weight="1"
-                android:layout_marginBottom="32dp"
-                android:padding="15dp"
-                android:layout_marginRight="100dp"
-                android:gravity="center"
-                android:layout_marginLeft="100dp"
-                android:text="Enter"
-                android:textSize="15sp"
-                android:background="@drawable/btn_bg2"
-                android:clickable="true"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already a member? "
+                    android:textColor="@color/blue_grey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bright_sky_blue"
+                    android:text="sign in"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    android:id="@+id/txt_login"
+                    android:textSize="15sp"
+                    android:clickable="true"
+                    />
+                <TextView
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:padding="6dp"
+                    android:clickable="true"
+                    android:textColor="@color/bright_sky_blue"/>
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
