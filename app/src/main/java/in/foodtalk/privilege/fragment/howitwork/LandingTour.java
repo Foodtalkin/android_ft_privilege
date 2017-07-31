@@ -18,6 +18,8 @@ import in.foodtalk.privilege.R;
 public class LandingTour extends Fragment {
     View layout;
 
+    TextView tv1;
+
 
     @Nullable
     @Override
@@ -26,6 +28,10 @@ public class LandingTour extends Fragment {
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");
         TextView tvTitle = (TextView) layout.findViewById(R.id.tv_title);
         tvTitle.setTypeface(typeface);
+
+        tv1 = (TextView) layout.findViewById(R.id.tv1);
+        Typeface sanchezRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/sanchez_regular.ttf");
+        tv1.setTypeface(sanchezRegular);
         return layout;
     }
 }

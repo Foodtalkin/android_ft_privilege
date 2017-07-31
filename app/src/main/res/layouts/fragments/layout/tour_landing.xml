@@ -30,12 +30,12 @@
             android:src="@drawable/logo_text"
             />
         <TextView
+            android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="An Exclusive Dining &amp; Experience Club"
+            android:text="An Exclusive Dining &amp;\nExperiences Club"
             android:layout_marginTop="100dp"
             android:textAlignment="center"
-            android:textAllCaps="true"
             android:textSize="22sp"
             android:textColor="@color/pale_grey"/>
     </LinearLayout>

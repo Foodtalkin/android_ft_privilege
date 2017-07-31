@@ -47,7 +47,7 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
 
     FragmentManager fm;
 
-    String firstCopy = "Swipe to know more.";
+    String firstCopy = "Swipe to know more";
     ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,17 +129,17 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
                        tv1.setText(firstCopy);
                        break;
                    case 1:
-                       tv1.setText("Book a seat at the city’s most exciting Food events curated by Food Talk, exclusively for Privilege members.");
+                       tv1.setText("Book a seat at the city’s most exciting Food events exclusively for Privilege members");
                        break;
                    case 2:
-                       tv1.setText("Now unlock minimum 6 coupons per restaurant to enjoy Dining privileges for 1 year.");
+                       tv1.setText("Now unlock minimum 6 coupons per restaurant to enjoy Dining privileges for 1 year");
                        break;
                    case 3:
                        tv1.setText("Search for offers at your favourite restaurant\n" +
-                               "or discover new ones using filters.");
+                               "or discover new ones using filters");
                        break;
                    case 4:
-                       tv1.setText("Redeem an offer of your choice. Ask the Restaurant to enter their PIN.");
+                       tv1.setText("Redeem an offer of your choice. Ask the Restaurant to enter their PIN");
                        break;
                    case 5:
                        break;
