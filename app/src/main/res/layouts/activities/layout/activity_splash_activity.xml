@@ -58,8 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp">
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp">
                 <TextView
                     android:id="@+id/txt_explore"
                     android:visibility="visible"
@@ -69,10 +69,9 @@
                     android:textColor="@color/dark_grey"
                     android:layout_weight="1"
                     android:layout_marginBottom="10dp"
-                    android:padding="15dp"
-                    android:layout_marginRight="100dp"
+                    android:padding="20dp"
                     android:gravity="center"
-                    android:layout_marginLeft="100dp"
+
                     android:text="Enter"
                     android:textSize="15sp"
                     android:background="@drawable/btn_bg2"
@@ -81,7 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/pale_grey"
-                    android:text="Press 'ENTER' to start exploring offers. Signup when you are ready"
+                    android:textSize="16sp"
+                    android:text="Press 'ENTER' to start exploring offers. Signup when you are ready."
                     android:textAlignment="center"/>
             </LinearLayout>
 
@@ -90,10 +90,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/pale_grey"
+                android:textSize="16sp"
                 android:text="Redeem on an offer of your choice. Ask the Restaurant to enter their PIN."/>
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:tabBackground="@drawable/tab_selector"
                 app:tabGravity="center"
@@ -112,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/bright_sky_blue"
-                    android:text="sign in"
+                    android:text="Login"
                     android:padding="6dp"
                     android:gravity="center"
                     android:id="@+id/txt_login"
@@ -128,6 +129,7 @@
                     android:gravity="right"
                     android:padding="6dp"
                     android:clickable="true"
+                    android:textSize="16sp"
                     android:textColor="@color/bright_sky_blue"/>
             </LinearLayout>
 

@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/black1">
+    android:background="@color/background">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/tv_title"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Landing Screen"
+        android:textColor="@color/pale_grey"
+        android:textSize="18sp"
+        android:padding="15dp"
+        android:layout_centerHorizontal="true"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -9,23 +24,19 @@
         android:gravity="center"
         android:layout_centerInParent="true"
         android:paddingBottom="100dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_text"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="landing Screen"
-            android:textAllCaps="true"
-            android:textSize="22sp"
-            android:textColor="@color/pale_grey"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let every meal be a\nprivilege"
+            android:text="An Exclusive Dining &amp; Experience Club"
             android:layout_marginTop="100dp"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="22sp"
             android:textColor="@color/pale_grey"/>
-
     </LinearLayout>
-
 </RelativeLayout>

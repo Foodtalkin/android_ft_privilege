@@ -24,8 +24,8 @@ public class LandingTour extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.tour_landing, container, false);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");
-        //TextView tvTitle = (TextView) layout.findViewById(R.id.tv_title);
-        //tvTitle.setTypeface(typeface);
+        TextView tvTitle = (TextView) layout.findViewById(R.id.tv_title);
+        tvTitle.setTypeface(typeface);
         return layout;
     }
 }

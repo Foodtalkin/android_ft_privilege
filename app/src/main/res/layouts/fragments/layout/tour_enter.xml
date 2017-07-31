@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/black1">
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Privilege"
-        android:textColor="@color/pale_grey"
-        android:textSize="18sp"
-        android:padding="15dp"
-        android:layout_centerHorizontal="true"/>
+    android:background="@color/background">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:paddingBottom="100dp">
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="100dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Privilege"
+            android:textColor="@color/pale_grey"
+            android:textSize="18sp"
+            android:padding="15dp"
+            android:layout_centerHorizontal="true"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="30dp">
             <TextView
+                android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Privilege membership"
                 android:textSize="16sp"
                 android:textColor="@color/light_gold"/>
             <TextView
+                android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1200"
+                android:text="\u20B9 1200"
                 android:textSize="26sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/light_gold"/>
             <TextView
+                android:id="@+id/tv3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Per year"
                 android:textSize="16sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/light_gold"/>
         </LinearLayout>
         <TextView
@@ -49,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Handpicked 100 best restaurants\nin Delhi NCR"
             android:textSize="18sp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:textAlignment="center"
             android:textColor="@color/pale_grey"/>
         <TextView

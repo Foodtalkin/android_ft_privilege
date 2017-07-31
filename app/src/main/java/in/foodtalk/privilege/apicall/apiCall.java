@@ -71,6 +71,8 @@ public class ApiCall {
                                     Log.e("Response error", "Session has expired");
                                     getSessionToken(requestType, context, obj, url, tag, apiCallback);
                                     //logOut();
+                                }else {
+                                    apiCallback1.apiResponse(response, tag);
                                 }
                             }
                         } catch (JSONException e) {

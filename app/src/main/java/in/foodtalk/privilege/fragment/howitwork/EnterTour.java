@@ -19,13 +19,27 @@ public class EnterTour extends Fragment {
     View layout;
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.tour_enter, container, false);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");
         TextView tvTitle = (TextView) layout.findViewById(R.id.tv_title);
+        TextView tv1 = (TextView) layout.findViewById(R.id.tv1);
+        TextView tv2 = (TextView) layout.findViewById(R.id.tv2);
+        TextView tv3 = (TextView) layout.findViewById(R.id.tv3);
         tvTitle.setTypeface(typeface);
+
+        //Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");
+        Typeface futuraMedium = Typeface.createFromAsset(getActivity().getAssets(),"fonts/futura_medium.ttf");
+        Typeface futuraBold = Typeface.createFromAsset(getActivity().getAssets(),"fonts/futura_bold.otf");
+
+        tv1.setTypeface(futuraMedium);
+        tv2.setTypeface(futuraBold);
+        tv3.setTypeface(futuraMedium);
+
         return layout;
     }
 }
