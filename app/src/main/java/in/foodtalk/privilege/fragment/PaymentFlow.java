@@ -96,10 +96,15 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
             errorView.setVisibility(View.VISIBLE);
             successView.setVisibility(View.GONE);
             loaderView.setVisibility(View.GONE);
+            //-------fbEvents--
+            Bundle params = new Bundle();
+            params.putString("status", "faild");
+            AppController.getInstance().fbLogEvent("purchase", params);
         }else if (screen.equals("success")){
             errorView.setVisibility(View.GONE);
             successView.setVisibility(View.VISIBLE);
             loaderView.setVisibility(View.GONE);
+
         }else if (screen.equals("loader")){
             errorView.setVisibility(View.GONE);
             successView.setVisibility(View.GONE);
@@ -174,6 +179,14 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                         setScreen("success");
                         Log.d(TAG,"savedResponse: "+AppController.getInstance().loginResponse);
                         //SaveLogin.addUser(getActivity(), response, "");
+                       // int amount = Integer.parseInt(response.getJSONObject("result").getString("amount"));
+                        int amount = 00;
+                        Log.d(TAG,"payment success:"+ amount);
+                        //-------fbEvents--
+                        Bundle params = new Bundle();
+                        params.putString("status", "success");
+                        params.putInt("Amount",amount);
+                        AppController.getInstance().fbLogEvent("purchase", params);
                         saveUser(response);
                     }else {
                         setScreen("error");

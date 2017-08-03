@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Food Talk Privilege</string>
     <string name="rs">\u20B9</string>
-    <string name="emailPattern">"[a-zA-Z0-9._-]+@[a-z0-9]+\\.+[a-z0-9.]+"</string>
+    <string name="emailPattern">"[a-zA-Z0-9._-]+@[a-z0-9._-]+\\.+[a-z0-9.]+"</string>
     <string name="error_internet">Internet is not working</string>
+    <string name="facebook_app_id">131166120735954</string>
 
     <string name="parseAppID">ftp</string>
     <string name="successCopy">

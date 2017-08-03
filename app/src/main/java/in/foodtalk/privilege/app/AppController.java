@@ -10,6 +10,8 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.instamojo.android.Instamojo;
 
@@ -42,6 +44,8 @@ public class AppController extends Application {
     public String sessionId;
     public JSONObject loginResponse;
 
+    AppEventsLogger logger;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -59,6 +63,10 @@ public class AppController extends Application {
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         parseUtils.registerParse(this);
+
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        logger = AppEventsLogger.newLogger(this);
 
 
     }
@@ -107,4 +115,15 @@ public class AppController extends Application {
             mRequestQueue.cancelAll(tag);
         }
     }
+
+    //-----facebook logEvents---------------------
+    public void fbLogEvent(String eventName, Bundle bundle){
+        if (bundle != null){
+            logger.logEvent(eventName, bundle);
+        }else {
+            logger.logEvent(eventName);
+        }
+
+    }
+
 }

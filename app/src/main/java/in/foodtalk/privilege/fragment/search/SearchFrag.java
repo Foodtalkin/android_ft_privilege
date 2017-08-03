@@ -31,6 +31,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
@@ -524,6 +525,10 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }
         Log.d(TAG, "url param: "+urlParams);
         callbackFragOpen.openFrag("searchResult", urlParams);
+
+        Bundle params = new Bundle();
+        params.putString("query", urlParams);
+        AppController.getInstance().fbLogEvent("search", params);
 
     }
 

@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,6 +62,8 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.otp_verify, container, false);
 
+        hideSoftKeyboard();
+
         otpBox = (LinearLayout) layout.findViewById(R.id.otp_box);
 
         Keypad keypad = new Keypad(layout, this);
@@ -101,6 +105,12 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
         countDown();
         return layout;
     }
+    public void hideSoftKeyboard() {
+        if(getActivity().getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
     @Override
     public void keyRead(String value) {
         typeOtpAdd(value);
@@ -111,7 +121,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             tvOtp1.setText(value);
         }else if (tvOtp2.length() == 0){
             tvOtp2.setText(value);
-        }else if (tvOtp3.length() == 0 ){
+        }else if (tvOtp3.length() == 0){
             tvOtp3.setText(value);
         }else if (tvOtp4.length() == 0){
             tvOtp4.setText(value);

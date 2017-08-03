@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.fragment.howitwork.ConfirmSlide;
 import in.foodtalk.privilege.fragment.howitwork.DineSlide;
 import in.foodtalk.privilege.fragment.howitwork.DiningTour;
@@ -172,6 +173,7 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
                     case MotionEvent.ACTION_UP:
                         gotoMain();
                         Log.d(TAG, "Main");
+                        AppController.getInstance().fbLogEvent("First_Enter", null);
                         break;
                 }
                 break;

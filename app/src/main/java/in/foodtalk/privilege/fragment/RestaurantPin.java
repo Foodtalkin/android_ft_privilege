@@ -21,6 +21,7 @@ import org.w3c.dom.Text;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -167,6 +168,11 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
                     if (response.getString("status").equals("OK")){
                         callbackFragOpen.openFrag("successFrag", response.getJSONObject("result").getString("id"));
                         tvError.setVisibility(View.GONE);
+                        //--fbEvents--
+                        Bundle params = new Bundle();
+                        params.putString("status", "success");
+                        params.putInt("offer_id",00);
+                        AppController.getInstance().fbLogEvent("redemption", params);
                     }else {
                         ToastShow.showToast(getActivity(), "Invalid PIN");
                         tvOtp1.setText("");

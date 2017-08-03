@@ -768,6 +768,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         drawerLayout.openDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("Navigation_button", null);
                         break;
                 }
                 break;
@@ -777,6 +778,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         Intent i = new Intent(MainActivity.this, Login.class);
                         startActivity(i);
+                        AppController.getInstance().fbLogEvent("login_view", null);
                         break;
                 }
                 break;
@@ -786,6 +788,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         //signUp();
                         signupAlert();
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("buynow_view", null);
                         break;
                 }
                 break;
@@ -794,6 +797,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         Log.d("MainActivity","search btn clicked");
                         setFragmentView(searchFrag, R.id.container, "searchFrag", true);
+
                         break;
                 }
                 break;
@@ -802,6 +806,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG,"logout clicked");
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("logout", null);
                         //logOut();
                         logoutDialog();
                         break;
@@ -811,6 +816,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         email();
+                        AppController.getInstance().fbLogEvent("contact_us_view", null);
                         break;
                 }
                 break;
@@ -820,6 +826,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         FavoritesFrag favoritesFrag = new FavoritesFrag();
                         setFragmentView(favoritesFrag, R.id.container, "favoritesFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("favorites_view", null);
                         break;
                 }
                 break;
@@ -829,6 +836,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         HistoryFrag historyFrag = new HistoryFrag();
                         setFragmentView(historyFrag, R.id.container, "historyFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("history_view", null);
                         break;
                 }
                 break;
@@ -837,6 +845,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         webView("http://foodtalk.in/app/legal.html");
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("legal_view", null);
                         break;
                 }
                 break;
@@ -845,6 +854,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         webView("http://foodtalk.in/app/faq.html");
                         drawerLayout.closeDrawer(Gravity.LEFT);
+
                         break;
                 }
                 break;
@@ -854,6 +864,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         AccountFrag accountFrag = new AccountFrag();
                         setFragmentView(accountFrag, R.id.container, "historyFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("account_view", null);
                         break;
                 }
                 break;
@@ -876,6 +887,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         HowItWorks howItWorks = new HowItWorks();
                         setFragmentView(howItWorks, R.id.container, "historyFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("howitwork_view", null);
                         break;
                 }
                 break;
@@ -886,6 +898,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         setFragmentView(homeFrag, R.id.container, "homeFrag", false);
                         clearBackStack();
                         drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("home_view", null);
                         break;
                 }
                 break;
@@ -895,6 +908,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         Log.d(TAG, "nav exprines");
                         experines();
+                        AppController.getInstance().fbLogEvent("experiences_view", null);
                         break;
                 }
                 break;
