@@ -148,7 +148,7 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
             String phone = tvPhone.getText().toString();
             if (status.equals("OK")){
                 Intent intent = new Intent(Login.this, LoginOtp.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("phone", phone);
                 startActivity(intent);
             }else {

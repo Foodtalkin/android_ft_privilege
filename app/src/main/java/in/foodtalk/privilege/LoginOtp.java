@@ -285,9 +285,13 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             public void onClick(View view) {
                 dialog.dismiss();
                 Intent intent = new Intent(LoginOtp.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Log.e(TAG, "flag activity clear top");
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.putExtra("fragment", "paymentFlow");
                 startActivity(intent);
+                finish();
                 //tvVeg.setText("No");
             }
         });

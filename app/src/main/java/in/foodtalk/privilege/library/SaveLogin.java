@@ -1,5 +1,6 @@
 package in.foodtalk.privilege.library;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -67,7 +68,12 @@ public class SaveLogin {
 
             if (openFrag.equals("homeFrag")){
                 Intent intent = new Intent(context, MainActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Log.e("SaveLogin", "flag activity clear top");
                 context.startActivity(intent);
+                ((Activity)context).finish();
             }
         }else {
             Log.e("SaveLogin", "message: "+ message);

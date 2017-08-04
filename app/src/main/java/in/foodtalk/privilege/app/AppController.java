@@ -123,7 +123,5 @@ public class AppController extends Application {
         }else {
             logger.logEvent(eventName);
         }
-
     }
-
 }
