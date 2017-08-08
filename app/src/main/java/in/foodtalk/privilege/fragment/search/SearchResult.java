@@ -3,6 +3,8 @@ package in.foodtalk.privilege.fragment.search;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import in.foodtalk.privilege.R;
@@ -125,6 +128,8 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         tvHeader1.setTypeface(typefaceFmedium);
         //btnBuy.setTypeface(typefaceFutura);
 
+        tvHeader.setText(offerUrl);
+
         //btnBuy.setOnTouchListener(this);
 
 
@@ -135,6 +140,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         endlessScrolling();
+        //searchFilter(offerUrl);
 
 
 
@@ -147,6 +153,24 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             }
         });*/
         return layout;
+    }
+
+    private String searchFilter(String query){
+        Uri uri = Uri.parse("http://google.com/offers?"+query);
+        String paramValue = uri.getQueryParameter("cost");
+
+        for (String key : uri.getQueryParameterNames()) {
+            String value = uri.getQueryParameter(key);
+            List<String> items = Arrays.asList(value.split("\\s*,\\s*"));
+
+            for (int i = 0; i< items.size();i++){
+                Log.e(TAG,"value:"+key+" : "+ items.get(i));
+            }
+            //Do something with value  key, like using a switch/case
+        }
+
+        //Log.e(TAG, offerUrl + " : "+uri.getQueryParameterNames()+" : " + paramValue);
+        return null;
     }
 
     /**
@@ -227,6 +251,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             offerCardObj.cardImage = listArray.getJSONObject(i).getString("card_image");
             offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
             offerCardObj.type = "offer";
+            offerCardObj.primaryCuisine = listArray.getJSONObject(i).getString("primary_cuisine");
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){

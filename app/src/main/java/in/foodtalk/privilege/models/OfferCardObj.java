@@ -16,6 +16,6 @@ public class OfferCardObj {
     public String coverImage;
     public String cardImage;
     public String oneLiner;
-
+    public String primaryCuisine;
     public String type;
 }

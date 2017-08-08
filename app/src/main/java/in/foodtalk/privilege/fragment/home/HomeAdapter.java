@@ -100,13 +100,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
            // offerCard.tvPrice.setText(rs+" "+offerCardObj.cost);
             Log.d(TAG, "outletCount: "+ offerCardObj.outletCount);
-            if (Integer.parseInt(offerCardObj.outletCount) > 1){
+            /*if (Integer.parseInt(offerCardObj.outletCount) > 1){
                 offerCard.tvLocation.setText(offerCardObj.outletCount+" Location");
             }else if (Integer.parseInt(offerCardObj.offerCount) > 1){
                 offerCard.tvLocation.setText(offerCardObj.offerCount+" Offers");
             }else {
                 offerCard.tvLocation.setText(offerCardObj.offerCount+" Offer");
-            }
+            }*/
+
+            offerCard.tvLocation.setText(offerCardObj.primaryCuisine);
 
             offerCard.imgView.getLayoutParams().width = imgSize;
             offerCard.imgView.getLayoutParams().height = imgSize;

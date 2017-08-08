@@ -1,5 +1,6 @@
 package in.foodtalk.privilege;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -151,6 +152,9 @@ public class Login extends AppCompatActivity implements View.OnTouchListener, Ap
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("phone", phone);
                 startActivity(intent);
+
+                finish();
+                //Log.e(TAG,"start loginOtp");
             }else {
                 Log.e(TAG,"error Msg: "+ message);
                 String msg = "Uh oh!\nLooks like "+tvPhone.getText().toString()+" is not registered with us.";
