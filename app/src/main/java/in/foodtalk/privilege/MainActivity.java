@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-
+        homeFrag = new HomeFrag();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             }
         }else {
             searchFrag = new SearchFrag();
-            homeFrag = new HomeFrag();
+
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
         }
 
@@ -326,8 +326,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     private void onFragmentChange(Fragment fragment){
         if (fragment == homeFrag){
             searchBtn.setVisibility(View.VISIBLE);
+            Log.e(TAG, "fragment == homeFrag");
         }else {
             searchBtn.setVisibility(View.INVISIBLE);
+            Log.e(TAG, "fragment != homeFrag");
         }
         if (fragment == offerDetailsFrag ){
             offerBarButtons.setVisibility(View.VISIBLE);
@@ -414,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(restaurantPin, R.id.container, "offerDetailsFrag", true);
         }
         if (fragName.equals("homeFrag")){
-            HomeFrag homeFrag = new HomeFrag();
+            //HomeFrag homeFrag = new HomeFrag();
             setFragmentView(homeFrag, R.id.container, "homeFrag", false);
 
             if (value.equals("fromRedeemSuccess")){

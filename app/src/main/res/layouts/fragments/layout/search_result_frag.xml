@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_marginTop="20dp"
-            android:text="No results for these filters. Please try again with diffrent filteres."/>
+            android:text="No results for these filters. Please try again with diffrent filters."/>
 
         <TextView
             android:id="@+id/btn_edit_filter"

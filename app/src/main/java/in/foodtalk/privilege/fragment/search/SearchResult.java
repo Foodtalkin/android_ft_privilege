@@ -32,6 +32,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -124,11 +125,12 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        tvHeader.setTypeface(typefaceFutura);
+        //tvHeader.setTypeface(typefaceFutura);
         tvHeader1.setTypeface(typefaceFmedium);
         //btnBuy.setTypeface(typefaceFutura);
 
-        tvHeader.setText(offerUrl);
+        //tvHeader.setText(offerUrl);
+        tvHeader.setText("Displaying: "+AppController.getInstance().filtersName);
 
         //btnBuy.setOnTouchListener(this);
 

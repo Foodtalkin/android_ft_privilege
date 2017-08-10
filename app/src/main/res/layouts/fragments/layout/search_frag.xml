@@ -85,6 +85,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gurgaon"
@@ -110,6 +111,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Noida"
@@ -135,6 +137,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="South Delhi"
@@ -160,6 +163,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="North Delhi"
@@ -185,6 +189,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="East Delhi"
@@ -210,6 +215,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="West Delhi"
@@ -235,6 +241,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_location7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Central Delhi"
@@ -279,6 +286,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_cost1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="₹ - BUDGET"
@@ -304,6 +312,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_cost2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="₹ ₹ - MID-RANGE"
@@ -329,6 +338,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_cost3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="₹ ₹ ₹ - SPLURGE"
@@ -373,6 +383,7 @@
                     android:background="@drawable/circle_select"
                     />
                 <TextView
+                    android:id="@+id/tv_offer1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1+1 Appetizer"
@@ -398,6 +409,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_offer2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1+1 Main Course"
@@ -423,6 +435,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_offer3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1+1 Cocktail"
@@ -448,6 +461,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_offer4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="15% off on Food &amp; Drinks"
@@ -473,6 +487,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_offer5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20% off on Food only"
@@ -498,6 +513,7 @@
                         android:background="@drawable/circle_select"
                         />
                     <TextView
+                        android:id="@+id/tv_offer6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1+1 on Buffet"

@@ -18,4 +18,5 @@ public class OfferCardObj {
     public String oneLiner;
     public String primaryCuisine;
     public String type;
+    public String savingAmount;
 }

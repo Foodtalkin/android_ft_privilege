@@ -67,9 +67,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     RecyclerView.LayoutManager mLayoutManager;
 
-    LinearLayoutManager linearLayoutManager;
+   // LinearLayoutManager linearLayoutManager;
 
-   // GridLayoutManager linearLayoutManager;
+    GridLayoutManager linearLayoutManager;
 
     LinearLayout progressBar;
     LinearLayout placeholderInternet;
@@ -78,6 +78,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     String nextUrl;
 
     Boolean saveState = false;
+
+    String sId;
+    Boolean savingsLoaded = false;
+    String savingsAmount;
+
 
 
 
@@ -102,6 +107,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
 
 
+
+
         btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
         tvHeader = (TextView) layout.findViewById(R.id.tv_header);
 
@@ -109,11 +116,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         header = (LinearLayout) layout.findViewById(R.id.header);
 
         db = new DatabaseHandler(getActivity());
+        sId = db.getUserDetails().get("sessionId");
+        savingsLoaded = false;
 
 
 
         if (db.getRowCount() > 0){
             header.setVisibility(View.GONE);
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_PROFILE+"?sessionid="+sId, "savings", this);
         }else {
             header.setVisibility(View.VISIBLE);
         }
@@ -160,6 +170,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+
 
         loadData("loadOffers");
 
@@ -232,7 +245,16 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         progressBar.setVisibility(View.GONE);
 
         if (tag.equals("loadOffers")){
+
             offerCardList.clear();
+            if (savingsLoaded){
+                if (!savingsAmount.equals("0") && !savingsAmount.equals("")){
+                    OfferCardObj offerCardObj = new OfferCardObj();
+                    offerCardObj.type = "savings";
+                    offerCardObj.savingAmount = savingsAmount;
+                    offerCardList.add(offerCardObj);
+                }
+            }
         }else {
             loadingMore = false;
             remove();
@@ -266,6 +288,21 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 homeAdapter.notifyDataSetChanged();
             }
         }
+        linearLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch(homeAdapter.getItemViewType(position)){
+                    case 0:
+                        return 2;
+                    case 2:
+                        return 2;
+                    case 1:
+                        return 1;
+                    default:
+                        return -1;
+                }
+            }
+        });
         endlessScrolling();
     }
     EndlessRecyclerViewScrollListener scrollListener;
@@ -295,7 +332,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     if (response.getString("status").equals("OK")){
                         sendToAdapter(response, tag);
                     }
+                }else if (tag.equals("savings")){
+                    if (response.getString("status").equals("OK")){
+                        savingsLoaded = true;
+                        savingsAmount = response.getJSONObject("result").getString("saving");
+                    }
+
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -305,6 +349,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 placeholderInternet.setVisibility(View.VISIBLE);
             }
         }
+
     }
 
     @Override

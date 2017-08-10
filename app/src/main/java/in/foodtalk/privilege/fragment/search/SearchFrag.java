@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -57,6 +58,9 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     View circleL1, circleL2, circleL3, circleL4, circleL5, circleL6, circleL7, circleCost1, circleCost2, circleCost3,
     circleOffer1, circleOffer2, circleOffer3, circleOffer4, circleOffer5, circleOffer6;
 
+    TextView tvLocation1, tvLocation2, tvLocation3, tvLocation4, tvLocation5, tvLocation6, tvLocation7,
+            tvCost1, tvCost2, tvCost3, tvOffer1, tvOffer2, tvOffer3, tvOffer4, tvOffer5, tvOffer6;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
@@ -78,6 +82,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
     List<String> cityZoneName = new ArrayList<>();
     List<String> offerName = new ArrayList<>();
+
+    List<String> filtersName = new ArrayList<>();
 
     String[] cityZone = {"Gurgaon", "Noida", "South Delhi", "North Delhi", "East Delhi", "West Delhi", "Central Delhi"};
 
@@ -108,6 +114,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         cuisineIds.clear();
         cost.clear();
         offer.clear();
+        filtersName.clear();
 
 
         btnApplyFilters = (LinearLayout) layout.findViewById(R.id.btn_apply_filters);
@@ -153,6 +160,25 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnOffer4.setOnTouchListener(this);
         btnOffer5.setOnTouchListener(this);
         btnOffer6.setOnTouchListener(this);
+
+        tvLocation1 = (TextView) layout.findViewById(R.id.tv_location1);
+        tvLocation2 = (TextView) layout.findViewById(R.id.tv_location2);
+        tvLocation3 = (TextView) layout.findViewById(R.id.tv_location3);
+        tvLocation4 = (TextView) layout.findViewById(R.id.tv_location4);
+        tvLocation5 = (TextView) layout.findViewById(R.id.tv_location5);
+        tvLocation6 = (TextView) layout.findViewById(R.id.tv_location6);
+        tvLocation7 = (TextView) layout.findViewById(R.id.tv_location7);
+
+        tvCost1 = (TextView) layout.findViewById(R.id.tv_cost1);
+        tvCost2 = (TextView) layout.findViewById(R.id.tv_cost2);
+        tvCost3 = (TextView) layout.findViewById(R.id.tv_cost3);
+
+        tvOffer1 = (TextView) layout.findViewById(R.id.tv_offer1);
+        tvOffer2 = (TextView) layout.findViewById(R.id.tv_offer2);
+        tvOffer3 = (TextView) layout.findViewById(R.id.tv_offer3);
+        tvOffer4 = (TextView) layout.findViewById(R.id.tv_offer4);
+        tvOffer5 = (TextView) layout.findViewById(R.id.tv_offer5);
+        tvOffer6 = (TextView) layout.findViewById(R.id.tv_offer6);
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
@@ -290,11 +316,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer1.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("1");
                 offerName.add("1+1 Appetizer");
+                filtersName.add(tvOffer1.getText().toString());
             }else {
                 offer1 = false;
                 circleOffer1.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("1");
                 offerName.remove("1+1 Appetizer");
+                filtersName.remove(tvOffer1.getText().toString());
             }
         }
         if (offerV.equals("2")){
@@ -303,11 +331,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer2.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("2");
                 offerName.add("1+1 Main Course");
+                filtersName.add(tvOffer2.getText().toString());
             }else {
                 offer2 = false;
                 circleOffer2.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("2");
                 offerName.remove("1+1 Main Course");
+                filtersName.remove(tvOffer2.getText().toString());
             }
         }
         if (offerV.equals("3")){
@@ -316,11 +346,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer3.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("3");
                 offerName.add("1+1 Cocktail");
+                filtersName.add(tvOffer3.getText().toString());
             }else {
                 offer3 = false;
                 circleOffer3.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("3");
                 offerName.remove("1+1 Cocktail");
+                filtersName.remove(tvOffer3.getText().toString());
             }
         }
         if (offerV.equals("4")){
@@ -329,11 +361,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer4.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("4");
                 offerName.add("15% off on Food & Drinks");
+                filtersName.remove(tvOffer4.getText().toString());
             }else {
                 offer4 = false;
                 circleOffer4.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("4");
                 offerName.remove("15% off on Food & Drinks");
+                filtersName.remove(tvOffer4.getText().toString());
             }
         }
         if (offerV.equals("5")){
@@ -342,11 +376,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer5.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("5");
                 offerName.add("20% off on Food only");
+                filtersName.add(tvOffer5.getText().toString());
             }else {
                 offer5 = false;
                 circleOffer5.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("5");
                 offerName.remove("20% off on Food only");
+                filtersName.remove(tvOffer5.getText().toString());
             }
         }
         if (offerV.equals("6")){
@@ -355,11 +391,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleOffer6.setBackgroundResource(R.drawable.circle_selected);
                 offer.add("6");
                 offerName.add("1+1 on Buffet");
+                filtersName.add(tvOffer6.getText().toString());
             }else {
                 offer6 = false;
                 circleOffer6.setBackgroundResource(R.drawable.circle_select);
                 offer.remove("6");
                 offerName.remove("1+1 on Buffet");
+                filtersName.remove(tvOffer6.getText().toString());
             }
         }
     }
@@ -370,21 +408,25 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 cost1 = true;
                 circleCost1.setBackgroundResource(R.drawable.circle_selected);
                 cost.add("budget");
+                filtersName.add(tvCost1.getText().toString());
             }else {
                 cost1 = false;
                 circleCost1.setBackgroundResource(R.drawable.circle_select);
                 cost.remove("budget");
+                filtersName.remove(tvCost1.getText().toString());
             }
         }
         if (costP.equals("2")){
             if (cost2 == false){
                 cost2 = true;
                 circleCost2.setBackgroundResource(R.drawable.circle_selected);
-                cost.add("midrange");
+                cost.add("mid");
+                filtersName.add(tvCost2.getText().toString());
             }else {
                 cost2 = false;
                 circleCost2.setBackgroundResource(R.drawable.circle_select);
-                cost.remove("midrange");
+                cost.remove("mid");
+                filtersName.remove(tvCost2.getText().toString());
             }
         }
         if (costP.equals("3")){
@@ -392,10 +434,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 cost3 = true;
                 circleCost3.setBackgroundResource(R.drawable.circle_selected);
                 cost.add("splurge");
+                filtersName.add(tvCost3.getText().toString());
             }else {
                 cost3 = false;
                 circleCost3.setBackgroundResource(R.drawable.circle_select);
                 cost.remove("splurge");
+                filtersName.remove(tvCost3.getText().toString());
             }
         }
     }
@@ -406,12 +450,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL1.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("1");
                 cityZoneName.add("Gurgaon");
+                filtersName.add(tvLocation1.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location1 = false;
                 circleL1.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("1");
                 cityZoneName.remove("Gurgaon");
+                filtersName.remove(tvLocation1.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -421,12 +467,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL2.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("2");
                 cityZoneName.add("Noida");
+                filtersName.add(tvLocation2.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location2 = false;
                 circleL2.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("2");
                 cityZoneName.remove("Noida");
+                filtersName.remove(tvLocation2.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -436,12 +484,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL3.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("3");
                 cityZoneName.add("South Delhi");
+                filtersName.add(tvLocation3.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location3 = false;
                 circleL3.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("3");
                 cityZoneName.remove("South Delhi");
+                filtersName.remove(tvLocation3.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -451,12 +501,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL4.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("4");
                 cityZoneName.add("North Delhi");
+                filtersName.add(tvLocation4.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location4 = false;
                 circleL4.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("4");
                 cityZoneName.remove("North Delhi");
+                filtersName.remove(tvLocation4.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -466,12 +518,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL5.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("5");
                 cityZoneName.add("East Delhi");
+                filtersName.add(tvLocation5.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location5 = false;
                 circleL5.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("5");
                 cityZoneName.remove("East Delhi");
+                filtersName.remove(tvLocation5.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -481,12 +535,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL6.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("6");
                 cityZoneName.add("West Delhi");
+                filtersName.add(tvLocation6.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location6 = false;
                 circleL6.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("6");
                 cityZoneName.remove("West Delhi");
+                filtersName.remove(tvLocation6.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -496,12 +552,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
                 circleL7.setBackgroundResource(R.drawable.circle_selected);
                 cityZoneIds.add("7");
                 cityZoneName.add("Central Delhi");
+                filtersName.add(tvLocation7.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location7 = false;
                 circleL7.setBackgroundResource(R.drawable.circle_select);
                 cityZoneIds.remove("7");
                 cityZoneName.remove("Central Delhi");
+                filtersName.remove(tvLocation7.getText().toString());
                 Log.d(TAG, "location remove");
             }
         }
@@ -556,11 +614,42 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }
         Log.d(TAG, "url param: "+urlParams);
         callbackFragOpen.openFrag("searchResult", urlParams);
+        //makeFilterString();
+
+        Log.d(TAG,"all filters: "+filtersName);
+        AppController.getInstance().filtersName = "";
+        if (filtersName.size() > 0){
+            if (filtersName.size() > 1){
+                if (filtersName.size() > 2){
+                    int moreC = filtersName.size()-2;
+                    AppController.getInstance().filtersName = filtersName.get(0)+", "+filtersName.get(1)+" + "+ Integer.toString(moreC)+" filters";
+                }else {
+                    AppController.getInstance().filtersName = filtersName.get(0)+", "+filtersName.get(1);
+                }
+            }else {
+                AppController.getInstance().filtersName = filtersName.get(0);
+            }
+
+        }
+
 
         Bundle params = new Bundle();
         params.putString("query", urlParams);
         AppController.getInstance().fbLogEvent("search", params);
 
+    }
+
+    private String makeFilterString(){
+        /*List<String> cityZoneIds = new ArrayList<>();
+        List<String> cuisineIds = new ArrayList<>();
+        List<String> cost = new ArrayList<>();
+        List<String> offer = new ArrayList<>();
+
+        List<String> cityZoneName = new ArrayList<>();
+        List<String> offerName = new ArrayList<>();*/
+
+
+        return null;
     }
 
     private String searchFilter(String query){

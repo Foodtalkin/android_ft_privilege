@@ -3,6 +3,7 @@ package in.foodtalk.privilege.fragment.home;
 import android.content.Context;
 import android.content.Loader;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.nfc.Tag;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -27,7 +29,11 @@ import org.json.JSONObject;
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
+import in.foodtalk.privilege.app.DatabaseHandler;
+import in.foodtalk.privilege.app.Url;
+import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.models.OfferCardObj;
 
@@ -44,8 +50,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     CallbackFragOpen callbackFragOpen;
 
-    private final int VIEW_LOADER = 0;
-    private final int VIEW_OFFER = 1;
+    public final int VIEW_LOADER = 0;
+    public final int VIEW_OFFER = 1;
+    public final int VIEW_SAVING = 2;
+
+    DatabaseHandler db;
+    String sId;
 
     String rs;
 
@@ -65,6 +75,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         display.getSize(size);
         imgSize = size.x/2;
 
+        db = new DatabaseHandler(context);
+        sId = db.getUserDetails().get("sessionId");
+
         rs = context.getResources().getString(R.string.rs);
     }
     @Override
@@ -77,6 +90,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             View view = layoutInflater.inflate(R.layout.loader_card, parent, false);
             LoaderCard loaderCard = new LoaderCard(view);
             return  loaderCard;
+        }else if (viewType == VIEW_SAVING){
+            View view = layoutInflater.inflate(R.layout.savings_card, parent, false);
+            SavingsCard savingsCard = new SavingsCard(view);
+            return savingsCard;
         }else {
             return null;
         }
@@ -134,6 +151,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 sglp.setFullSpan(true);
                 holder.itemView.setLayoutParams(sglp);
             }*/
+        }else if (holder instanceof SavingsCard){
+            OfferCardObj offerCardObj = offerCardList.get(position);
+            SavingsCard savingsCard = (SavingsCard) holder;
+
+            savingsCard.tvLine.setText("You have saved "+rs+" "+offerCardObj.savingAmount);
         }
 
     }
@@ -149,6 +171,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (offerCardList.get(position).type!= null){
             if (offerCardList.get(position).type.equals("loader")){
                 return VIEW_LOADER;
+            }else if (offerCardList.get(position).type.equals("savings")){
+                return VIEW_SAVING;
             }else {
                 return VIEW_OFFER;
             }
@@ -167,6 +191,27 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public LoaderCard(View itemView) {
             super(itemView);
             loaderView = (RelativeLayout) itemView.findViewById(R.id.loader_view);
+        }
+    }
+    class SavingsCard extends RecyclerView.ViewHolder{
+        TextView tvLine;
+        TextView tvLine1;
+        Typeface typefaceFmedium= Typeface.createFromAsset(context.getAssets(), "fonts/futura_medium.ttf");
+        public SavingsCard(View itemView) {
+            super(itemView);
+            tvLine = (TextView) itemView.findViewById(R.id.tv_line);
+            tvLine1 = (TextView) itemView.findViewById(R.id.tv_line1);
+            //tvLine.setTypeface(typefaceFmedium);
+            tvLine1.setTypeface(typefaceFmedium);
+            tvLine.setText("You have saved "+rs+" --");
+            ApiCallback apiCallback1 = new ApiCallback() {
+                @Override
+                public void apiResponse(JSONObject response, String tag) {
+                    Log.d(TAG,"savings loaded");
+                }
+            };
+           // ApiCall.jsonObjRequest(Request.Method.GET, context, null, Url.URL_PROFILE+"?sessionid="+sId, "savings", apiCallback1);
+            Log.d(TAG,"savings api call");
         }
     }
 

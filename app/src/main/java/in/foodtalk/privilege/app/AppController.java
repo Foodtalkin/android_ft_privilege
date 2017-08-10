@@ -44,6 +44,8 @@ public class AppController extends Application {
     public String sessionId;
     public JSONObject loginResponse;
 
+    public String filtersName;
+
     AppEventsLogger logger;
 
     @Override
