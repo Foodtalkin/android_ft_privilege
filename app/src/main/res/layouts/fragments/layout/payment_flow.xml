@@ -5,7 +5,8 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_grey"
     android:paddingLeft="40dp"
-    android:paddingRight="40dp">
+    android:paddingRight="40dp"
+    android:clickable="true">
 
     <RelativeLayout
         android:id="@+id/loader_view"

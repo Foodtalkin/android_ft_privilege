@@ -130,6 +130,7 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         JSONObject jsonObject = new JSONObject();
         String sId = AppController.getInstance().sessionId;
         setScreen("loader");
+        //setScreen("success");
         try {
             jsonObject.put("subscription_type_id", "1");
 
