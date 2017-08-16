@@ -10,11 +10,13 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.instamojo.android.Instamojo;
 
+import io.fabric.sdk.android.Fabric;
 import org.json.JSONObject;
 
 import in.foodtalk.privilege.helper.ParseUtils;
@@ -57,6 +59,7 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         Instamojo.initialize(this);
         Instamojo.setLogLevel(Log.DEBUG);
 

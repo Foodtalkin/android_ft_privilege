@@ -273,6 +273,13 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         searchList.clear();
         JSONArray jsonArray = response.getJSONObject("result").getJSONArray("hits");
         Log.d(TAG, "jsonArray length: "+ jsonArray.length());
+
+        if (jsonArray.length() > 0){
+            recyclerView.setVisibility(View.VISIBLE);
+        }else {
+            recyclerView.setVisibility(View.GONE);
+        }
+
         for (int i = 0; i < jsonArray.length(); i++){
             SearchObj searchObj = new SearchObj();
             /*searchObj._index = jsonArray.getJSONObject(i).getString("_intex");

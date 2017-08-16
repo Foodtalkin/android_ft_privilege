@@ -7,10 +7,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +47,9 @@ import com.instamojo.android.network.Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
@@ -134,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         db = new DatabaseHandler(this);
 
+
+        //getKeyHash();
 
 
         checkPermission();
@@ -928,6 +937,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             signupAlert();
         }
     }
+
+    public void forceCrash() {
+        throw new RuntimeException("This is a crash");
+    }
+
     private void checkPermission() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -1073,5 +1087,30 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         editor.putString("ratingPopup", "1");
         //editor.putInt("idName", 12);
         editor.apply();
+    }
+
+    private void getKeyHash(){
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "in.foodtalk.privilege",  // replace with your unique package name
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                Log.d("KeyHash:", hashKey);
+               // ToastShow.showToast(this, hashKey);
+
+
+
+                /*ClipboardManager clipboard = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("hashKey", hashKey);
+                clipboard.setPrimaryClip(clip);*/
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 }
