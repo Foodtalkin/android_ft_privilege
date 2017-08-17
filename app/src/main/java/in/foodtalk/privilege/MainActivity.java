@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -208,10 +209,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         offerBarButtons = (LinearLayout) findViewById(R.id.offer_bar_buttons);
 
 
-
-
-
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             String frag = bundle.getString("fragment");
@@ -251,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         checkAndOpenPlayStore();
 
     }
+
+
 
     private void setUserProperty(){
         //Sets whether analytics collection is enabled for this app on this device.
@@ -908,7 +907,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         //HomeFrag homeFrag = new HomeFrag();
-                        setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+                        setFragmentView(homeFrag, R.id.container, "homeFrag", true);
                         clearBackStack();
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         AppController.getInstance().fbLogEvent("home_view", null);

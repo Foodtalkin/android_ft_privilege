@@ -130,7 +130,6 @@ public class ApiCall {
         try {
             obj1.put("refresh_token", refreshToken);
             //Log.d("refreshToken", refreshToken);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,7 +140,7 @@ public class ApiCall {
                         Log.d("ApiCall","getSessionToken: "+ response);
                         try {
                             String status = response.getString("status");
-                            if (!status.equals("error")){
+                            if (!status.equals("ERROR")){
                                 //-- getAndSave(response);
                                 //loadDataIntoView(response);
                                 ///db.updateTokens(db.getUserDetails().get("userId"), response.getJSONObject("result").getString("session_id"), response.getJSONObject("result").getString("refresh_token"));
@@ -163,10 +162,8 @@ public class ApiCall {
                                     obj.put("session_id", db.getUserDetails().get("sessionId"));
                                     jsonObjRequest(requestType, context, obj, url,tag, apiCallback);
                                 }
-
-
                             }else {
-                                String errorCode = response.getString("errorCode");
+                                String errorCode = response.getString("code");
                                 if(errorCode.equals("404")){
                                     String activityName = context.getClass().getSimpleName();
                                     MainActivity mainActivity = (MainActivity) context;

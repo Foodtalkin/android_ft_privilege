@@ -293,12 +293,17 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             public int getSpanSize(int position) {
                 switch(homeAdapter.getItemViewType(position)){
                     case 0:
+                        Log.d(TAG, "getSpan 0");
                         return 2;
                     case 2:
+                        Log.d(TAG, "getSpan 2");
                         return 2;
+
                     case 1:
+                        Log.d(TAG, "getSpan 1");
                         return 1;
                     default:
+                        Log.d(TAG, "getSpan default");
                         return -1;
                 }
             }

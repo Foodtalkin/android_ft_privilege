@@ -180,9 +180,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Log.d(TAG, "null type position is "+ position);
             return VIEW_OFFER;
         }
-
-
-
     }
 
     class LoaderCard extends RecyclerView.ViewHolder {
