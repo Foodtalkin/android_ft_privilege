@@ -1102,7 +1102,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-                /*ClipboardManager clipboard = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
+                /*ClipboardManager clipboar0d = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("hashKey", hashKey);
                 clipboard.setPrimaryClip(clip);*/
             }
