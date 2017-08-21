@@ -62,6 +62,7 @@ import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
 import in.foodtalk.privilege.fragment.PaymentFlow;
 import in.foodtalk.privilege.fragment.PaymentNowFrag;
+import in.foodtalk.privilege.fragment.PaymentPaytm;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
+    PaymentPaytm paymentPaytm = new PaymentPaytm();
     OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
     WebViewFrag webViewFrag;
 
@@ -472,12 +474,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
 
     private void startPaymentFlow(){
-        setFragmentView(paymentFlow, R.id.container, "paymentFlow", false);
+        //setFragmentView(paymentFlow, R.id.container, "paymentFlow", false);
+        setFragmentView(paymentPaytm, R.id.container, "paymentPaytm", false);
     }
 
     @Override
     public void onBackPressed() {
-
         int totalBS = getFragmentManager().getBackStackEntryCount();
         if (this.getFragmentManager().findFragmentById(R.id.container) == successFrag ){
             //setFragmentView(homeFrag, R.id.container, "homeFrag", false);

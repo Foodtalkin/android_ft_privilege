@@ -47,6 +47,8 @@ public class Url {
 
     public static String URL_PAYTM_ORDER = baseUrl+"paytm_order";
 
+    public static String URL_PAYTM_SUBSCRIBE = baseUrl+"subscribe";
+
     //
 
     //http://stg-api.foodtalk.in/subscription?sessionid=bca402b53b16cf9a5121331fecfadb075ed672ae
