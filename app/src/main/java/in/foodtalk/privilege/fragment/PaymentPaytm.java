@@ -93,7 +93,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
         setScreen("loader");
         //setScreen("success");
         try {
-            jsonObject.put("subscription_type_id", "1");
+            jsonObject.put("subscription_type_id", "2");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -186,7 +186,9 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
 
     private void startPayment(JSONObject response) throws JSONException {
         PaytmPGService Service = null;
-        Service = PaytmPGService.getStagingService();
+        //Service = PaytmPGService.getStagingService();
+
+        Service = PaytmPGService.getProductionService();
 
         //Create new order Object having all order information.
         Map<String, String> paramMap = new HashMap<String,String>();
@@ -222,6 +224,8 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
                 Log.d(TAG, "Status: "+inResponse.getString("STATUS"));
                 if (inResponse.getString("STATUS").equals("TXN_SUCCESS")){
                     subscribe(inResponse.getString("ORDERID"));
+                }else {
+                    setScreen("retry");
                 }
             }
 

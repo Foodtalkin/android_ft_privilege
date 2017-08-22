@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.zip.Inflater;
@@ -22,7 +23,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 public class SignupAlert extends Fragment implements View.OnTouchListener {
     View layout;
-    TextView btnSignup;
+    LinearLayout btnSignup;
     CallbackFragOpen callbackFragOpen;
     TextView txtFoodtalk, tvHead, tvRs;
 
@@ -30,7 +31,7 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.signup_alert, container, false);
-        btnSignup = (TextView) layout.findViewById(R.id.btn_signup);
+        btnSignup = (LinearLayout) layout.findViewById(R.id.btn_signup);
         btnSignup.setOnTouchListener(this);
 
         tvHead = (TextView) layout.findViewById(R.id.tv_head);
