@@ -116,7 +116,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
            // offerCard.tvPrice.setText(rs+" "+offerCardObj.cost);
-            Log.d(TAG, "outletCount: "+ offerCardObj.outletCount);
+            //Log.d(TAG, "outletCount: "+ offerCardObj.outletCount);
             /*if (Integer.parseInt(offerCardObj.outletCount) > 1){
                 offerCard.tvLocation.setText(offerCardObj.outletCount+" Location");
             }else if (Integer.parseInt(offerCardObj.offerCount) > 1){
@@ -138,7 +138,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .fit().centerCrop()
                     .into(offerCard.imgView);
         }else if (holder instanceof LoaderCard){
-            Log.d(TAG, "loader view");
+            //Log.d(TAG, "loader view");
 
            // GridLayoutManager.LayoutParams layoutParams = (GridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             //layoutParams.setFullSpan(true);
@@ -177,7 +177,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return VIEW_OFFER;
             }
         }else {
-            Log.d(TAG, "null type position is "+ position);
+            //Log.d(TAG, "null type position is "+ position);
             return VIEW_OFFER;
         }
     }
@@ -204,11 +204,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ApiCallback apiCallback1 = new ApiCallback() {
                 @Override
                 public void apiResponse(JSONObject response, String tag) {
-                    Log.d(TAG,"savings loaded");
+                    //Log.d(TAG,"savings loaded");
                 }
             };
            // ApiCall.jsonObjRequest(Request.Method.GET, context, null, Url.URL_PROFILE+"?sessionid="+sId, "savings", apiCallback1);
-            Log.d(TAG,"savings api call");
+            //Log.d(TAG,"savings api call");
         }
     }
 
@@ -231,17 +231,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             switch (view.getId()){
                 case R.id.card_view:
-                    Log.d(TAG, "card clicked");
+                    //Log.d(TAG, "card clicked");
                     switch (motionEvent.getAction()){
                         case MotionEvent.ACTION_UP:
                             if (Integer.parseInt(offerCardList.get(getAdapterPosition()).outletCount) > 1){
-                                Log.d(TAG, "open outlet list");
+                                //Log.d(TAG, "open outlet list");
                                 callbackFragOpen.openFrag("selectOutletFrag", offerCardList.get(getAdapterPosition()).rId);
                             }else if (Integer.parseInt(offerCardList.get(getAdapterPosition()).offerCount) > 1){
-                                Log.d(TAG, "open offer list");
+                                //Log.d(TAG, "open offer list");
                                 callbackFragOpen.openFrag("selectOfferFrag", offerCardList.get(getAdapterPosition()).outletIds);
                             }else {
-                                Log.d(TAG, "open details");
+                                //Log.d(TAG, "open details");
                                 JSONObject offerOutletId = new JSONObject();
                                 try {
                                     offerOutletId.put("offerId", offerCardList.get(getAdapterPosition()).offerIds);

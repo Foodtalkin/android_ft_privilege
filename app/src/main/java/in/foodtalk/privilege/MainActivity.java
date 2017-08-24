@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -126,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     String MY_PREFS_NAME = "MyPrefsFile";
 
     int bExitCount = 0;
+
+    Fragment mContent;
 
 
 
@@ -248,6 +251,20 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         setUserProperty();
 
         checkAndOpenPlayStore();
+/*
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            mContent = getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+        }*/
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's instance
+        //getFragmentManager().putFragment(outState, "myFragmentName", mContent);
 
     }
 
@@ -909,10 +926,19 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         //HomeFrag homeFrag = new HomeFrag();
-                        setFragmentView(homeFrag, R.id.container, "homeFrag", true);
-                        clearBackStack();
-                        drawerLayout.closeDrawer(Gravity.LEFT);
-                        AppController.getInstance().fbLogEvent("home_view", null);
+                       // setFragmentView(homeFrag, R.id.container, "homeFrag", true);
+
+
+                        //-----------
+                        if (currentFragment != homeFrag){
+                            clearBackStack();
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                            AppController.getInstance().fbLogEvent("home_view", null);
+                            Intent intent = new Intent(this, MainActivity.class);
+                            finish();
+                            startActivity(intent);
+                        }
+
                         break;
                 }
                 break;

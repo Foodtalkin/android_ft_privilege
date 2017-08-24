@@ -93,7 +93,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
         setScreen("loader");
         //setScreen("success");
         try {
-            jsonObject.put("subscription_type_id", "2");
+            jsonObject.put("subscription_type_id", "1");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -170,6 +170,9 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
                     e.printStackTrace();
                 }
             }
+        }else if (tag.equals("paytmOrder")){
+            Log.e(TAG, "retry");
+            setScreen("retry");
         }
     }
     private void saveUser(JSONObject response){
@@ -231,29 +234,34 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
 
             @Override
             public void networkNotAvailable() {
-                Log.d("LOG", "UI Error Occur.");
+                Log.e("LOG", "UI Error Occur.");
+                setScreen("retry");
                 //Toast.makeText(getApplicationContext(), " UI Error Occur. ", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void clientAuthenticationFailed(String inErrorMessage) {
-                Log.d("LOG", "UI Error Occur.");
+                Log.e("LOG", "UI Error Occur.");
                 //Toast.makeText(getApplicationContext(), " Severside Error "+ inErrorMessage, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onErrorLoadingWebPage(int iniErrorCode,
                                               String inErrorMessage, String inFailingUrl) {
-
+                Log.e("LOG", "onErrorLoadingWebPage "+inErrorMessage+" : "+inFailingUrl);
+                setScreen("retry");
             }
             @Override
             public void onBackPressedCancelTransaction() {
 // TODO Auto-generated method stub
+                Log.e("LOG", "onBackPressedCancelTransaction ");
+                setScreen("retry");
             }
 
             @Override
             public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {
-                Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
+                Log.e("LOG", "Payment Transaction Failed " + inErrorMessage);
+                setScreen("retry");
                 //Toast.makeText(getApplicationContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
             }
 

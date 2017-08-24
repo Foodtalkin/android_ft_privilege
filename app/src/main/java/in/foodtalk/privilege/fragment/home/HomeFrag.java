@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -83,12 +84,18 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     Boolean savingsLoaded = false;
     String savingsAmount;
 
-
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.d(TAG, "onCreate");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.home_frag, container, false);
 
@@ -156,9 +163,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 callbackFragOpen.openFrag("selectOfferFrag","");
             }
         });*/
-        Log.e(TAG,"check saveSate: "+ saveState);
+
         return layout;
     }
+
+
 
 
 
@@ -172,19 +181,38 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
+        Log.d(TAG, "ActivityCreated "+ "array length: "+offerCardList.size());
 
+        if (saveState == false){
+            loadData("loadOffers");
+            Log.d(TAG,"loadOffers");
+            saveState = true;
+        }else {
+            homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+            recyclerView.setAdapter(homeAdapter);
+            setMethod();
+        }
 
-        loadData("loadOffers");
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"onDestroyView");
+    }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        saveState = true;
+        //saveState = true;
+        Log.d(TAG,"onSaveInstanceState");
+        //outState.putBoolean("saveState", true);
         //Save the fragment's state here
     }
 
@@ -209,9 +237,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                         homeAdapter.notifyItemInserted(offerCardList.size()-1);
                     }
                 });
-                Log.e(TAG, "load more");
             }else {
-                Log.e(TAG, "No more offers");
                 ToastShow.showToast(getActivity(), "No more offers!");
 
                 //scrollListener.resetState();
@@ -288,22 +314,26 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 homeAdapter.notifyDataSetChanged();
             }
         }
+        setMethod();
+
+    }
+    private void setMethod(){
         linearLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch(homeAdapter.getItemViewType(position)){
                     case 0:
-                        Log.d(TAG, "getSpan 0");
+                        // Log.d(TAG, "getSpan 0");
                         return 2;
                     case 2:
-                        Log.d(TAG, "getSpan 2");
+                        // Log.d(TAG, "getSpan 2");
                         return 2;
 
                     case 1:
-                        Log.d(TAG, "getSpan 1");
+                        // Log.d(TAG, "getSpan 1");
                         return 1;
                     default:
-                        Log.d(TAG, "getSpan default");
+                        //  Log.d(TAG, "getSpan default");
                         return -1;
                 }
             }
@@ -312,11 +342,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     }
     EndlessRecyclerViewScrollListener scrollListener;
     private void endlessScrolling(){
-        Log.e(TAG,"set endlessScrolling");
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.e(TAG, "page: "+page+" totalItemsCount: "+ totalItemsCount);
                 if (loadingMore == false){
                     if (!nextUrl.equals("")){
                         loadData("loadOffersMore");
@@ -370,7 +398,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_retry:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        Log.d(TAG, "retry click");
                         loadData("loadOffers");
                         break;
                 }
