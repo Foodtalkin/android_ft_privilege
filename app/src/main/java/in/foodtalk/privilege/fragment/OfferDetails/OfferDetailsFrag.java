@@ -14,7 +14,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -168,6 +170,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         barButtons = (RelativeLayout) layout.findViewById(R.id.bar_buttons);
         barButtons.setVisibility(View.INVISIBLE);
+
+
 
 
 
@@ -433,6 +437,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             recyclerView.setAdapter(imagesAdapter);
 
             BigImagesAdapter bigImagesAdapter = new BigImagesAdapter(getActivity(), imagesList, this);
+            SnapHelper snapHelper = new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerView1);
             recyclerView1.setAdapter(bigImagesAdapter);
         }
     }

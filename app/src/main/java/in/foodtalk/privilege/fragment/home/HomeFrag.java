@@ -192,7 +192,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             recyclerView.setAdapter(homeAdapter);
             setMethod();
         }
-
     }
 
     @Override
