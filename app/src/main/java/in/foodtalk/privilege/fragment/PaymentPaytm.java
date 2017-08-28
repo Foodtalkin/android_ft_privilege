@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.PurchaseEvent;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -22,6 +24,8 @@ import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +130,14 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
             errorView.setVisibility(View.GONE);
             successView.setVisibility(View.VISIBLE);
             loaderView.setVisibility(View.GONE);
+
+            Answers.getInstance().logPurchase(new PurchaseEvent()
+                    .putItemPrice(BigDecimal.valueOf(1200))
+                    .putCurrency(Currency.getInstance("INR"))
+                    .putItemName("Privilege Membership")
+                    //.putItemType("Apparel")
+                    //.putItemId("sku-350")
+                    .putSuccess(true));
 
         }else if (screen.equals("loader")){
             errorView.setVisibility(View.GONE);

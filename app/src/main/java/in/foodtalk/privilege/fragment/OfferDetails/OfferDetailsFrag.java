@@ -68,7 +68,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
     public Boolean redeemBarVisible = false;
     public Boolean imgSliderVisible = false;
     String TAG = OfferDetailsFrag.class.getSimpleName();
-    ImageView btnRemove, btnAdd;
+    ImageView btnRemove, btnAdd, btnRemoveDark, btnAddDark;
     CallbackFragOpen callbackFragOpen;
     ImageView imgView;
 
@@ -129,7 +129,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         btnNext = (TextView) layout.findViewById(R.id.btn_next);
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
         btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
+        btnRemoveDark = (ImageView) layout.findViewById(R.id.btn_remove_dark);
         btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
+        btnAddDark = (ImageView) layout.findViewById(R.id.btn_add_dark);
         imgView = (ImageView) layout.findViewById(R.id.img_view);
         tvShortDes = (TextView) layout.findViewById(R.id.tv_short_des);
         tvAddress = (TextView) layout.findViewById(R.id.tv_address);
@@ -261,6 +263,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         btnPhone.setOnTouchListener(this);
         btnLocation.setOnTouchListener(this);
 
+        //btnRemove.setColorFilter(ContextCompat.getColor(getActivity(), R.color.warm_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+        btnRemove.setVisibility(View.INVISIBLE);
+
 
 
         //setAnimation();
@@ -354,12 +359,14 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             tvTableHead1.setText(numberOfCoupons);
             setAnimation("onePlus");
             tvCouponLine.setText("Select number of coupons to use");
-            btnRemove.setVisibility(View.VISIBLE);
+           // btnRemove.setVisibility(View.VISIBLE);
             btnAdd.setVisibility(View.VISIBLE);
         }else {
             tvCouponLine.setText("You can only use one coupon at a time");
             btnRemove.setVisibility(View.GONE);
             btnAdd.setVisibility(View.GONE);
+            btnRemoveDark.setVisibility(View.GONE);
+            btnAddDark.setVisibility(View.GONE);
             setAnimation("percent");
             tableHolder.setVisibility(View.GONE);
             tvLine1.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(0).toString());
@@ -396,7 +403,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
         tvShortDes.setText(result.getString("short_description"));
         tvAddress.setText(result.getString("address"));
-        tvHours.setText(result.getString("work_hours"));
+        String workHours = result.getString("work_hours");
+        workHours = workHours.replaceAll(", ", "\n");
+        tvHours.setText(workHours);
         tvDes.setText(result.getString("description"));
         tvCoupons.setText(result.getString("purchase_limit")+" Coupons available");
 
@@ -680,7 +689,11 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         if (currentCounter < purchaseLimit){
                             tvCounter.setText(String.valueOf(currentCounter+1));
                         }
-
+                        if (Integer.parseInt(tvCounter.getText().toString()) == purchaseLimit){
+                            //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.warm_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                            btnAdd.setVisibility(View.INVISIBLE);
+                        }
+                        btnRemove.setVisibility(View.VISIBLE);
                         break;
                 }
                 break;
@@ -692,6 +705,19 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         if (currentCounter > 1){
                             tvCounter.setText(String.valueOf(currentCounter-1));
                         }
+                        if (Integer.parseInt(tvCounter.getText().toString()) == 1){
+                            btnRemove.setVisibility(View.INVISIBLE);
+                        }
+
+
+                        //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        //btnRemove.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        //btnRemove.setVisibility(View.GONE);
+                        /*if (currentCounter < purchaseLimit){
+                            Log.d(TAG,"currentCounter: "+currentCounter+" - purchaseLimit: "+purchaseLimit);
+
+                        }*/
+                        btnAdd.setVisibility(View.VISIBLE);
 
                         break;
                 }
@@ -720,9 +746,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                             }else {
                                 callbackFragOpen.openFrag("signupAlert","");
                             }
-
                         }
-
                         break;
                 }
                 break;
