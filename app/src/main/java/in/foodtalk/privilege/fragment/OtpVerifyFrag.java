@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SignUpEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,6 +209,10 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
             AppController.getInstance().loginResponse = response;
             callbackFragOpen.openFrag("paymentFlow","");
+
+            Answers.getInstance().logSignUp(new SignUpEvent()
+                    .putMethod("Digits")
+                    .putSuccess(true));
         }
     }
     @Override

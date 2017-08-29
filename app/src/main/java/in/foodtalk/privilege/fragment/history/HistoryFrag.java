@@ -64,6 +64,10 @@ public class HistoryFrag extends Fragment implements ApiCallback, View.OnTouchLi
         btnOffers.setOnTouchListener(this);
 
         Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+
+
+        btnOffers.setTypeface(typefaceFutura);
 
         placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
         placeholderInternet.setVisibility(View.GONE);

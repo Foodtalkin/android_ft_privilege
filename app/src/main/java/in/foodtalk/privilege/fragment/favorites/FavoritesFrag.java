@@ -63,14 +63,18 @@ public class FavoritesFrag extends Fragment implements ApiCallback, View.OnTouch
         btnOffers.setOnTouchListener(this);
 
         Typeface typefaceFmedium= Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_medium.ttf");
+        Typeface typefaceFutura = Typeface.createFromAsset(getActivity().getAssets(), "fonts/futura_bold.otf");
+
+        btnOffers.setTypeface(typefaceFutura);
 
         placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
         placeholderInternet.setVisibility(View.GONE);
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        btnRetry.setTypeface(typefaceFutura);
         tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
-        btnRetry.setTypeface(typefaceFmedium);
+
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
 

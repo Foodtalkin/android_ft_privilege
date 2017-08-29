@@ -108,7 +108,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         progressBar.setVisibility(View.GONE);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
         tvMsg = (TextView) layout.findViewById(R.id.tv_msg);
-        btnRetry.setTypeface(typefaceFmedium);
+        btnRetry.setTypeface(typefaceFutura);
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
 

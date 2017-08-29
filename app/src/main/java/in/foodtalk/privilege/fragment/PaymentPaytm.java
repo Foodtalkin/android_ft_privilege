@@ -167,7 +167,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
                         Log.d(TAG,"savedResponse: "+AppController.getInstance().loginResponse);
                         //SaveLogin.addUser(getActivity(), response, "");
                         // int amount = Integer.parseInt(response.getJSONObject("result").getString("amount"));
-                        int amount = 00;
+                        int amount = 1200;
                         Log.d(TAG,"payment success:"+ amount);
                         //-------fbEvents--
                         Bundle params = new Bundle();
