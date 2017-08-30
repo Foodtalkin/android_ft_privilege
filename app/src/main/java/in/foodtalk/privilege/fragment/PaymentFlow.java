@@ -151,8 +151,8 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
        // Log.d(TAG,"accessToken: "+accessToken+" orderId: "+orderId);
 
         paymentId = paymentid;
-        PayNow payNow = new PayNow(getActivity());
-        payNow.paymentWithOrder(accessToken, orderId);
+       // PayNow payNow = new PayNow(getActivity());
+       // payNow.paymentWithOrder(accessToken, orderId);
         //payNow.payment(accessToken, paymentid, name, email, phone, amount, "membership999FT");
         //payNow.paymentWithOrder(accessToken,orderId);
     }

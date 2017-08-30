@@ -14,7 +14,7 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.instamojo.android.Instamojo;
+
 
 import io.fabric.sdk.android.Fabric;
 import org.json.JSONObject;
@@ -60,8 +60,8 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        Instamojo.initialize(this);
-        Instamojo.setLogLevel(Log.DEBUG);
+        //Instamojo.initialize(this);
+        //Instamojo.setLogLevel(Log.DEBUG);
 
         mInstance = this;
 

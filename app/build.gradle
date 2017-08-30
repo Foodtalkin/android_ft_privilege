@@ -72,7 +72,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.instamojo:android-sdk:1.2.6'
+    //compile 'com.instamojo:android-sdk:1.2.6'
     compile 'com.github.silvestrpredko:dot-progress-bar:1.1'
     compile 'com.parse:parse-android:1.15.8'
     compile 'com.google.android.gms:play-services-analytics:11.0.2'

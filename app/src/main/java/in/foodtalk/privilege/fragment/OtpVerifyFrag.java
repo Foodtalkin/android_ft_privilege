@@ -178,19 +178,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
         ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), jsonObject, Url.SUBSCRIPTION_PYMENT+"?sessionid="+sId, "subscriptionPayment", this);
     }
 
-    private void paymentProcess(JSONObject response) throws JSONException {
-        String accessToken = response.getJSONObject("result").getString("access_token");
-        String paymentid = response.getJSONObject("result").getString("paymentid");
-        String orderId = response.getJSONObject("result").getJSONObject("order").getString("order_id");
-        String name = response.getJSONObject("result").getJSONObject("order").getString("name");
-        String email = response.getJSONObject("result").getJSONObject("order").getString("email");
-        String phone = response.getJSONObject("result").getJSONObject("order").getString("phone");
-        String amount = response.getJSONObject("result").getJSONObject("order").getString("amount");
-        Log.d(TAG,"accessToken: "+accessToken+" orderId: "+orderId);
-        PayNow payNow = new PayNow(getActivity());
-        //payNow.paymentWithOrder(accessToken, orderId);
-        payNow.payment(accessToken, paymentid, name, email, phone, amount, "membership999");
-    }
+
 
     private void userLogin(JSONObject response) throws JSONException {
 

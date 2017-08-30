@@ -49,13 +49,10 @@ public class BigImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ImagesObj imagesObj = imagesList.get(position);
         Picasso.with(context)
                 .load(imagesObj.url)
-                .fit().centerCrop()
-                //.fit()
+                //.fit().centerCrop()
+               // .fit().centerInside()
                 .placeholder(R.drawable.ic_placeholder)
                 .into(imageCard.imgView);
-
-
-
         //imageCard.imgView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
@@ -71,8 +68,6 @@ public class BigImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public ImageCard(View itemView) {
             super(itemView);
             imgView = (ImageView) itemView.findViewById(R.id.img_view);
-
-
             //imgView.setOnTouchListener(this);
         }
 

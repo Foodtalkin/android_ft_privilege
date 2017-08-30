@@ -5,13 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.instamojo.android.Instamojo;
-import com.instamojo.android.activities.PaymentDetailsActivity;
-import com.instamojo.android.callbacks.OrderRequestCallBack;
-import com.instamojo.android.helpers.Constants;
-import com.instamojo.android.models.Errors;
-import com.instamojo.android.models.Order;
-import com.instamojo.android.network.Request;
+
 
 /**
  * Created by RetailAdmin on 02-06-2017.
@@ -21,7 +15,7 @@ public class PayNow {
     String TAG = PayNow.class.getSimpleName();
     Context context;
     Activity activity;
-    public PayNow(Activity activity){
+    /*public PayNow(Activity activity){
         this.activity = activity;
         Instamojo.setBaseUrl("https://www.instamojo.com/");
         //Instamojo.setBaseUrl("http://api.foodtalk.in/");
@@ -181,5 +175,5 @@ public class PayNow {
         Intent intent = new Intent(activity, PaymentDetailsActivity.class);
         intent.putExtra(Constants.ORDER, order);
         activity.startActivityForResult(intent, Constants.REQUEST_CODE);
-    }
+    }*/
 }

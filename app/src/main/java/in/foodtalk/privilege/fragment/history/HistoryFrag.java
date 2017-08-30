@@ -120,7 +120,6 @@ public class HistoryFrag extends Fragment implements ApiCallback, View.OnTouchLi
             HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), historyList);
             recyclerView.setAdapter(historyAdapter);
         }
-
     }
 
     @Override
