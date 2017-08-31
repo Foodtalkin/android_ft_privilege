@@ -1,13 +1,20 @@
 package in.foodtalk.privilege.fragment.home;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,10 +27,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
@@ -59,8 +72,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     HomeAdapter homeAdapter;
 
     RecyclerView recyclerView;
-    TextView btnBuy, tvHeader;
-    LinearLayout header;
+    TextView btnBuy, tvHeader, btnLocation, tvFooter;
+    ImageView btnLocationClose;
+    LinearLayout header, footer;
     DatabaseHandler db;
 
 
@@ -84,11 +98,19 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     Boolean savingsLoaded = false;
     String savingsAmount;
 
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    protected Location mLastLocation;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         Log.d(TAG, "onCreate");
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
     @Override
@@ -112,8 +134,16 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
 
+        footer = (LinearLayout) layout.findViewById(R.id.footer);
+        btnLocation = (TextView) layout.findViewById(R.id.btn_location);
+        tvFooter = (TextView) layout.findViewById(R.id.tv_footer);
+        btnLocationClose = (ImageView) layout.findViewById(R.id.btn_location_close);
+        btnLocationClose.setOnTouchListener(this);
 
+        btnLocation.setOnTouchListener(this);
 
+        btnLocation.setTypeface(typefaceFutura);
+        tvFooter.setTypeface(typefaceFmedium);
 
 
         btnBuy = (TextView) layout.findViewById(R.id.btn_buy);
@@ -164,8 +194,80 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         });*/
 
+        checkLocationPermission();
+
         return layout;
     }
+
+    static final int MY_PERMISSION_ACCESS_COURSE_LOCATION = 5;
+
+    private void checkLocationPermission(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ( ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+               /* ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                        MY_PERMISSION_ACCESS_COURSE_LOCATION );*/
+                footer.setVisibility(View.VISIBLE);
+                Log.d(TAG,"not Location Permissions");
+            }else {
+                footer.setVisibility(View.GONE);
+                Log.d(TAG,"Location Permissions");
+                getLastLocation();
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_ACCESS_COURSE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Log.d(TAG,"permission was granted");
+                    getLastLocation();
+
+                } else {
+                    Log.d(TAG,"permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @SuppressWarnings("MissingPermission")
+    private void getLastLocation() {
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+
+                          /*  mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                                    mLatitudeLabel,
+                                    mLastLocation.getLatitude()));
+                            mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                                    mLongitudeLabel,
+                                    mLastLocation.getLongitude()));*/
+                            Log.d(TAG, "lat: "+mLastLocation.getLatitude()+" : Lon: "+mLastLocation.getLongitude());
+                        } else {
+                            Log.w(TAG, "getLastLocation:exception", task.getException());
+                            //showSnackbar(getString(R.string.no_location_detected));
+                        }
+                    }
+                });
+    }
+
+
 
 
 
@@ -398,6 +500,21 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         loadData("loadOffers");
+                        break;
+                }
+                break;
+            case R.id.btn_location_close:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        footer.setVisibility(View.GONE);
+                        break;
+                }
+                break;
+            case R.id.btn_location:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                                MY_PERMISSION_ACCESS_COURSE_LOCATION );
                         break;
                 }
                 break;
