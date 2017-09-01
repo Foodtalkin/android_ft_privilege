@@ -127,6 +127,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             offerCard.tvLocation.setText(offerCardObj.primaryCuisine);
 
+
+            if (offerCardObj.distance.equals("")){
+                offerCard.tvDistance.setVisibility(View.GONE);
+            }else {
+                offerCard.tvDistance.setText(offerCardObj.distance+" KM");
+            }
+
+
             offerCard.imgView.getLayoutParams().width = imgSize;
             offerCard.imgView.getLayoutParams().height = imgSize;
 
@@ -215,7 +223,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class OfferCard extends RecyclerView.ViewHolder implements View.OnTouchListener {
         CardView cardView;
         ImageView imgView;
-        TextView tvTitle, tvLocation, tvPrice;
+        TextView tvTitle, tvLocation, tvPrice, tvDistance;
         public OfferCard(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
@@ -223,6 +231,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvLocation = (TextView) itemView.findViewById(R.id.tv_location);
             tvPrice = (TextView) itemView.findViewById(R.id.tv_price);
+            tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
 
             cardView.setOnTouchListener(this);
         }

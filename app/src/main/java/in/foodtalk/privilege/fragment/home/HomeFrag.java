@@ -104,6 +104,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     protected Location mLastLocation;
 
+    String lat = "";
+    String lon = "";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,6 +213,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                         MY_PERMISSION_ACCESS_COURSE_LOCATION );*/
                 footer.setVisibility(View.VISIBLE);
                 Log.d(TAG,"not Location Permissions");
+                startLoading();
             }else {
                 footer.setVisibility(View.GONE);
                 Log.d(TAG,"Location Permissions");
@@ -220,17 +224,20 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        Log.d(TAG,"requestCode: "+ requestCode);
         switch (requestCode) {
             case MY_PERMISSION_ACCESS_COURSE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
+                Log.d(TAG,"requestCode: done");
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     Log.d(TAG,"permission was granted");
+                    saveState = false;
                     getLastLocation();
-
+                    footer.setVisibility(View.GONE);
                 } else {
                     Log.d(TAG,"permission denied");
                     // permission denied, boo! Disable the
@@ -259,10 +266,15 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                                     mLongitudeLabel,
                                     mLastLocation.getLongitude()));*/
                             Log.d(TAG, "lat: "+mLastLocation.getLatitude()+" : Lon: "+mLastLocation.getLongitude());
+                            lat = new Double(mLastLocation.getLatitude()).toString();
+                            lon = new Double(mLastLocation.getLongitude()).toString();
                         } else {
                             Log.w(TAG, "getLastLocation:exception", task.getException());
+                            lat = "";
+                            lon = "";
                             //showSnackbar(getString(R.string.no_location_detected));
                         }
+                        startLoading();
                     }
                 });
     }
@@ -283,8 +295,12 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        Log.d(TAG, "ActivityCreated "+ "array length: "+offerCardList.size());
+       // Log.d(TAG, "ActivityCreated "+ "array length: "+offerCardList.size());
 
+
+    }
+
+    private void startLoading(){
         if (saveState == false){
             loadData("loadOffers");
             Log.d(TAG,"loadOffers");
@@ -328,7 +344,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     private void loadData(String tag){
         if (tag.equals("loadOffersMore")){
             if (!nextUrl.equals("")){
-                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, tag, this);
+                String url;
+                if (!lat.equals("")){
+                    url = nextUrl+"&latitude="+lat+"&longitude="+lon;
+                }else {
+                    url = nextUrl;
+                }
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
                 offerCardList.add(offerCardObj);
@@ -348,7 +370,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }else if (tag.equals("loadOffers")){
             progressBar.setVisibility(View.VISIBLE);
             placeholderInternet.setVisibility(View.GONE);
-            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS, tag, this);
+            String url;
+            if (!lat.equals("")){
+                url = Url.OFFERS+"?latitude="+lat+"&longitude="+lon;
+            }else {
+                url = Url.OFFERS;
+            }
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
 
         }
     }
@@ -405,6 +433,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
             offerCardObj.type = "offer";
             offerCardObj.primaryCuisine = listArray.getJSONObject(i).getString("primary_cuisine");
+            if (listArray.getJSONObject(i).has("distance")){
+                Double dis = Double.parseDouble(listArray.getJSONObject(i).getString("distance"))/1000;
+                offerCardObj.distance = String.format("%.1f", dis);
+            }else {
+                offerCardObj.distance = "";
+            }
+
+
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
@@ -513,8 +549,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_location:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                                MY_PERMISSION_ACCESS_COURSE_LOCATION );
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions( new String[] {
+                                            Manifest.permission.ACCESS_COARSE_LOCATION  },
+                                    MY_PERMISSION_ACCESS_COURSE_LOCATION );
+                        }
                         break;
                 }
                 break;
