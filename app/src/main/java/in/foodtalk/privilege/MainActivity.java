@@ -2,6 +2,7 @@ package in.foodtalk.privilege;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -927,6 +928,42 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         editor.putString("ratingPopup", "1");
         //editor.putInt("idName", 12);
         editor.apply();
+    }
+    final static int REQUEST_LOCATION = 199;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("onActivityResult()", Integer.toString(resultCode));
+
+        //final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        switch (requestCode)
+        {
+            case REQUEST_LOCATION:
+                switch (resultCode)
+                {
+                    case Activity.RESULT_OK:
+                    {
+                        // All required changes were successfully made
+                        //Toast.makeText(getActivity(), "Location enabled by user!", Toast.LENGTH_LONG).show();
+                        Log.d(TAG,"Location enabled by user!");
+
+                        break;
+                    }
+                    case Activity.RESULT_CANCELED:
+                    {
+                        // The user was asked to change settings, but chose not to
+                        // Toast.makeText(getActivity(), "Location not enabled, user cancelled.", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "Location not enabled, user cancelled.");
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+                break;
+        }
     }
 
     private void getKeyHash(){
