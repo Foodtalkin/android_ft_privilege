@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -947,7 +948,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         // All required changes were successfully made
                         //Toast.makeText(getActivity(), "Location enabled by user!", Toast.LENGTH_LONG).show();
                         Log.d(TAG,"Location enabled by user!");
-
+                        if (currentFragment == homeFrag){
+                            //homeFrag.refreshFeed();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    homeFrag.refreshFeed();
+                                }
+                            }, 3000);
+                        }
                         break;
                     }
                     case Activity.RESULT_CANCELED:
