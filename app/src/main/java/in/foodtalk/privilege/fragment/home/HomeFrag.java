@@ -221,7 +221,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         });*/
 
-        checkLocationPermission();
+
+        if (lat.equals("")){
+            checkLocationPermission();
+        }else {
+            startLoading();
+        }
+
 
         latLonCallback = this;
 

@@ -51,6 +51,12 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         OutletCardObj outletCardObj = outletCardList.get(position);
         OutletCard outletCard = (OutletCard) holder;
         outletCard.tvTitle.setText(outletCardObj.address);
+
+        if (outletCardObj.distance.equals("")){
+            outletCard.tvDistance.setVisibility(View.GONE);
+        }else {
+            outletCard.tvDistance.setText(outletCardObj.distance+" KM");
+        }
     }
 
     @Override
@@ -60,11 +66,12 @@ public class OutletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     class OutletCard extends RecyclerView.ViewHolder implements View.OnTouchListener{
         LinearLayout btnOutlet;
-        TextView tvTitle;
+        TextView tvTitle, tvDistance;
         public OutletCard(View itemView) {
             super(itemView);
             btnOutlet = (LinearLayout) itemView.findViewById(R.id.btn_outlet);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             btnOutlet.setOnTouchListener(this);
         }
 

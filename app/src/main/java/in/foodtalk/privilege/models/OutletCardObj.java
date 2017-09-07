@@ -15,4 +15,5 @@ public class OutletCardObj {
     public String postcode;
     public String description;
     public String workHours;
+    public String distance;
 }

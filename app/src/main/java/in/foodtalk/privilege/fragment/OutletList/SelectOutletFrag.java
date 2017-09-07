@@ -2,8 +2,13 @@ package in.foodtalk.privilege.fragment.OutletList;
 
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,12 +34,15 @@ import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.LatLonCallback;
+import in.foodtalk.privilege.library.GetLocation;
+import in.foodtalk.privilege.models.ConstantVar;
 import in.foodtalk.privilege.models.OutletCardObj;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTouchListener {
+public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTouchListener, LatLonCallback {
 
     View layout;
     public String rId;
@@ -53,6 +61,13 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
     LinearLayout progressBar;
     LinearLayout placeholderInternet;
     TextView btnRetry, tvMsg;
+
+    String lat = "";
+    String lon = "";
+
+    LatLonCallback latLonCallback;
+
+    GetLocation getLocation;
 
 
     @Override
@@ -94,15 +109,71 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
         tvMsg.setTypeface(typefaceFmedium);
         btnRetry.setOnTouchListener(this);
 
-        loadData("restaurantOutlets");
+        //--loadData("restaurantOutlets");
+
+        checkLocationPermission();
 
         return layout;
     }
 
+    private void checkLocationPermission(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ( ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+               /* ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                        MY_PERMISSION_ACCESS_COURSE_LOCATION );*/
+                //footer.setVisibility(View.VISIBLE);
+                Log.d(TAG,"not Location Permissions");
+                loadData("restaurantOutlets");
+                //--startLoading();
+            }else {
+                //footer.setVisibility(View.GONE);
+                Log.d(TAG,"Location Permissions");
+                //getLastLocation();
+                checkLocationService();
+            }
+        }
+        //--startLoading();
+        // checkLocationService();
+    }
+    private void checkLocationService(){
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //buildAlertMessageNoGps();
+            Log.d(TAG,"Location GPS off");
+            loadData("restaurantOutlets");
+           // settingApi();
+            //footer1.setVisibility(View.VISIBLE);
+
+        }else {
+            Log.d(TAG,"Location GPS on");
+            //getLastLocation();
+            getLocation();
+            //footer1.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void getLocation(){
+        latLonCallback = this;
+        getLocation = new GetLocation(getActivity(), latLonCallback, "homeFrag");
+        getLocation.onStart();
+    }
+
+
+
     private void loadData(String tag){
         progressBar.setVisibility(View.VISIBLE);
         placeholderInternet.setVisibility(View.GONE);
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.RESTAURANT_OUTLETS+"/"+rId, tag, this);
+        String url;
+        if (!lat.equals("")){
+            url = Url.RESTAURANT_OUTLETS+"/"+rId+"?latitude="+lat+"&longitude="+lon;
+        }else {
+            url = Url.RESTAURANT_OUTLETS+"/"+rId;
+        }
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
     }
 
     private void sendToAdapter(JSONObject response, String tag)throws JSONException{
@@ -121,6 +192,15 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
             outletCardObj.postcode = listArray.getJSONObject(i).getString("postcode");
            // outletCardObj.description = listArray.getJSONObject(i).getString("description");
             outletCardObj.workHours = listArray.getJSONObject(i).getString("work_hours");
+
+            if (listArray.getJSONObject(i).has("distance")){
+                Double dis = Double.parseDouble(listArray.getJSONObject(i).getString("distance"))/1000;
+                outletCardObj.distance = String.format("%.1f", dis);
+            }else {
+                outletCardObj.distance = "";
+            }
+
+
             outletCardList.add(outletCardObj);
         }
         if (getActivity() != null){
@@ -156,5 +236,18 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void location(String gpsStatus, String lat, String lon) {
+        Log.d(TAG,"location - lat: "+lat+" lon:"+ lon);
+        if (gpsStatus.equals(ConstantVar.LOCATION_GOT)){
+            this.lat = lat;
+            this.lon = lon;
+        }else {
+            this.lat = "";
+            this.lon = "";
+        }
+        loadData("restaurantOutlets");
     }
 }
