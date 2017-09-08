@@ -1,11 +1,16 @@
 package in.foodtalk.privilege.fragment.search;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -37,18 +42,21 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.comm.LatLonCallback;
 import in.foodtalk.privilege.fragment.home.HomeAdapter;
 import in.foodtalk.privilege.fragment.home.HomeFrag;
 import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
+import in.foodtalk.privilege.library.GetLocation;
 import in.foodtalk.privilege.library.GridSpacingItemDecoration;
 import in.foodtalk.privilege.library.ToastShow;
+import in.foodtalk.privilege.models.ConstantVar;
 import in.foodtalk.privilege.models.OfferCardObj;
 
 /**
  * Created by RetailAdmin on 30-05-2017.
  */
 
-public class SearchResult extends Fragment implements ApiCallback, View.OnTouchListener {
+public class SearchResult extends Fragment implements ApiCallback, View.OnTouchListener, LatLonCallback{
     View layout;
 
     private String TAG = SearchResult.class.getSimpleName();
@@ -77,6 +85,13 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     String nextUrl;
 
     LinearLayoutManager linearLayoutManager;
+
+    String lat = "";
+    String lon = "";
+
+    LatLonCallback latLonCallback;
+
+    GetLocation getLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,7 +152,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
-        loadData("loadOffers");
+        //--loadData("loadOffers");
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
@@ -154,7 +169,56 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
                 callbackFragOpen.openFrag("selectOfferFrag","");
             }
         });*/
+        checkLocationPermission();
         return layout;
+    }
+
+    private void checkLocationPermission(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ( ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+               /* ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                        MY_PERMISSION_ACCESS_COURSE_LOCATION );*/
+                //footer.setVisibility(View.VISIBLE);
+                Log.d(TAG,"not Location Permissions");
+                //loadData("restaurantOutlets");
+                loadData("loadOffers");
+                //--startLoading();
+            }else {
+                //footer.setVisibility(View.GONE);
+                Log.d(TAG,"Location Permissions");
+                //getLastLocation();
+                checkLocationService();
+            }
+        }
+        //--startLoading();
+        // checkLocationService();
+    }
+    private void checkLocationService(){
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //buildAlertMessageNoGps();
+            Log.d(TAG,"Location GPS off");
+            //loadData("restaurantOutlets");
+            loadData("loadOffers");
+            // settingApi();
+            //footer1.setVisibility(View.VISIBLE);
+
+        }else {
+            Log.d(TAG,"Location GPS on");
+            //getLastLocation();
+            getLocation();
+            //footer1.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void getLocation(){
+        latLonCallback = this;
+        getLocation = new GetLocation(getActivity(), latLonCallback, "homeFrag");
+        getLocation.onStart();
     }
 
     private String searchFilter(String query){
@@ -191,7 +255,13 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
     private void loadData(String tag){
         if (tag.equals("loadOffersMore")){
             if (!nextUrl.equals("")){
-                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl+"&"+offerUrl, tag, this);
+                String url;
+                if (!lat.equals("")){
+                    url = nextUrl+"&latitude="+lat+"&longitude="+lon+"&"+offerUrl;
+                }else {
+                    url =  nextUrl+"&"+offerUrl;
+                }
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
                 offerCardList.add(offerCardObj);
@@ -204,7 +274,13 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }else if (tag.equals("loadOffers")){
             progressBar.setVisibility(View.VISIBLE);
             placeholderInternet.setVisibility(View.GONE);
-            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.OFFERS+"?"+offerUrl, tag, this);
+            String url;
+            if (!lat.equals("")){
+                url = Url.OFFERS+"?"+"latitude="+lat+"&longitude="+lon+"&"+offerUrl;
+            }else {
+                url =  Url.OFFERS+"?"+offerUrl;
+            }
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
         }
     }
 
@@ -254,6 +330,12 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             offerCardObj.oneLiner = listArray.getJSONObject(i).getString("one_liner");
             offerCardObj.type = "offer";
             offerCardObj.primaryCuisine = listArray.getJSONObject(i).getString("primary_cuisine");
+            if (listArray.getJSONObject(i).has("distance")){
+                Double dis = Double.parseDouble(listArray.getJSONObject(i).getString("distance"))/1000;
+                offerCardObj.distance = String.format("%.1f", dis);
+            }else {
+                offerCardObj.distance = "";
+            }
             offerCardList.add(offerCardObj);
         }
         if (getActivity() != null){
@@ -344,5 +426,18 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void location(String gpsStatus, String lat, String lon) {
+        Log.d(TAG,"location - lat: "+lat+" lon:"+ lon);
+        if (gpsStatus.equals(ConstantVar.LOCATION_GOT)){
+            this.lat = lat;
+            this.lon = lon;
+        }else {
+            this.lat = "";
+            this.lon = "";
+        }
+        loadData("loadOffers");
     }
 }

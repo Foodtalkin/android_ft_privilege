@@ -19,5 +19,5 @@ public class OfferCardObj {
     public String primaryCuisine;
     public String type;
     public String savingAmount;
-    public String distance;
+    public String distance = "";
 }
