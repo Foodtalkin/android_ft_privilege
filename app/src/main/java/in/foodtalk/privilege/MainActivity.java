@@ -953,7 +953,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    homeFrag.refreshFeed();
+                                   // homeFrag.refreshFeed();
                                 }
                             }, 3000);
                         }

@@ -98,7 +98,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     RecyclerView.LayoutManager mLayoutManager;
 
-   // LinearLayoutManager linearLayoutManager;
+    // LinearLayoutManager linearLayoutManager;
 
     GridLayoutManager linearLayoutManager;
 
@@ -222,11 +222,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         });*/
 
 
-        if (lat.equals("")){
-            checkLocationPermission();
-        }else {
-            startLoading();
-        }
+
 
 
         latLonCallback = this;
@@ -255,7 +251,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         }
         startLoading();
-       // checkLocationService();
+        // checkLocationService();
     }
 
     LocationRequest mLocationRequest;
@@ -378,8 +374,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        if (lat.equals("")){
+            checkLocationPermission();
+        }else {
+            startLoading();
+        }
 
-       // Log.d(TAG, "ActivityCreated "+ "array length: "+offerCardList.size());
+
+        // Log.d(TAG, "ActivityCreated "+ "array length: "+offerCardList.size());
 
 
     }
@@ -389,10 +391,12 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             loadData("loadOffers");
             Log.d(TAG,"loadOffers");
             saveState = true;
+            Log.d(TAG,"StartLoading 1");
         }else {
             homeAdapter = new HomeAdapter(getActivity(), offerCardList);
             recyclerView.setAdapter(homeAdapter);
             setMethod();
+            Log.d(TAG,"StartLoading 2");
         }
     }
 
@@ -401,7 +405,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         getLocation();
         Log.d(TAG,"refreshFeed");
         footer1.setVisibility(View.GONE);
-       // startLoading();
+        // startLoading();
     }
 
     @Override
@@ -547,7 +551,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         }
         setMethod();
-
     }
     private void setMethod(){
         linearLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -577,6 +580,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG,"onLoadMore");
                 if (loadingMore == false){
                     if (!nextUrl.equals("")){
                         loadData("loadOffersMore");
@@ -663,7 +667,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_location1:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                       settingApi();
+                        settingApi();
                         break;
                 }
                 break;
@@ -743,7 +747,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     case Activity.RESULT_CANCELED:
                     {
                         // The user was asked to change settings, but chose not to
-                       // Toast.makeText(getActivity(), "Location not enabled, user cancelled.", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getActivity(), "Location not enabled, user cancelled.", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "Location not enabled, user cancelled.");
                         break;
                     }
