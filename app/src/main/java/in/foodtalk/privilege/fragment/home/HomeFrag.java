@@ -195,9 +195,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
 
 
-
-
-
         tvHeader.setTypeface(typefaceFmedium);
         btnBuy.setTypeface(typefaceFutura);
 

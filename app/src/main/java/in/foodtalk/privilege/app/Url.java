@@ -17,7 +17,7 @@ public class Url {
     public static String RESTAURANT_OUTLETS = baseUrl+"restaurant/outlets";
     public static String OUTLET = baseUrl+"outlet";
 
-    public static String SEARCH_TEXT = baseUrl+"search";
+    public static String SEARCH_TEXT = baseUrl+"search_restaurant";
     public static String OFFER_DETAILS = baseUrl;
 
     public static String GET_OTP = baseUrl+"getotp";

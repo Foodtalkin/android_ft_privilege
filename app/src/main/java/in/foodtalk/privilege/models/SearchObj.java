@@ -21,4 +21,5 @@ public class SearchObj {
     public String coverImage;
     public String cardImage;
     public String oneLiner;
+    public String distance = "";
 }

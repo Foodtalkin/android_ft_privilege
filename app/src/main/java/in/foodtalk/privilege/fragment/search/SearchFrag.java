@@ -1,9 +1,14 @@
 package in.foodtalk.privilege.fragment.search;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,14 +43,17 @@ import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.comm.LatLonCallback;
 import in.foodtalk.privilege.comm.ValueCallback;
+import in.foodtalk.privilege.library.GetLocation;
+import in.foodtalk.privilege.models.ConstantVar;
 import in.foodtalk.privilege.models.SearchObj;
 
 /**
  * Created by RetailAdmin on 15-05-2017.
  */
 
-public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCallback, ValueCallback {
+public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCallback, ValueCallback, LatLonCallback {
     View layout;
 
     String TAG = SearchFrag.class.getSimpleName();
@@ -92,6 +100,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     CallbackFragOpen callbackFragOpen;
 
     LinearLayout progressBar;
+    String lat = "";
+    String lon = "";
+
+    LatLonCallback latLonCallback;
+
+    GetLocation getLocation;
 
 
 
@@ -214,7 +228,56 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         textListener();
         loadCuisineData ();
 
+        checkLocationPermission();
+
         return layout;
+    }
+    private void checkLocationPermission(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if ( ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+               /* ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                        MY_PERMISSION_ACCESS_COURSE_LOCATION );*/
+                //footer.setVisibility(View.VISIBLE);
+                Log.d(TAG,"not Location Permissions");
+                //loadData("restaurantOutlets");
+                loadData("loadOffers");
+                //--startLoading();
+            }else {
+                //footer.setVisibility(View.GONE);
+                Log.d(TAG,"Location Permissions");
+                //getLastLocation();
+                checkLocationService();
+            }
+        }
+        //--startLoading();
+        // checkLocationService();
+    }
+    private void checkLocationService(){
+        final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //buildAlertMessageNoGps();
+            Log.d(TAG,"Location GPS off");
+            //loadData("restaurantOutlets");
+            loadData("loadOffers");
+            // settingApi();
+            //footer1.setVisibility(View.VISIBLE);
+
+        }else {
+            Log.d(TAG,"Location GPS on");
+            //getLastLocation();
+            getLocation();
+            //footer1.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void getLocation(){
+        latLonCallback = this;
+        getLocation = new GetLocation(getActivity(), latLonCallback, "homeFrag");
+        getLocation.onStart();
     }
 
     private void textListener(){
@@ -249,6 +312,10 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+        if (!lat.equals("")){
+            query = query+"?"+"latitude="+lat+"&longitude="+lon;
+        }
         Log.d(TAG, "key: "+ query);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.SEARCH_TEXT+"/"+query, "search", this);
     }
@@ -271,7 +338,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
 
         searchList.clear();
-        JSONArray jsonArray = response.getJSONObject("result").getJSONArray("hits");
+        JSONArray jsonArray = response.getJSONObject("result").getJSONArray("data");
         Log.d(TAG, "jsonArray length: "+ jsonArray.length());
 
         if (jsonArray.length() > 0){
@@ -287,17 +354,24 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             searchObj._id = jsonArray.getJSONObject(i).getString("_id");
             searchObj._score = jsonArray.getJSONObject(i).getString("_score");*/
 
-            searchObj.offerCount = jsonArray.getJSONObject(i).getJSONObject("_source").getString("offer_count");
-            searchObj.offerIds = jsonArray.getJSONObject(i).getJSONObject("_source").getString("offer_ids");
-            searchObj.outletCount = jsonArray.getJSONObject(i).getJSONObject("_source").getString("outlet_count");
-            searchObj.outletIds = jsonArray.getJSONObject(i).getJSONObject("_source").getString("outlet_ids");
-            searchObj.id = jsonArray.getJSONObject(i).getJSONObject("_source").getString("rid");
-            searchObj.name = jsonArray.getJSONObject(i).getJSONObject("_source").getString("name");
-            searchObj.cost = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cost");
-            searchObj.oneLiner = jsonArray.getJSONObject(i).getJSONObject("_source").getString("one_liner");
+            searchObj.offerCount = jsonArray.getJSONObject(i).getString("offer_count");
+            searchObj.offerIds = jsonArray.getJSONObject(i).getString("offer_ids");
+            searchObj.outletCount = jsonArray.getJSONObject(i).getString("outlet_count");
+            searchObj.outletIds = jsonArray.getJSONObject(i).getString("outlet_ids");
+            searchObj.id = jsonArray.getJSONObject(i).getString("rid");
+            searchObj.name = jsonArray.getJSONObject(i).getString("name");
+            searchObj.cost = jsonArray.getJSONObject(i).getString("cost");
+            searchObj.oneLiner = jsonArray.getJSONObject(i).getString("one_liner");
 //            searchObj.description = jsonArray.getJSONObject(i).getJSONObject("_source").getString("description");
 //            searchObj.coverImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("cover_image");
-            searchObj.cardImage = jsonArray.getJSONObject(i).getJSONObject("_source").getString("card_image");
+            searchObj.cardImage = jsonArray.getJSONObject(i).getString("card_image");
+
+            if (jsonArray.getJSONObject(i).has("distance")){
+                Double dis = Double.parseDouble(jsonArray.getJSONObject(i).getString("distance"))/1000;
+                searchObj.distance = String.format("%.1f", dis);
+            }else {
+                searchObj.distance = "";
+            }
 
             searchList.add(searchObj);
             Log.d(TAG,"add to search list: "+i);
@@ -839,6 +913,22 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             cuisineIds.add(v2);
         }else if (v1.equals("remove")){
             cuisineIds.remove(v2);
+        }
+    }
+
+    @Override
+    public void location(String gpsStatus, String lat, String lon) {
+        Log.d(TAG,"location - lat: "+lat+" lon:"+ lon);
+        if (gpsStatus.equals(ConstantVar.LOCATION_GOT)){
+            this.lat = lat;
+            this.lon = lon;
+        }else {
+            this.lat = "";
+            this.lon = "";
+        }
+        loadData("loadOffers");
+        if (getLocation != null){
+            getLocation.onStop();
         }
     }
 }

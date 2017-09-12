@@ -439,5 +439,8 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             this.lon = "";
         }
         loadData("loadOffers");
+        if (getLocation != null){
+            getLocation.onStop();
+        }
     }
 }

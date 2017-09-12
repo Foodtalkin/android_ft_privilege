@@ -2,6 +2,7 @@ package in.foodtalk.privilege.fragment.search;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -65,24 +66,36 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             searchCard.tvCount.setText(searchObj.offerCount+" offer");
         }*/
         String rs = context.getResources().getString(R.string.rs);
+        String setCost;
 
         int cost = Integer.valueOf(searchObj.cost);
         if (cost < 500){
-            searchCard.tvCount.setText(rs);
+            //searchCard.tvCount.setText(rs);
+            setCost = rs;
         }else if (cost < 999){
-            searchCard.tvCount.setText(rs+rs);
+           // searchCard.tvCount.setText(rs+rs);
+            setCost = rs+rs;
         }else {
-            searchCard.tvCount.setText(rs+rs+rs);
+           // searchCard.tvCount.setText(rs+rs+rs);
+            setCost = rs+rs+rs;
         }
+        int warmGrey = context.getResources().getColor(R.color.warm_grey);
+        int blackColor = context.getResources().getColor(R.color.black1);
+        int golderColor = context.getResources().getColor(R.color.light_gold);
+        String styledText;
+        if (!searchObj.distance.equals("")){
+            styledText = "<font color='"+blackColor+"'>"+setCost+"</font>"+"<font color='"+warmGrey+"'> | </font>"+"<font color='"+golderColor+"'> "+searchObj.distance+ " KM </font>";
+        }else {
+            styledText = "<font color='"+blackColor+"'>"+setCost+"</font>";
+        }
+
+        searchCard.tvCount.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
     }
 
     @Override
     public int getItemCount() {
         return searchList.size();
     }
-
-
-
     private class SearchCard extends RecyclerView.ViewHolder implements View.OnTouchListener {
         LinearLayout searchTab;
         TextView tvName, tvCount;
