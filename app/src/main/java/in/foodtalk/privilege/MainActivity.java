@@ -63,6 +63,7 @@ import in.foodtalk.privilege.fragment.PaymentPaytm;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
+import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
@@ -95,13 +96,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines;
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines, navCity;
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
     PaymentPaytm paymentPaytm = new PaymentPaytm();
     OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
     WebViewFrag webViewFrag;
+
+    CitySelectFrag citySelectFrag = new CitySelectFrag();
 
     DatabaseHandler db;
 
@@ -169,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navFavourites = (LinearLayout) findViewById(R.id.nav_favourites);
         navLogout = (LinearLayout) findViewById(R.id.nav_logout);
         navHome = (LinearLayout) findViewById(R.id.nav_home);
+        navCity = (LinearLayout) findViewById(R.id.nav_city);
 
         navExperines = (LinearLayout) findViewById(R.id.nav_experines);
 
@@ -190,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navContact.setOnTouchListener(this);
         navAbout.setOnTouchListener(this);
         navHome.setOnTouchListener(this);
+        navCity.setOnTouchListener(this);
 
 
         Log.d(TAG,"check login status: "+ db.getRowCount());
@@ -764,6 +769,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         Log.d(TAG, "nav exprines");
                         experines();
                         AppController.getInstance().fbLogEvent("experiences_view", null);
+                        break;
+                }
+                break;
+            case R.id.nav_city:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        AppController.getInstance().fbLogEvent("city_view", null);
+                        setFragmentView(citySelectFrag, R.id.container, "searchFrag", true);
                         break;
                 }
                 break;
