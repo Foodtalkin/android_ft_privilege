@@ -7,7 +7,7 @@ package in.foodtalk.privilege.app;
 public class Url {
 
     private static String baseUrl = "http://api.foodtalk.in/";
-   // private static String baseUrl = "http://stg-api.foodtalk.in/";
+    //private static String baseUrl = "http://stg-api.foodtalk.in/";
 
     public static String OFFERS = baseUrl+"offers";
     public static String OUTLET_OFFER = baseUrl+"outletoffer";
@@ -48,6 +48,10 @@ public class Url {
     public static String URL_PAYTM_ORDER = baseUrl+"paytm_order";
 
     public static String URL_PAYTM_SUBSCRIBE = baseUrl+"subscribe";
+
+    public static String URL_CITIES = baseUrl+"cities";
+
+
 
     //
 
