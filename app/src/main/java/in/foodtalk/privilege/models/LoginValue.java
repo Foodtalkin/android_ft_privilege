@@ -16,6 +16,7 @@ public class LoginValue {
     public String gender;
     public String dob;
     public String pref;
+    public String cityId;
 
 
     public String subId;

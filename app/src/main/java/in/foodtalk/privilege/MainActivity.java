@@ -52,6 +52,7 @@ import java.security.NoSuchAlgorithmException;
 import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.fragment.AccountFrag;
 import in.foodtalk.privilege.fragment.BlankFrag;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
@@ -77,7 +78,7 @@ import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.ToastShow;
 
-public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener, FragmentManager.OnBackStackChangedListener, ValueCallback {
 
     NavigationView navigationView;
     Fragment currentFragment;
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     String versionName;
     TextView txtVersion;
+
+    LinearLayout btnCity;
+
+    TextView tvCityName, tvCityName1;
 
 
 
@@ -176,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         navExperines = (LinearLayout) findViewById(R.id.nav_experines);
 
+
+
         txtVersion = (TextView) findViewById(R.id.txt_version);
 
         navExperines.setOnTouchListener(this);
@@ -212,6 +219,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         searchBtn = (ImageView) findViewById(R.id.btn_search);
         searchBtn.setOnTouchListener(this);
 
+        btnCity = (LinearLayout) findViewById(R.id.btn_city);
+        btnCity.setOnTouchListener(this);
+
         offerBarButtons = (LinearLayout) findViewById(R.id.offer_bar_buttons);
 
 
@@ -242,6 +252,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         txtFoodtalkNav.setTypeface(typeface);
         txtTitle = (TextView) findViewById(R.id.title_text);
         txtTitle.setTypeface(typeface);
+
+        tvCityName = (TextView) findViewById(R.id.tv_city_name);
+        tvCityName1 = (TextView) findViewById(R.id.tv_city_name1);
+
 
         checkVersion();
 
@@ -776,13 +790,25 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         drawerLayout.closeDrawer(Gravity.LEFT);
-                        AppController.getInstance().fbLogEvent("city_view", null);
-                        setFragmentView(citySelectFrag, R.id.container, "searchFrag", true);
+                        selectCity();
+                        break;
+                }
+                break;
+            case R.id.btn_city:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        selectCity();
                         break;
                 }
                 break;
         }
         return false;
+    }
+    private void selectCity(){
+        if (currentFragment != citySelectFrag){
+            AppController.getInstance().fbLogEvent("city_view", null);
+            setFragmentView(citySelectFrag, R.id.container, "searchFrag", true);
+        }
     }
     private void experines(){
         if (db.getRowCount() > 0){
@@ -1011,6 +1037,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         } catch (NoSuchAlgorithmException e) {
 
+        }
+    }
+
+    @Override
+    public void setValue(String v1, String v2) {
+        if (v1.equals("cityName")){
+            tvCityName.setText(v2);
+            tvCityName1.setText(v2);
         }
     }
 }

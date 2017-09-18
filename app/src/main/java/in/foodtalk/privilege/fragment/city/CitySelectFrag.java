@@ -3,11 +3,13 @@ package in.foodtalk.privilege.fragment.city;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,8 +20,10 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.library.ToastShow;
 
 /**
@@ -31,8 +35,16 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
 
     String TAG = CitySelectFrag.class.getSimpleName();
 
+    ImageView imgCity2;
+
     LinearLayout btnCity1, btnCity2;
     TextView tvRestaurantCity1, tvOutletCity1, tvRestaurantCity2, tvOutletCity2;
+
+    DatabaseHandler db;
+    LinearLayout btnSaveCity;
+    String cityId;
+
+    ValueCallback valueCallback;
 
     @Nullable
     @Override
@@ -47,9 +59,17 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         tvRestaurantCity2 = (TextView) layout.findViewById(R.id.tv_restaurant_city2);
         tvOutletCity1 = (TextView) layout.findViewById(R.id.tv_outlet_city1);
         tvOutletCity2 = (TextView) layout.findViewById(R.id.tv_outlet_city2);
+        imgCity2 = (ImageView) layout.findViewById(R.id.img_city2);
 
         btnCity1.setOnTouchListener(this);
         btnCity2.setOnTouchListener(this);
+
+        btnSaveCity = (LinearLayout) layout.findViewById(R.id.btn_save_city);
+        btnSaveCity.setOnTouchListener(this);
+
+        valueCallback = (ValueCallback) getActivity();
+
+        db = new DatabaseHandler(getActivity());
 
         loadCities();
         return layout;
@@ -60,7 +80,12 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
     }
 
     Boolean cityMumbai;
+    JSONObject response;
     private void setData(JSONObject response) throws JSONException {
+        this.response = response;
+
+        Log.d(TAG, "check city: "+db.getUserDetails().get("cityId"));
+
         if (response.getJSONArray("result").getJSONObject(0).getString("is_active").equals("1")){
             tvRestaurantCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("restaurant_count"));
             tvOutletCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("outlet_count"));
@@ -75,6 +100,42 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
             cityMumbai = false;
             tvRestaurantCity2.setText("Coming Soon!");
             tvOutletCity2.setText("");
+            imgCity2.setColorFilter(getResources().getColor(R.color.brownish_grey));
+           // imgCity2.setVisibility(View.GONE);
+            //imgCity2.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+
+        if (db.getUserDetails().get("cityId") == null){
+            btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+            btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+        }else {
+            if (db.getUserDetails().get("cityId").equals("null") || db.getUserDetails().get("cityId").equals("")){
+                btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+            }else {
+                cityId = db.getUserDetails().get("cityId");
+                if (cityId.equals("1")){
+                    btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                    btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                }else if (cityId.equals("2")){
+                    btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                    btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                }
+            }
+        }
+
+    }
+
+    private void saveCity(String cityId) throws JSONException{
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("city_id", cityId);
+
+        Log.d(TAG, "json obj: "+jsonObject);
+        if (db.getRowCount() > 0){
+            ApiCall.jsonObjRequest(Request.Method.PUT, getActivity(), jsonObject, Url.USER_UPDATE+"?sessionid="+db.getUserDetails().get("sessionId"), "saveCity", this);
+        }else {
+            getFragmentManager().popBackStack();
         }
     }
 
@@ -82,13 +143,18 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
     public boolean onTouch(View view, MotionEvent motionEvent) {
         Log.d(TAG,"btn clicked");
         switch (view.getId()){
-
             case R.id.btn_city1:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn city delhi");
                         btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
                         btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                        try {
+                            cityId = response.getJSONArray("result").getJSONObject(0).getString("id");
+                            Log.d(TAG,"btn city1 : "+cityId);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
                 break;
@@ -99,14 +165,42 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                         if (cityMumbai == true){
                             btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
                             btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                            try {
+                                cityId = response.getJSONArray("result").getJSONObject(1).getString("id");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }else {
                             ToastShow.showToast(getActivity(),"Mumbai coming soon!");
                         }
                         break;
                 }
                 break;
+            case R.id.btn_save_city:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        try {
+                            saveCity(cityId);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
         }
         return false;
+    }
+
+    private void citySaved(JSONObject response) throws JSONException {
+        if (response.getString("status").equals("OK")){
+            db.updateCity(db.getUserDetails().get("sessionId"),response.getJSONObject("result").getString("city_id"));
+            if (response.getJSONObject("result").getString("city_id").equals("1")){
+                valueCallback.setValue("cityName", "Delhi NCR");
+            }else {
+                valueCallback.setValue("cityName", "Mumbai");
+            }
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -119,6 +213,15 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+            if (tag.equals("saveCity")){
+                Log.d(TAG,"city save response: "+ response);
+                try {
+                    citySaved(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

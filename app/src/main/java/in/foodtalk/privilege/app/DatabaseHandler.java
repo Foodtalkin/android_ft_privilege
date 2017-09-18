@@ -16,7 +16,7 @@ import in.foodtalk.privilege.models.LoginValue;
  */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "foodtalkDb";
 
     private static final String TABLE_LOGIN = "loginInfo";
@@ -36,6 +36,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PREF = "pref";
 
     private static final String KEY_SUBSCRIPTION = "subscription";
+
+    private static final String KEY_CITY_ID = "cityId";
 
 
 
@@ -62,12 +64,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_DOB + " TEXT,"
                 + KEY_USERID +" TEXT,"
                 + KEY_PREF +" TEXT,"
+                + KEY_CITY_ID + " TEXT,"
                 + KEY_SUBSCRIPTION +" TEXT"+ ")";
         db.execSQL(CREATE_LOGIN_TABLE);
     }
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (newVersion == 4){
+            db.execSQL("ALTER TABLE " + TABLE_LOGIN + " ADD "+KEY_CITY_ID+" TEXT DEFAULT null");
+            Log.d(TAG,"Alter Table done city added");
+        }
     }
     // adding new credantial to login table
     public void addUser(LoginValue loginValue){
@@ -85,6 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_DOB, loginValue.dob);
         values.put(KEY_PREF, loginValue.pref);
         values.put(KEY_SUBSCRIPTION, loginValue.subscription);
+        values.put(KEY_CITY_ID, loginValue.cityId);
 
 
         db.insert(TABLE_LOGIN, null, values);
@@ -112,6 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put("phone", cursor.getString(cursor.getColumnIndex(KEY_PHONE)));
             user.put("pref", cursor.getString(cursor.getColumnIndex(KEY_PREF)));
             user.put("subscription", cursor.getString(cursor.getColumnIndex(KEY_SUBSCRIPTION)));
+            user.put("cityId", cursor.getString(cursor.getColumnIndex(KEY_CITY_ID)));
         }
         cursor.close();
         db.close();
@@ -145,6 +153,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
         db.close(); //Closing database connection
 
+    }
+
+    public void updateCity(String uId, String cityId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_CITY_ID, cityId);
+        db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
     }
 
     public int getRowCount(){
