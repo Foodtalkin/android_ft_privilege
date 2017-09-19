@@ -35,6 +35,8 @@ public class AppController extends Application {
 
     public FirebaseAnalytics firebaseAnalytics;
 
+    public String cityId = "1";
+
 
 
 

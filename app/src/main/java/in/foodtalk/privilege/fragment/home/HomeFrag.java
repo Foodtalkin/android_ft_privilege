@@ -60,6 +60,7 @@ import java.util.Locale;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
@@ -129,6 +130,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     GetLocation getLocation;
     ValueCallback valueCallback;
 
+    public String cityId;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,12 +191,24 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         savingsLoaded = false;
         valueCallback = (ValueCallback) getActivity();
 
-
+        callbackFragOpen = (CallbackFragOpen) getActivity();
 
         if (db.getRowCount() > 0){
             header.setVisibility(View.GONE);
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_PROFILE+"?sessionid="+sId, "savings", this);
+            //-----------------
+            if (db.getUserDetails().get("cityId") == null){
+                callbackFragOpen.openFrag("selectCityFrag","");
+            }else {
+                cityId = db.getUserDetails().get("cityId");
+                if (db.getUserDetails().get("cityId").equals("1")){
+                    valueCallback.setValue("cityName", "Delhi NCR");
+                }else if (db.getUserDetails().get("cityId").equals("2")){
+                    valueCallback.setValue("cityName", "Mumbai");
+                }
+            }
         }else {
+            cityId = AppController.getInstance().cityId;
             header.setVisibility(View.VISIBLE);
         }
 
@@ -204,7 +219,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         btnBuy.setOnTouchListener(this);
 
 
-        callbackFragOpen = (CallbackFragOpen) getActivity();
+
 
 
 
@@ -221,15 +236,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         });*/
 
-        if (db.getUserDetails().get("cityId") == null){
-            callbackFragOpen.openFrag("selectCityFrag","");
-        }else {
-            if (db.getUserDetails().get("cityId").equals("1")){
-                valueCallback.setValue("cityName", "Delhi NCR");
-            }else if (db.getUserDetails().get("cityId").equals("2")){
-                valueCallback.setValue("cityName", "Mumbai");
-            }
-        }
+
         latLonCallback = this;
         return layout;
     }
@@ -475,9 +482,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             placeholderInternet.setVisibility(View.GONE);
             String url;
             if (!lat.equals("")){
-                url = Url.OFFERS+"?latitude="+lat+"&longitude="+lon;
+                url = Url.OFFERS+"?latitude="+lat+"&longitude="+lon+"&city_id="+cityId;
             }else {
-                url = Url.OFFERS;
+                url = Url.OFFERS+"?city_id="+cityId;
             }
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
 
