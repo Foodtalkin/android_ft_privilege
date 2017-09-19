@@ -65,6 +65,7 @@ import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.LatLonCallback;
+import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.library.EndlessRecyclerOnScrollListener;
 import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 import in.foodtalk.privilege.library.GetLocation;
@@ -126,6 +127,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     LatLonCallback latLonCallback;
 
     GetLocation getLocation;
+    ValueCallback valueCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -184,6 +186,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         db = new DatabaseHandler(getActivity());
         sId = db.getUserDetails().get("sessionId");
         savingsLoaded = false;
+        valueCallback = (ValueCallback) getActivity();
 
 
 
@@ -218,12 +221,16 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         });*/
 
-
-
-
-
+        if (db.getUserDetails().get("cityId") == null){
+            callbackFragOpen.openFrag("selectCityFrag","");
+        }else {
+            if (db.getUserDetails().get("cityId").equals("1")){
+                valueCallback.setValue("cityName", "Delhi NCR");
+            }else if (db.getUserDetails().get("cityId").equals("2")){
+                valueCallback.setValue("cityName", "Mumbai");
+            }
+        }
         latLonCallback = this;
-
         return layout;
     }
 

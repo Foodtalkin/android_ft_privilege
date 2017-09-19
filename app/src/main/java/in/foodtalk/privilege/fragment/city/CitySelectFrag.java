@@ -85,6 +85,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         this.response = response;
 
         Log.d(TAG, "check city: "+db.getUserDetails().get("cityId"));
+        Log.d(TAG, "getUserDetails: "+db.getUserDetails());
 
         if (response.getJSONArray("result").getJSONObject(0).getString("is_active").equals("1")){
             tvRestaurantCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("restaurant_count"));
@@ -108,10 +109,12 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         if (db.getUserDetails().get("cityId") == null){
             btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
             btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+            cityId = "1";
         }else {
             if (db.getUserDetails().get("cityId").equals("null") || db.getUserDetails().get("cityId").equals("")){
                 btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
                 btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                cityId = "1";
             }else {
                 cityId = db.getUserDetails().get("cityId");
                 if (cityId.equals("1")){
@@ -193,7 +196,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
 
     private void citySaved(JSONObject response) throws JSONException {
         if (response.getString("status").equals("OK")){
-            db.updateCity(db.getUserDetails().get("sessionId"),response.getJSONObject("result").getString("city_id"));
+            db.updateCity(db.getUserDetails().get("userId"),response.getJSONObject("result").getString("city_id"));
             if (response.getJSONObject("result").getString("city_id").equals("1")){
                 valueCallback.setValue("cityName", "Delhi NCR");
             }else {

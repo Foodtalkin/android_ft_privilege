@@ -160,6 +160,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_CITY_ID, cityId);
         db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
+        db.close();
+
+        Log.d(TAG,"updateCity- uId: "+uId+" - cityId: "+cityId );
     }
 
     public int getRowCount(){

@@ -503,6 +503,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("webViewFrag")){
             webView(value);
         }
+        if (fragName.equals("selectCityFrag")){
+            selectCity();
+        }
     }
 
     private void startPaymentFlow(){
