@@ -44,7 +44,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
 
     DatabaseHandler db;
     LinearLayout btnSaveCity;
-    String cityId;
+    String cityId = "1";
 
     ValueCallback valueCallback;
 

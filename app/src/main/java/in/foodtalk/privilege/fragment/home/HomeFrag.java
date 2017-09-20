@@ -200,16 +200,21 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             if (db.getUserDetails().get("cityId") == null){
                 callbackFragOpen.openFrag("selectCityFrag","");
             }else {
-                cityId = db.getUserDetails().get("cityId");
-                if (db.getUserDetails().get("cityId").equals("1")){
-                    valueCallback.setValue("cityName", "Delhi NCR");
-                }else if (db.getUserDetails().get("cityId").equals("2")){
-                    valueCallback.setValue("cityName", "Mumbai");
+                if (db.getUserDetails().get("cityId").equals("null") || db.getUserDetails().get("cityId").equals("")){
+                    callbackFragOpen.openFrag("selectCityFrag","");
+                }else {
+                    cityId = db.getUserDetails().get("cityId");
+                    if (db.getUserDetails().get("cityId").equals("1")){
+                        valueCallback.setValue("cityName", "Delhi NCR");
+                    }else if (db.getUserDetails().get("cityId").equals("2")){
+                        valueCallback.setValue("cityName", "Mumbai");
+                    }
                 }
             }
         }else {
             cityId = AppController.getInstance().cityId;
             header.setVisibility(View.VISIBLE);
+            valueCallback.setValue("cityName", AppController.getInstance().cityName);
         }
 
 
@@ -456,9 +461,9 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             if (!nextUrl.equals("")){
                 String url;
                 if (!lat.equals("")){
-                    url = nextUrl+"&latitude="+lat+"&longitude="+lon;
+                    url = nextUrl+"&latitude="+lat+"&longitude="+lon+"&city_id="+cityId;
                 }else {
-                    url = nextUrl;
+                    url = nextUrl+"?city_id="+cityId;
                 }
                 ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();

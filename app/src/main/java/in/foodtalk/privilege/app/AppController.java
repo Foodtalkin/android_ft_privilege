@@ -36,6 +36,7 @@ public class AppController extends Application {
     public FirebaseAnalytics firebaseAnalytics;
 
     public String cityId = "1";
+    public String cityName = "Delhi NCR";
 
 
 

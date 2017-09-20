@@ -47,6 +47,8 @@ public class SaveLogin {
             loginValue.dob = ((result.isNull("dob")) ? "N/A" : result.getString("dob"));
             loginValue.pref = result.getString("preference");
             loginValue.uId = result.getString("id");
+            loginValue.cityId = result.getString("city_id");
+
 
             loginValue.subscription = subscription.toString();
             db.addUser(loginValue);

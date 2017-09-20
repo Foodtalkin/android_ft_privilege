@@ -40,6 +40,7 @@ import java.util.List;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
@@ -107,6 +108,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
     GetLocation getLocation;
 
+    DatabaseHandler db;
+
 
 
 
@@ -129,6 +132,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         cost.clear();
         offer.clear();
         filtersName.clear();
+
+        db = new DatabaseHandler(getActivity());
 
 
         btnApplyFilters = (LinearLayout) layout.findViewById(R.id.btn_apply_filters);
@@ -306,6 +311,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     }
 
     private void loadData(String key){
+        String cityId;
+        if (db.getRowCount() > 0){
+            cityId = db.getUserDetails().get("cityId");
+        }else {
+            cityId = AppController.getInstance().cityId;
+        }
         String query = "";
         try {
             query = URLEncoder.encode(key, "utf-8").replace("+","%20");
@@ -314,9 +325,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }
 
         if (!lat.equals("")){
-            query = query+"?"+"latitude="+lat+"&longitude="+lon;
+            query = query+"?"+"latitude="+lat+"&longitude="+lon+"&city_id="+cityId;
+        }else {
+            query = query+"?city_id="+cityId;
         }
         Log.d(TAG, "key: "+ query);
+
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.SEARCH_TEXT+"/"+query, "search", this);
     }
     private void loadCuisineData (){

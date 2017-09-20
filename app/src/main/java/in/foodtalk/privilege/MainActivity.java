@@ -1050,6 +1050,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (v1.equals("cityName")){
             tvCityName.setText(v2);
             tvCityName1.setText(v2);
+            AppController.getInstance().cityName = v2;
         }
     }
 }

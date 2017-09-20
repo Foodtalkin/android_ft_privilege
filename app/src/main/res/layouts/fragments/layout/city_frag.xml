@@ -51,8 +51,8 @@
                 </LinearLayout>
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_india_gate_large"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_gateway_india"
                     android:layout_gravity="bottom"/>
 
             </LinearLayout>
@@ -197,8 +197,9 @@
                             <ImageView
                                 android:id="@+id/img_city2"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_india_gate_small" />
+                                android:layout_height="50dp"
+                                android:src="@drawable/ic_gateway_india"
+                                />
                         </LinearLayout>
                     </LinearLayout>
 
