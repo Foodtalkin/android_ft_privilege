@@ -127,6 +127,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         btnLocation7 = (LinearLayout) layout.findViewById(R.id.btn_location7);
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
 
+
+
         cityZoneIds.clear();
         cuisineIds.clear();
         cost.clear();
@@ -235,6 +237,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
         checkLocationPermission();
 
+        setLocationFilters();
+
         return layout;
     }
     private void checkLocationPermission(){
@@ -269,20 +273,71 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             loadData("loadOffers");
             // settingApi();
             //footer1.setVisibility(View.VISIBLE);
-
         }else {
             Log.d(TAG,"Location GPS on");
             //getLastLocation();
             getLocation();
             //footer1.setVisibility(View.GONE);
         }
-
     }
 
     private void getLocation(){
         latLonCallback = this;
         getLocation = new GetLocation(getActivity(), latLonCallback, "homeFrag");
         getLocation.onStart();
+    }
+
+    private void setLocationFilters(){
+        if (db.getRowCount() > 0){
+            if (db.getUserDetails().get("cityId").equals("1")){
+                setFilterForDelhi();
+            }else if (db.getUserDetails().get("cityId").equals("2")){
+                setFilterForMumbai();
+            }
+        }else {
+            if (AppController.getInstance().cityId.equals("1")){
+                setFilterForDelhi();
+            }else if (AppController.getInstance().cityId.equals("2")){
+                setFilterForMumbai();
+            }
+        }
+    }
+    private void setFilterForDelhi(){
+        tvLocation1.setText("Gurgaon");
+        tvLocation2.setText("Noida");
+        tvLocation3.setText("South Delhi");
+        tvLocation4.setText("North Delhi");
+        tvLocation5.setText("East Delhi");
+        tvLocation6.setText("West Delhi");
+        tvLocation7.setText("Central Delhi");
+        tvLocation1.setTag("1");
+        tvLocation2.setTag("2");
+        tvLocation3.setTag("3");
+        tvLocation4.setTag("4");
+        tvLocation5.setTag("5");
+        tvLocation6.setTag("6");
+        tvLocation7.setTag("7");
+
+        btnLocation5.setVisibility(View.VISIBLE);
+        btnLocation6.setVisibility(View.VISIBLE);
+        btnLocation7.setVisibility(View.VISIBLE);
+
+
+    }
+    private void setFilterForMumbai(){
+        tvLocation1.setText("Western Suburbs");
+        tvLocation2.setText("Eastern Suburbs");
+        tvLocation3.setText("Harbour Suburbs");
+        tvLocation4.setText("South Mumbai");
+        tvLocation1.setTag("8");
+        tvLocation2.setTag("9");
+        tvLocation3.setTag("10");
+        tvLocation4.setTag("11");
+
+        btnLocation5.setVisibility(View.GONE);
+        btnLocation6.setVisibility(View.GONE);
+        btnLocation7.setVisibility(View.GONE);
+
     }
 
     private void textListener(){
@@ -543,15 +598,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location1 == false){
                 location1 = true;
                 circleL1.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("1");
-                cityZoneName.add("Gurgaon");
+                cityZoneIds.add(tvLocation1.getTag().toString());
+                cityZoneName.add(tvLocation1.getText().toString());
                 filtersName.add(tvLocation1.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location1 = false;
                 circleL1.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("1");
-                cityZoneName.remove("Gurgaon");
+                cityZoneIds.remove(tvLocation1.getTag().toString());
+                cityZoneName.remove(tvLocation1.getText().toString());
                 filtersName.remove(tvLocation1.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -560,15 +615,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location2 == false){
                 location2 = true;
                 circleL2.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("2");
-                cityZoneName.add("Noida");
+                cityZoneIds.add(tvLocation2.getTag().toString());
+                cityZoneName.add(tvLocation2.getText().toString());
                 filtersName.add(tvLocation2.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location2 = false;
                 circleL2.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("2");
-                cityZoneName.remove("Noida");
+                cityZoneIds.remove(tvLocation2.getTag().toString());
+                cityZoneName.remove(tvLocation2.getText().toString());
                 filtersName.remove(tvLocation2.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -577,15 +632,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location3 == false){
                 location3 = true;
                 circleL3.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("3");
-                cityZoneName.add("South Delhi");
+                cityZoneIds.add(tvLocation3.getTag().toString());
+                cityZoneName.add(tvLocation3.getText().toString());
                 filtersName.add(tvLocation3.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location3 = false;
                 circleL3.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("3");
-                cityZoneName.remove("South Delhi");
+                cityZoneIds.remove(tvLocation3.getTag().toString());
+                cityZoneName.remove(tvLocation3.getText().toString());
                 filtersName.remove(tvLocation3.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -594,15 +649,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location4 == false){
                 location4 = true;
                 circleL4.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("4");
-                cityZoneName.add("North Delhi");
+                cityZoneIds.add(tvLocation4.getTag().toString());
+                cityZoneName.add(tvLocation4.getText().toString());
                 filtersName.add(tvLocation4.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location4 = false;
                 circleL4.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("4");
-                cityZoneName.remove("North Delhi");
+                cityZoneIds.remove(tvLocation4.getTag().toString());
+                cityZoneName.remove(tvLocation4.getText().toString());
                 filtersName.remove(tvLocation4.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -611,15 +666,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location5 == false){
                 location5 = true;
                 circleL5.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("5");
-                cityZoneName.add("East Delhi");
+                cityZoneIds.add(tvLocation5.getTag().toString());
+                cityZoneName.add(tvLocation5.getText().toString());
                 filtersName.add(tvLocation5.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location5 = false;
                 circleL5.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("5");
-                cityZoneName.remove("East Delhi");
+                cityZoneIds.remove(tvLocation5.getTag().toString());
+                cityZoneName.remove(tvLocation5.getText().toString());
                 filtersName.remove(tvLocation5.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -628,15 +683,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location6 == false){
                 location6 = true;
                 circleL6.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("6");
-                cityZoneName.add("West Delhi");
+                cityZoneIds.add(tvLocation6.getTag().toString());
+                cityZoneName.add(tvLocation6.getText().toString());
                 filtersName.add(tvLocation6.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location6 = false;
                 circleL6.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("6");
-                cityZoneName.remove("West Delhi");
+                cityZoneIds.remove(tvLocation6.getTag().toString());
+                cityZoneName.remove(tvLocation6.getText().toString());
                 filtersName.remove(tvLocation6.getText().toString());
                 Log.d(TAG, "location remove");
             }
@@ -645,15 +700,15 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             if (location7 == false){
                 location7 = true;
                 circleL7.setBackgroundResource(R.drawable.circle_selected);
-                cityZoneIds.add("7");
-                cityZoneName.add("Central Delhi");
+                cityZoneIds.add(tvLocation7.getTag().toString());
+                cityZoneName.add(tvLocation7.getText().toString());
                 filtersName.add(tvLocation7.getText().toString());
                 Log.d(TAG, "location selected");
             }else {
                 location7 = false;
                 circleL7.setBackgroundResource(R.drawable.circle_select);
-                cityZoneIds.remove("7");
-                cityZoneName.remove("Central Delhi");
+                cityZoneIds.remove(tvLocation7.getTag().toString());
+                cityZoneName.remove(tvLocation7.getText().toString());
                 filtersName.remove(tvLocation7.getText().toString());
                 Log.d(TAG, "location remove");
             }

@@ -65,6 +65,7 @@ import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
+import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     PaymentPaytm paymentPaytm = new PaymentPaytm();
     OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
     WebViewFrag webViewFrag;
+    ExpeFrag expeFrag = new ExpeFrag();
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
 
@@ -817,9 +819,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
     private void experines(){
         if (db.getRowCount() > 0){
-            String url = "http://foodtalk.in/pe/#!/app/"+db.getUserDetails().get("sessionId");
-            Log.d(TAG, url);
-            webView(url);
+            if (db.getUserDetails().get("cityId").equals("1")){
+                String url = "http://foodtalk.in/pe/#!/app/"+db.getUserDetails().get("sessionId");
+                Log.d(TAG, url);
+                webView(url);
+            }else {
+                setFragmentView(expeFrag, R.id.container, "expeFrag", false);
+            }
+
         }else {
             signupAlert();
         }
