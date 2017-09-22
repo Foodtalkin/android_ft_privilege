@@ -93,6 +93,8 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
 
     GetLocation getLocation;
 
+    String cityId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -170,6 +172,15 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             }
         });*/
         checkLocationPermission();
+
+
+        if (db.getRowCount() > 0){
+
+            cityId = db.getUserDetails().get("cityId");
+        }else {
+
+            cityId = AppController.getInstance().cityId;
+        }
         return layout;
     }
 
@@ -257,9 +268,9 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             if (!nextUrl.equals("")){
                 String url;
                 if (!lat.equals("")){
-                    url = nextUrl+"&latitude="+lat+"&longitude="+lon+"&"+offerUrl;
+                    url = nextUrl+"&latitude="+lat+"&longitude="+lon+"&"+offerUrl+"&city_id="+cityId;
                 }else {
-                    url =  nextUrl+"&"+offerUrl;
+                    url =  nextUrl+"&"+offerUrl+"&city_id="+cityId;
                 }
                 ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
@@ -276,9 +287,9 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
             placeholderInternet.setVisibility(View.GONE);
             String url;
             if (!lat.equals("")){
-                url = Url.OFFERS+"?"+"latitude="+lat+"&longitude="+lon+"&"+offerUrl;
+                url = Url.OFFERS+"?"+"latitude="+lat+"&longitude="+lon+"&"+offerUrl+"&city_id="+cityId;
             }else {
-                url =  Url.OFFERS+"?"+offerUrl;
+                url =  Url.OFFERS+"?"+offerUrl+"&city_id="+cityId;
             }
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
         }

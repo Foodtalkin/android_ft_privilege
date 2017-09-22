@@ -110,6 +110,8 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
 
     DatabaseHandler db;
 
+    String cityId;
+
 
 
 
@@ -291,15 +293,18 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         if (db.getRowCount() > 0){
             if (db.getUserDetails().get("cityId").equals("1")){
                 setFilterForDelhi();
+
             }else if (db.getUserDetails().get("cityId").equals("2")){
                 setFilterForMumbai();
             }
+            cityId = db.getUserDetails().get("cityId");
         }else {
             if (AppController.getInstance().cityId.equals("1")){
                 setFilterForDelhi();
             }else if (AppController.getInstance().cityId.equals("2")){
                 setFilterForMumbai();
             }
+            cityId = AppController.getInstance().cityId;
         }
     }
     private void setFilterForDelhi(){
@@ -366,12 +371,12 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     }
 
     private void loadData(String key){
-        String cityId;
+        /*String cityId;
         if (db.getRowCount() > 0){
             cityId = db.getUserDetails().get("cityId");
         }else {
             cityId = AppController.getInstance().cityId;
-        }
+        }*/
         String query = "";
         try {
             query = URLEncoder.encode(key, "utf-8").replace("+","%20");
@@ -390,7 +395,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
     }
     private void loadCuisineData (){
         progressBar.setVisibility(View.VISIBLE);
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.GET_CUISINE,"getCuisine", this);
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.GET_CUISINE+"?city_id="+cityId,"getCuisine", this);
     }
 
     private void setCuisineAdapter(JSONObject response) throws JSONException {

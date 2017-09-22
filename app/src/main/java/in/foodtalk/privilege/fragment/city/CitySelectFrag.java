@@ -65,6 +65,11 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         tvOutletCity2 = (TextView) layout.findViewById(R.id.tv_outlet_city2);
         imgCity2 = (ImageView) layout.findViewById(R.id.img_city2);
 
+        tvRestaurantCity1.setText("--");
+        tvRestaurantCity2.setText("--");
+        tvOutletCity1.setText("--");
+        tvOutletCity2.setText("--");
+
         btnCity1.setOnTouchListener(this);
         btnCity2.setOnTouchListener(this);
 
@@ -134,8 +139,14 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                 }
             }
         }else {
-            btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
-            btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+            if (AppController.getInstance().cityId.equals("1")){
+                btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+            }else if (AppController.getInstance().cityId.equals("2")){
+                btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+            }
+
         }
     }
 

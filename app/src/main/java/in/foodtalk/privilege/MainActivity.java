@@ -1041,9 +1041,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-                /*ClipboardManager clipboar0d = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(this.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("hashKey", hashKey);
-                clipboard.setPrimaryClip(clip);*/
+                clipboard.setPrimaryClip(clip);
             }
         } catch (PackageManager.NameNotFoundException e) {
 
