@@ -30,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Present your app to the restaurant &amp; ask them to punch in the PIN  "/>
+                android:text="Ask your server to enter the unique PIN to redeem your offer"/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

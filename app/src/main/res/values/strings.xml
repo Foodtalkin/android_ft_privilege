@@ -8,7 +8,7 @@
     <string name="parseAppID">ftp</string>
     <string name="successCopy">
         <![CDATA[
-        Offer redemption successful, Please <font color="#1fb6ff">contact us</font> for any queries.
+        Offer redemption successful! \n<font color="#1fb6ff">Contact us</font> for any queries
         ]]>
 
     </string>

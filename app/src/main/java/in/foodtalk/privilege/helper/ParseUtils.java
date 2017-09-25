@@ -125,6 +125,40 @@ public class ParseUtils {
         installation.saveInBackground();
     }
 
+    public static void sendCityToParse(String cityId){
+        if (ParseUser.getCurrentUser() == null) {
+            ParseUser.enableAutomaticUser();
+            Log.d("getCurrentUser","currentuser null");
+        }
+        ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+            AppController appController = new AppController();
+            @Override
+            public void done(ParseException e) {
+                String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
+                String userId = ParseInstallation.getCurrentInstallation().get("userId").toString();
+                String cityId = ParseInstallation.getCurrentInstallation().get("city_id").toString();
+
+                //Map<String, String>map = ParseInstallation.getCurrentInstallation();
+                Log.d("Parse", "cityId: "+ cityId);
+               // Log.e("deviceToken callback", deviceToken+" ");
+
+                if (e!= null){
+                    Log.e("ParseException", e.toString()+" done");
+                }
+                //appController.deviceToken = deviceToken;
+            }
+        });
+
+        //2018-06-26 23:59:59
+
+        // Date date = new Date();
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("city_id", cityId);
+        //installation.put("expiry", date);
+
+        installation.saveInBackground();
+    }
+
     public static void subscribeWithInfo(String userId, String locationIdentifire, String work,
                                          String cityId, String stateId, String countryId, String regionId) {
 

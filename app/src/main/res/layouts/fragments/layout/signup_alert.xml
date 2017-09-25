@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Handpicked 100 best restaurants in Delhi NCR \n\n 1+1 Deals and Discounts at the 100 best \n \n Access to exclusive experiences"
+                        android:text="Handpicked list of Delhi NCR’s 100 best restaurants \n\n Endless 1+1 deals and offers \n \n Access to exclusive experiences"
                         android:textSize="18sp"
                         android:padding="25dp"
                         android:textColor="@color/dark_grey"

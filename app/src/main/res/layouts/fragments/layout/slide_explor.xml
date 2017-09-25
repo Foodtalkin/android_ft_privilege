@@ -30,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Browse through our list of hand picked restaurants to find a deal"/>
+                android:text="Browse through our list of handpicked restaurants to find an offer you like"/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

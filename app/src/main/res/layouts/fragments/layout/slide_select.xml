@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Use filters to narrow down on a restaurant based on your prefrences."/>
+                android:text="Looking for something specific? Use our filters to find whatever you’re in the mood for"/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

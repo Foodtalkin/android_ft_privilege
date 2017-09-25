@@ -130,17 +130,16 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
                        tv1.setText(firstCopy);
                        break;
                    case 1:
-                       tv1.setText("Book a seat at the city’s most exciting Food events exclusively for Privilege members");
+                       tv1.setText("Book a seat at the most exciting events in the city, curated by Food Talk. Exclusively for Privilege members.");
                        break;
                    case 2:
-                       tv1.setText("Now unlock minimum 6 coupons per restaurant to enjoy Dining privileges for 1 year");
+                       tv1.setText("Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges.");
                        break;
                    case 3:
-                       tv1.setText("Search for offers at your favourite restaurant\n" +
-                               "or discover new ones using filters");
+                       tv1.setText("Search for your favourite restaurants or discover a restaurant you haven’t tried before!");
                        break;
                    case 4:
-                       tv1.setText("Redeem an offer of your choice. Ask the Restaurant to enter their PIN");
+                       tv1.setText("Just ask your server to enter the unique PIN to redeem your offer.");
                        break;
                    case 5:
                        break;

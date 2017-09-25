@@ -30,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:text="Purchase Food Talk Privilege for Rs 1,200 only to enjoy deals and more for 1 full year."/>
+                android:text="Buy the annual subscription for INR 1,200 only and make every meal a Privilege"/>
         </LinearLayout>
         <ImageView
             android:layout_width="wrap_content"

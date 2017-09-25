@@ -26,6 +26,7 @@ import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
+import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.library.ToastShow;
 
 /**
@@ -99,19 +100,19 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         Log.d(TAG, "getUserDetails: "+db.getUserDetails());
 
         if (response.getJSONArray("result").getJSONObject(0).getString("is_active").equals("1")){
-            tvRestaurantCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("restaurant_count"));
-            tvOutletCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("outlet_count"));
+            //tvRestaurantCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("restaurant_count"));
+            tvOutletCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("outlet_count")+" Restaurants");
         }else {
-            tvRestaurantCity1.setText("Coming Soon!");
+            tvOutletCity1.setText("Coming Soon!");
         }
         if (response.getJSONArray("result").getJSONObject(1).getString("is_active").equals("1")){
-            tvRestaurantCity2.setText(response.getJSONArray("result").getJSONObject(1).getString("restaurant_count"));
-            tvOutletCity2.setText(response.getJSONArray("result").getJSONObject(1).getString("outlet_count"));
+            //tvRestaurantCity2.setText(response.getJSONArray("result").getJSONObject(1).getString("restaurant_count"));
+            tvOutletCity2.setText(response.getJSONArray("result").getJSONObject(1).getString("outlet_count")+" Restaurants");
             cityMumbai = true;
         }else {
             cityMumbai = false;
-            tvRestaurantCity2.setText("Coming Soon!");
-            tvOutletCity2.setText("");
+            tvOutletCity2.setText("Coming Soon!");
+            //tvOutletCity2.setText("");
             imgCity2.setColorFilter(getResources().getColor(R.color.brownish_grey));
            // imgCity2.setVisibility(View.GONE);
             //imgCity2.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -162,6 +163,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         jsonObject.put("city_id", cityId);
 
         Log.d(TAG, "json obj: "+jsonObject);
+        ParseUtils.sendCityToParse(cityId);
         if (db.getRowCount() > 0){
             ApiCall.jsonObjRequest(Request.Method.PUT, getActivity(), jsonObject, Url.USER_UPDATE+"?sessionid="+db.getUserDetails().get("sessionId"), "saveCity", this);
         }else {

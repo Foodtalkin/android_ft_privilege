@@ -27,7 +27,7 @@
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:layout_marginRight="30dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="20dp"
                     >
                     <TextView
                         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Privilege Bombay"
+                        android:text="Privilege Mumbai"
                         android:textColor="@color/light_gold"
                     />
                     <TextView
@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:layout_marginTop="15dp"
-                        android:text="Food Talk privilege is now abailable in bombay. No extra purchases, no hidden charges, just switch the city below &amp; start redeeming."
+                        android:text="We’re hitting the shores of Mumbai very soon! Use your Privilege at all available cities at no additional charge."
                         />
                 </LinearLayout>
                 <ImageView
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginLeft="60dp"
@@ -73,13 +73,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Select a city"
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:layout_marginTop="7dp"
-                        android:text="Changing your city is free You can change city anytime from menu."/>
+                        android:textSize="16sp"/>
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -121,6 +116,7 @@
                                 android:textSize="14sp"
                                 android:textColor="@color/white"
                                 android:clickable="false"
+                                android:visibility="gone"
                                 />
                             <TextView
                                 android:id="@+id/tv_outlet_city1"
@@ -176,6 +172,7 @@
                                 android:text="16 Restaurants"
                                 android:textSize="14sp"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
                                 android:clickable="false"
                                 />
                             <TextView

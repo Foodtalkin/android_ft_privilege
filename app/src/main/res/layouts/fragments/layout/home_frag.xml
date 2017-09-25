@@ -23,16 +23,16 @@
             android:textColor="@color/pale_grey"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
-
-            android:text="Get access to all these offers for one year at ₹1200 Only."/>
+            android:textSize="13sp"
+            android:text="Access to all these offers and experiences for 1 year at INR 1,200"/>
         <TextView
             android:id="@+id/btn_buy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="15dp"
             android:layout_marginLeft="5dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp"
             android:textSize="12sp"
             android:text="BUY"
             android:textColor="@color/black"

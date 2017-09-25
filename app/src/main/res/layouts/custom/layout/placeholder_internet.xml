@@ -24,7 +24,7 @@
             android:textAlignment="center"
             android:layout_marginTop="30dp"
             android:textColor="@color/dark_grey"
-            android:text="Looks like you’re not connected to the Internet. Check your connection"/>
+            android:text="Uh-oh. Looks like you’re not connected to the Internet. Please check your connection and try again"/>
         <TextView
             android:id="@+id/btn_retry"
             android:layout_width="wrap_content"

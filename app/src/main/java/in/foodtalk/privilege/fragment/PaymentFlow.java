@@ -15,9 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.PurchaseEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.R;
@@ -189,6 +194,15 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                         params.putInt("Amount",amount);
                         AppController.getInstance().fbLogEvent("purchase", params);
                         saveUser(response);
+
+                        //----fabric event----
+                      /* Answers.getInstance().logPurchase(new PurchaseEvent()
+                                .putItemPrice(BigDecimal.valueOf(1200))
+                                .putCurrency(Currency.getInstance("INR"))
+                                .putItemName("Privilege Membership")
+                                .putItemType("Subscription")
+                                .putItemId("01")
+                                .putSuccess(true));*/
                     }else {
                         setScreen("error");
                     }

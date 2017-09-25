@@ -24,7 +24,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
             <TextView
                 android:id="@+id/tv_phone"
                 android:layout_width="match_parent"
@@ -46,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:textAlignment="center"
-                android:text="We will send you One-Time-Password (OTP) \n via SMS. Please enter OTP in next step."
+                android:text="We will send you a One Time Password (OTP) via SMS. Please enter your OTP in the next step"
                 android:textColor="@color/warm_grey"/>
         </LinearLayout>
 
