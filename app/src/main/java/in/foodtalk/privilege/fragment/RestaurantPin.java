@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,6 +175,9 @@ public class RestaurantPin extends Fragment implements CallbackKeypad, ApiCallba
                         params.putString("status", "success");
                         params.putInt("offer_id",00);
                         AppController.getInstance().fbLogEvent("redemption", params);
+
+                        //-----
+                        Answers.getInstance().logCustom(new CustomEvent("redeem"));
                     }else {
                         ToastShow.showToast(getActivity(), "Invalid PIN");
                         tvOtp1.setText("");

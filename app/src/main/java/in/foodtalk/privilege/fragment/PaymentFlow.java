@@ -196,13 +196,12 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
                         saveUser(response);
 
                         //----fabric event----
-                      /* Answers.getInstance().logPurchase(new PurchaseEvent()
+                      Answers.getInstance().logPurchase(new PurchaseEvent()
                                 .putItemPrice(BigDecimal.valueOf(1200))
                                 .putCurrency(Currency.getInstance("INR"))
                                 .putItemName("Privilege Membership")
                                 .putItemType("Subscription")
-                                .putItemId("01")
-                                .putSuccess(true));*/
+                                .putSuccess(true));
                     }else {
                         setScreen("error");
                     }

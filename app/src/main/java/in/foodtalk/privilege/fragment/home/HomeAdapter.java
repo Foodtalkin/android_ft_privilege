@@ -176,16 +176,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
 //        Log.d(TAG, "type: "+ offerCardList.get(position).type.equals("loader"));
-        if (offerCardList.get(position).type!= null){
-            if (offerCardList.get(position).type.equals("loader")){
-                return VIEW_LOADER;
-            }else if (offerCardList.get(position).type.equals("savings")){
-                return VIEW_SAVING;
+        if (offerCardList.size() > position){
+            if (offerCardList.get(position).type!= null){
+                if (offerCardList.get(position).type.equals("loader")){
+                    return VIEW_LOADER;
+                }else if (offerCardList.get(position).type.equals("savings")){
+                    return VIEW_SAVING;
+                }else {
+                    return VIEW_OFFER;
+                }
             }else {
+                //Log.d(TAG, "null type position is "+ position);
                 return VIEW_OFFER;
             }
         }else {
-            //Log.d(TAG, "null type position is "+ position);
+            Log.d(TAG,"size:"+offerCardList.size() +"| position: "+position);
             return VIEW_OFFER;
         }
     }

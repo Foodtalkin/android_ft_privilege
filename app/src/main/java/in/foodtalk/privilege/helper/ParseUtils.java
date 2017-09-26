@@ -134,8 +134,8 @@ public class ParseUtils {
             AppController appController = new AppController();
             @Override
             public void done(ParseException e) {
-                String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
-                String userId = ParseInstallation.getCurrentInstallation().get("userId").toString();
+               // String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
+               // String userId = ParseInstallation.getCurrentInstallation().get("userId").toString();
                 String cityId = ParseInstallation.getCurrentInstallation().get("city_id").toString();
 
                 //Map<String, String>map = ParseInstallation.getCurrentInstallation();

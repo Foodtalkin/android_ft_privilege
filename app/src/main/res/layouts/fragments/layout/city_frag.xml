@@ -90,7 +90,7 @@
                         android:orientation="horizontal"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:background="@drawable/btn_bg3"
+                        android:background="@drawable/btn_bg4"
                         android:clickable="true"
                         >
                         <LinearLayout
@@ -215,12 +215,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="Continue"
             android:padding="18dp"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/white"/>
-
     </LinearLayout>
 
 </RelativeLayout>
