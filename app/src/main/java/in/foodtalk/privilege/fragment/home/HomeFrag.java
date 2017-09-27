@@ -428,9 +428,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG,"onDestroyView");
-        if (getLocation != null){
-            getLocation.onStop();
-        }
+
     }
 
     @Override
@@ -579,7 +577,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     case 2:
                         // Log.d(TAG, "getSpan 2");
                         return 2;
-
                     case 1:
                         // Log.d(TAG, "getSpan 1");
                         return 1;
@@ -798,6 +795,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
         saveState = false;
         startLoading();
-
+        if (getLocation != null){
+            getLocation.onStop();
+        }
     }
 }

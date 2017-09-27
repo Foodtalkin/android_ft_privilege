@@ -249,5 +249,8 @@ public class SelectOutletFrag extends Fragment implements ApiCallback, View.OnTo
             this.lon = "";
         }
         loadData("restaurantOutlets");
+        if (getLocation != null){
+            getLocation.onStop();
+        }
     }
 }
