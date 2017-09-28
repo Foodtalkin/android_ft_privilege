@@ -461,7 +461,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 if (!lat.equals("")){
                     url = nextUrl+"&latitude="+lat+"&longitude="+lon+"&city_id="+cityId;
                 }else {
-                    url = nextUrl+"?city_id="+cityId;
+                    url = nextUrl+"&city_id="+cityId;
                 }
                 ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, url, tag, this);
                 OfferCardObj offerCardObj = new OfferCardObj();
