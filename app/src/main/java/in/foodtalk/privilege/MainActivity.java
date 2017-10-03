@@ -64,6 +64,7 @@ import in.foodtalk.privilege.fragment.PaymentPaytm;
 import in.foodtalk.privilege.fragment.RestaurantPin;
 import in.foodtalk.privilege.fragment.SignupAlert;
 import in.foodtalk.privilege.fragment.WebViewFrag;
+import in.foodtalk.privilege.fragment.account.AccountTabFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     ExpeFrag expeFrag = new ExpeFrag();
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
+    AccountTabFrag accountTabFrag = new AccountTabFrag();
 
     DatabaseHandler db;
 
@@ -726,7 +728,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         webView("http://foodtalk.in/app/faq.html");
                         drawerLayout.closeDrawer(Gravity.LEFT);
-
                         break;
                 }
                 break;
@@ -734,7 +735,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         AccountFrag accountFrag = new AccountFrag();
-                        setFragmentView(accountFrag, R.id.container, "historyFrag", true);
+                        setFragmentView(accountTabFrag, R.id.container, "accountTabFrag", true);
+
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         AppController.getInstance().fbLogEvent("account_view", null);
                         break;

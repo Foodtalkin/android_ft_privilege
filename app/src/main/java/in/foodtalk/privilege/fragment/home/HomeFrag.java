@@ -506,7 +506,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         //Log.d("position for remove", position+"");
 
     }
-
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
 

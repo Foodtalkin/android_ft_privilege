@@ -188,13 +188,15 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn city delhi");
-                        btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
-                        btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
-                        try {
-                            cityId = response.getJSONArray("result").getJSONObject(0).getString("id");
-                            Log.d(TAG,"btn city1 : "+cityId);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (response != null){
+                            btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                            btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                            try {
+                                cityId = response.getJSONArray("result").getJSONObject(0).getString("id");
+                                Log.d(TAG,"btn city1 : "+cityId);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                 }
@@ -203,16 +205,18 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn city Mumbai");
-                        if (cityMumbai == true){
-                            btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
-                            btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
-                            try {
-                                cityId = response.getJSONArray("result").getJSONObject(1).getString("id");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        if (response != null){
+                            if (cityMumbai == true){
+                                btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
+                                btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
+                                try {
+                                    cityId = response.getJSONArray("result").getJSONObject(1).getString("id");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                ToastShow.showToast(getActivity(),"Mumbai coming soon!");
                             }
-                        }else {
-                            ToastShow.showToast(getActivity(),"Mumbai coming soon!");
                         }
                         break;
                 }
