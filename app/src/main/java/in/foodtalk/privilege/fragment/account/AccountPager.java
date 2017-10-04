@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AccountPager extends FragmentPagerAdapter {
     private List<Fragment> fragments;
-    private String[] tabTitles = new String[]{"Profile", "History", "Bookmarks"};
+    private String[] tabTitles = new String[]{"Profile", "History", "Bookmarks","Profile", "History", "Bookmarks"};
     public AccountPager(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;

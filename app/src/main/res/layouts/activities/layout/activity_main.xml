@@ -65,53 +65,7 @@
                         android:layout_marginLeft="20dp"
                         android:text="Privilege Member"/>
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/nav_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginLeft="@dimen/nav_icon_margin"
-                    android:clickable="true"
-                    android:background="@drawable/ripple_effect">
-                    <LinearLayout
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_location_24"
-                            android:tint="@color/light_gold"/>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:id="@+id/tv_city_name1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Delhi NCR"
-                            android:textSize="@dimen/nav_text_size"
-                            android:textAllCaps="true"
-                            android:textStyle="bold"
-                            android:layout_marginLeft="@dimen/nav_text_margin"
-                            android:textColor="@color/white"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="tap to change city"
-                            android:textAllCaps="true"
-                            android:textSize="12sp"
-                            android:layout_marginLeft="@dimen/nav_text_margin"
-                            android:textColor="@color/warm_grey"/>
-                    </LinearLayout>
-
-                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/nav_home"
                     android:layout_width="match_parent"
@@ -187,7 +141,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="10dp"
-                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="@dimen/nav_icon_margin"
                         android:clickable="true"
                         android:background="@drawable/ripple_effect">
@@ -205,7 +158,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Profile"
+                            android:text="Account"
                             android:textSize="@dimen/nav_text_size"
                             android:textAllCaps="true"
                             android:textStyle="bold"
@@ -219,6 +172,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="10dp"
+                        android:visibility="gone"
                         android:layout_marginLeft="@dimen/nav_icon_margin"
                         android:clickable="true"
                         android:background="@drawable/ripple_effect">
@@ -232,7 +186,6 @@
                                 android:src="@drawable/ic_nav_history"
                                 android:tint="@color/light_gold"/>
                         </LinearLayout>
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -250,6 +203,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="10dp"
+                        android:visibility="gone"
                         android:layout_marginLeft="@dimen/nav_icon_margin"
                         android:clickable="true"
                         android:background="@drawable/ripple_effect">
@@ -282,7 +236,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
                     android:background="@drawable/ripple_effect">
@@ -314,7 +267,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    android:layout_marginTop="@dimen/nav_item_top_margin"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
                     android:background="@drawable/ripple_effect">
@@ -345,7 +297,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    android:layout_marginTop="@dimen/nav_item_top_margin1"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
                     android:background="@drawable/ripple_effect">
@@ -362,7 +313,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="How it works"
+                        android:text="Help &amp; Support"
                         android:layout_gravity="center_vertical"
                         android:textSize="@dimen/nav_text_size"
                         android:textAllCaps="true"
@@ -379,6 +330,7 @@
                     android:layout_marginTop="@dimen/nav_item_top_margin"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:background="@drawable/ripple_effect">
                     <LinearLayout
                         android:layout_width="30dp"
@@ -410,6 +362,7 @@
                     android:layout_marginTop="@dimen/nav_item_top_margin"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:background="@drawable/ripple_effect">
                     <LinearLayout
                         android:layout_width="30dp"
@@ -438,7 +391,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="10dp"
-                    android:layout_marginTop="@dimen/nav_item_top_margin1"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
                     android:background="@drawable/ripple_effect">
@@ -529,6 +481,52 @@
                             android:layout_marginLeft="@dimen/nav_text_margin"
                             android:textColor="@color/white"/>
                     </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/nav_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:background="@color/black">
+                    <LinearLayout
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_location_24"
+                            android:tint="@color/light_gold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:id="@+id/tv_city_name1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delhi NCR"
+                            android:textSize="@dimen/nav_text_size"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="@dimen/nav_text_margin"
+                            android:textColor="@color/white"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="tap to change city"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            android:layout_marginLeft="@dimen/nav_text_margin"
+                            android:textColor="@color/warm_grey"/>
+                    </LinearLayout>
+
                 </LinearLayout>
                 <TextView
                     android:id="@+id/txt_version"

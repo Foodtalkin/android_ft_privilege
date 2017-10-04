@@ -55,6 +55,7 @@ import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.fragment.AccountFrag;
 import in.foodtalk.privilege.fragment.BlankFrag;
+import in.foodtalk.privilege.fragment.HelpSupportFrag;
 import in.foodtalk.privilege.fragment.OfferDetails.OfferDetailsFrag;
 import in.foodtalk.privilege.fragment.OtpVerifyFrag;
 import in.foodtalk.privilege.fragment.OutletList.SelectOutletFrag;
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     OfferDetailsFrag offerDetailsFrag = new OfferDetailsFrag();
     WebViewFrag webViewFrag;
     ExpeFrag expeFrag = new ExpeFrag();
+    HelpSupportFrag helpSupportFrag = new HelpSupportFrag();
+    HowItWorks howItWorks = new HowItWorks();
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
     AccountTabFrag accountTabFrag = new AccountTabFrag();
@@ -512,6 +515,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("selectCityFrag")){
             selectCity();
         }
+        if (fragName.equals("howItWorkFrag")){
+            setFragmentView(howItWorks, R.id.container, "paymentPaytm", true);
+        }
+        if (fragName.equals("faqFrag")){
+            webView("http://foodtalk.in/app/faq.html");
+        }
+        if (fragName.equals("legalFrag")){
+            webView("http://foodtalk.in/app/legal.html");
+            AppController.getInstance().fbLogEvent("legal_view", null);
+        }
     }
 
     private void startPaymentFlow(){
@@ -758,10 +771,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             case R.id.nav_howitwork:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        HowItWorks howItWorks = new HowItWorks();
-                        setFragmentView(howItWorks, R.id.container, "historyFrag", true);
+                        //HowItWorks howItWorks = new HowItWorks();
+                        setFragmentView(helpSupportFrag, R.id.container, "historyFrag", true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
-                        AppController.getInstance().fbLogEvent("howitwork_view", null);
+                        AppController.getInstance().fbLogEvent("Help & Support", null);
                         break;
                 }
                 break;
@@ -770,8 +783,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                     case MotionEvent.ACTION_UP:
                         //HomeFrag homeFrag = new HomeFrag();
                        // setFragmentView(homeFrag, R.id.container, "homeFrag", true);
-
-
                         //-----------
                         if (currentFragment != homeFrag){
                             clearBackStack();
