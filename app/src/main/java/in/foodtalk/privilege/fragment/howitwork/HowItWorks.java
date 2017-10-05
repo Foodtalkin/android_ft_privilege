@@ -87,11 +87,8 @@ public class HowItWorks extends android.app.Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-
         myContext=(FragmentActivity) activity;
         fm = myContext.getSupportFragmentManager();
-
-
         super.onAttach(activity);
     }
 }

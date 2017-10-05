@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     LinearLayout btnCity;
 
-    TextView tvCityName, tvCityName1;
+    TextView tvCityName, tvCityName1, btnLogoutBar;
 
 
 
@@ -230,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         btnCity = (LinearLayout) findViewById(R.id.btn_city);
         btnCity.setOnTouchListener(this);
+
+        btnLogoutBar = (TextView) findViewById(R.id.btn_logout_bar);
+        btnLogoutBar.setOnTouchListener(this);
 
         offerBarButtons = (LinearLayout) findViewById(R.id.offer_bar_buttons);
 
@@ -387,6 +390,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
         if (fragment == webViewFrag){
 
+        }
+        if (fragment == accountTabFrag){
+            btnLogoutBar.setVisibility(View.VISIBLE);
+            Log.d(TAG,"show logout button");
+        }else {
+           Log.d(TAG, "fragment: "+ fragment.getClass().getSimpleName());
+            btnLogoutBar.setVisibility(View.GONE);
+            Log.d(TAG,"hide logout button");
         }
 
     }
@@ -818,6 +829,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         selectCity();
+                        break;
+                }
+                break;
+            case R.id.btn_logout_bar:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        logOut();
                         break;
                 }
                 break;

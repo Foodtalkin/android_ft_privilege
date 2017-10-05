@@ -3,6 +3,7 @@ package in.foodtalk.privilege.fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,6 +34,8 @@ public class HelpSupportFrag extends Fragment implements View.OnTouchListener {
         btn1.setOnTouchListener(this);
         btn2.setOnTouchListener(this);
         btn3.setOnTouchListener(this);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 

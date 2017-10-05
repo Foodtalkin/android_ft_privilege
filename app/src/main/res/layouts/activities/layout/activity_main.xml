@@ -483,63 +483,74 @@
                     </LinearLayout>
 
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/nav_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:clickable="true"
-                    android:background="@color/black">
-                    <LinearLayout
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_location_24"
-                            android:tint="@color/light_gold"/>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            android:id="@+id/tv_city_name1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Delhi NCR"
-                            android:textSize="@dimen/nav_text_size"
-                            android:textAllCaps="true"
-                            android:textStyle="bold"
-                            android:layout_marginLeft="@dimen/nav_text_margin"
-                            android:textColor="@color/white"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="tap to change city"
-                            android:textAllCaps="true"
-                            android:textSize="12sp"
-                            android:layout_marginLeft="@dimen/nav_text_margin"
-                            android:textColor="@color/warm_grey"/>
-                    </LinearLayout>
 
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/txt_version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="version 2.0.1"
-                    android:textColor="@color/warm_grey"
-                    android:layout_marginLeft="40dp"
-                    android:textAlignment="center"
-                    android:layout_marginTop="20dp"
-                    />
             </LinearLayout>
         </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="version 2.0.1"
+                android:textColor="@color/warm_grey"
+                android:layout_marginLeft="40dp"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                />
+            <LinearLayout
+                android:id="@+id/nav_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:clickable="true"
+                android:layout_gravity="bottom"
+                android:background="@color/black">
+                <LinearLayout
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_location_24"
+                        android:tint="@color/light_gold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/tv_city_name1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delhi NCR"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="@dimen/nav_text_margin"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tap to change city"
+                        android:textAllCaps="true"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="@dimen/nav_text_margin"
+                        android:textColor="@color/warm_grey"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
 
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
