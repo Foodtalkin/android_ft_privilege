@@ -196,7 +196,12 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             //SaveLogin.addUser(getActivity(), response, "");
             AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
             AppController.getInstance().loginResponse = response;
-            callbackFragOpen.openFrag("paymentFlow","");
+            if (AppController.getInstance().signuptype.equals("payment")){
+                callbackFragOpen.openFrag("paymentFlow","");
+            }else {
+
+            }
+
 
             Answers.getInstance().logSignUp(new SignUpEvent()
                     .putMethod("Digits")

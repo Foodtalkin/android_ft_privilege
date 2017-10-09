@@ -27,6 +27,7 @@ import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.Splash_activity;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
@@ -46,6 +47,8 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
     String email;
     String name;
     String phone;
+
+    public String type;
 
     RelativeLayout progressBar;
 
@@ -111,6 +114,7 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
         String status = response.getString("status");
         if (status.equals("OK")){
             callbackFragOpen.openFrag("otpVerify",phone);
+            AppController.getInstance().signuptype = type;
         }else {
             String error = response.getJSONObject("result").getString("error");
             if (error.equals("email")){

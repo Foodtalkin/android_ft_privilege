@@ -639,7 +639,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_buy:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signupAlert","");
+                        callbackFragOpen.openFrag("signUp","trial");
                         //refreshFeed();
                         break;
                 }

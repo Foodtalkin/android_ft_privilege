@@ -38,6 +38,8 @@ public class AppController extends Application {
     public String cityId = "1";
     public String cityName = "Delhi NCR";
 
+    public String signuptype;
+
 
 
 

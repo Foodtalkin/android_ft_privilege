@@ -431,8 +431,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         transaction.commit();
     }
 
-    private void signUp(){
+    private void signUp(String type){
         SignupFrag signupFrag = new SignupFrag();
+        signupFrag.type = type;
         setFragmentView(signupFrag, R.id.container, "signupFrag", false);
     }
     private void signupAlert(){
@@ -507,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(searchResult, R.id.container, "searchResult", true);
         }
         if (fragName.equals("signUp")){
-            signUp();
+            signUp(value);
         }
         if (fragName.equals("paymentNowFrag")){
             PaymentNowFrag paymentNowFrag = new PaymentNowFrag();

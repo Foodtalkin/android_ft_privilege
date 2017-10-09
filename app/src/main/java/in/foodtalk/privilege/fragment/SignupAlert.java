@@ -58,7 +58,7 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
             case R.id.btn_signup:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signUp","");
+                        callbackFragOpen.openFrag("signUp","payment");
                         break;
                 }
                 break;
