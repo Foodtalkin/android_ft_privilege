@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.foodtalk.privilege.Login;
+import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
@@ -194,12 +195,15 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
             tvOtp4.setText("");
         }else {
             //SaveLogin.addUser(getActivity(), response, "");
-            AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+            String sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
+            AppController.getInstance().sessionId = sessionId;
             AppController.getInstance().loginResponse = response;
             if (AppController.getInstance().signuptype.equals("payment")){
                 callbackFragOpen.openFrag("paymentFlow","");
+                Log.d(TAG,"call payment flow");
             }else {
-
+                Log.d(TAG, "call trial api");
+                ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_TRIAL+"?sessionid="+sessionId, "trialApi", this);
             }
 
 
@@ -208,20 +212,40 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                     .putSuccess(true));
         }
     }
+
+    private void saveUser(JSONObject response){
+        try {
+            JSONObject savedResponse = AppController.getInstance().loginResponse;
+            savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
+            SaveLogin.addUser(getActivity(), savedResponse, "");
+            Log.d(TAG, "updated response: " +savedResponse);
+            ((MainActivity)getActivity()).loginView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (response != null){
             if (tag.equals("otpVerify")){
                 Log.d(TAG,"response: "+ response);
-
-
                 try {
                     userLogin(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 //getInfoToPayent();
-
+            }
+            if (tag.equals("trialApi")){
+                Log.d(TAG,"response trial: "+ response);
+                try {
+                    if (response.getString("status").equals("OK")){
+                        saveUser(response);
+                        callbackFragOpen.openFrag("homeFrag","");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             /*if (tag.equals("subscriptionPayment")){
                 Log.d(TAG, "response: "+ response);
