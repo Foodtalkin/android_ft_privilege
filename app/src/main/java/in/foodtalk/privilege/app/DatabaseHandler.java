@@ -126,6 +126,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    public void updateSubscription(String uId, String subscription){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SUBSCRIPTION, subscription);
+
+        db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
+    }
+
     public void updateUserInfo(String uId, LoginValue loginValue){
 
         SQLiteDatabase db = this.getWritableDatabase();

@@ -434,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     private void signUp(String type){
         SignupFrag signupFrag = new SignupFrag();
         signupFrag.type = type;
-        setFragmentView(signupFrag, R.id.container, "signupFrag", false);
+        setFragmentView(signupFrag, R.id.container, "signupFrag", true);
     }
     private void signupAlert(){
         SignupAlert signupAlert = new SignupAlert();
@@ -444,7 +444,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     @Override
     public void openFrag(String fragName, String value) {
-
         if (fragName.equals("selectOfferFrag")){
             SelectOfferFrag selectOfferFrag = new SelectOfferFrag();
             selectOfferFrag.outletId = value;

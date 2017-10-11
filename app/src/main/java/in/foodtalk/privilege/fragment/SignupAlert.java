@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.zip.Inflater;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 /**
@@ -27,6 +32,8 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
     CallbackFragOpen callbackFragOpen;
     TextView txtFoodtalk, tvHead, tvRs;
 
+    DatabaseHandler db;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +45,8 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
         tvRs = (TextView) layout.findViewById(R.id.tv_rs);
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
+
+        db = new DatabaseHandler(getActivity());
 
 
         txtFoodtalk = (TextView) layout.findViewById(R.id.txt_foodtalk);
@@ -58,11 +67,29 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
             case R.id.btn_signup:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signUp","payment");
+                        buyNow();
+
                         break;
                 }
                 break;
         }
         return false;
+    }
+
+    private void buyNow(){
+        if (db.getRowCount() > 0) {
+
+            JSONArray subscription;
+            try {
+                subscription = new JSONArray(db.getUserDetails().get("subscription"));
+                if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")) {
+                    callbackFragOpen.openFrag("paymentFlow","");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            callbackFragOpen.openFrag("signUp","payment");
+        }
     }
 }

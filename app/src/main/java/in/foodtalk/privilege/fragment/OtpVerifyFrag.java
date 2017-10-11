@@ -205,8 +205,6 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                 Log.d(TAG, "call trial api");
                 ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_TRIAL+"?sessionid="+sessionId, "trialApi", this);
             }
-
-
             Answers.getInstance().logSignUp(new SignUpEvent()
                     .putMethod("Digits")
                     .putSuccess(true));

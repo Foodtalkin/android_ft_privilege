@@ -132,6 +132,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     public String cityId;
 
+    String userType = "guest";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,7 +196,24 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         if (db.getRowCount() > 0){
-            header.setVisibility(View.GONE);
+            Log.d(TAG,"subscription id: "+ db.getUserDetails().get("subscription"));
+            JSONArray subscription;
+            try {
+                subscription = new JSONArray(db.getUserDetails().get("subscription"));
+                if (subscription.getJSONObject(0).getString("subscription_type_id").equals("1")){
+                    header.setVisibility(View.GONE);
+                    userType = "paid";
+                }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
+                    header.setVisibility(View.VISIBLE);
+                    btnBuy.setText("Buy Now");
+                    userType = "trial";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
             ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_PROFILE+"?sessionid="+sId, "savings", this);
             //-----------------
             if (db.getUserDetails().get("cityId") == null){
@@ -639,7 +658,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             case R.id.btn_buy:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signUp","trial");
+                        if (userType.equals("guest")){
+                            callbackFragOpen.openFrag("signUp","trial");
+                        }else if (userType.equals("trial")){
+                            callbackFragOpen.openFrag("signupAlert","");
+                        }
                         //refreshFeed();
                         break;
                 }

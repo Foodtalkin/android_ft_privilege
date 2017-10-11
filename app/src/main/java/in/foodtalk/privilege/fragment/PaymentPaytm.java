@@ -21,6 +21,7 @@ import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -188,22 +189,35 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
         }
     }
     private void saveUser(JSONObject response){
-        try {
-            JSONObject savedResponse = AppController.getInstance().loginResponse;
-            savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
-            SaveLogin.addUser(getActivity(), savedResponse, "");
-            Log.d(TAG, "updated response: " +savedResponse);
-            ((MainActivity)getActivity()).loginView();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (db.getRowCount() > 0) {
+            JSONArray subscription;
+            try {
+                subscription = new JSONArray(db.getUserDetails().get("subscription"));
+                if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")) {
+                    //callbackFragOpen.openFrag("paymentFlow","");
+                    db.updateSubscription(db.getUserDetails().get("userId"), response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                JSONObject savedResponse = AppController.getInstance().loginResponse;
+                savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
+                SaveLogin.addUser(getActivity(), savedResponse, "");
+                Log.d(TAG, "updated response: " +savedResponse);
+                ((MainActivity)getActivity()).loginView();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void startPayment(JSONObject response) throws JSONException {
         PaytmPGService Service = null;
-        //Service = PaytmPGService.getStagingService();
+        Service = PaytmPGService.getStagingService();
 
-        Service = PaytmPGService.getProductionService();
+        //Service = PaytmPGService.getProductionService();
 
         //Create new order Object having all order information.
         Map<String, String> paramMap = new HashMap<String,String>();
