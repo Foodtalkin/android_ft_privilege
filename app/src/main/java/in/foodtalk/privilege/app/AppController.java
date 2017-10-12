@@ -39,6 +39,8 @@ public class AppController extends Application {
     public String cityName = "Delhi NCR";
 
     public String signuptype;
+    public String userType;
+    public String userStatus;
 
 
 

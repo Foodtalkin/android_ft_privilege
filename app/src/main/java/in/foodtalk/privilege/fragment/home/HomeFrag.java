@@ -54,9 +54,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
@@ -67,6 +70,7 @@ import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.LatLonCallback;
 import in.foodtalk.privilege.comm.ValueCallback;
+import in.foodtalk.privilege.library.DateFunction;
 import in.foodtalk.privilege.library.EndlessRecyclerOnScrollListener;
 import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 import in.foodtalk.privilege.library.GetLocation;
@@ -203,10 +207,15 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 if (subscription.getJSONObject(0).getString("subscription_type_id").equals("1")){
                     header.setVisibility(View.GONE);
                     userType = "paid";
+                    Log.d(TAG, "UserType: Paid user");
+                    AppController.getInstance().userType = userType;
                 }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
                     header.setVisibility(View.VISIBLE);
                     btnBuy.setText("Buy Now");
+                    tvHeader.setText("You have _ days of trial remaining, buy now to continue using privilege.");
                     userType = "trial";
+                    AppController.getInstance().userType = userType;
+                    Log.d(TAG, "UserType: Trial user");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -636,6 +645,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     if (response.getString("status").equals("OK")){
                         savingsLoaded = true;
                         savingsAmount = response.getJSONObject("result").getString("saving");
+
+                        checkUserStatus(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),response.getString("date_time"));
                     }
 
                 }
@@ -650,6 +661,25 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             }
         }
 
+    }
+
+    private void checkUserStatus(String expiryDate, String currentDate){
+       // Log.e(TAG, "check days: "+ DateFunction.getCountOfDays(currentDate, expiryDate));
+        String leftDays = DateFunction.getCountOfDays(currentDate, expiryDate);
+
+        if (userType.equals("trial")){
+            if (Integer.parseInt(leftDays) < 1){
+                tvHeader.setText("You have finished your 7 day trial, Buy privilege now to use privilege.");
+                AppController.getInstance().userStatus = "expire";
+            }else {
+                if (Integer.parseInt(leftDays) == 1){
+                    tvHeader.setText("You have "+ leftDays +" day of trial remaining, buy now to continue using privilege.");
+                }else {
+                    tvHeader.setText("You have "+ leftDays +" days of trial remaining, buy now to continue using privilege.");
+                }
+                AppController.getInstance().userStatus = "active";
+            }
+        }
     }
 
     @Override

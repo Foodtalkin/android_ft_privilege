@@ -195,7 +195,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
                 subscription = new JSONArray(db.getUserDetails().get("subscription"));
                 if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")) {
                     //callbackFragOpen.openFrag("paymentFlow","");
-                    db.updateSubscription(db.getUserDetails().get("userId"), response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).toString());
+                    db.updateSubscription(db.getUserDetails().get("userId"), response.getJSONObject("result").getJSONArray("subscription").toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
