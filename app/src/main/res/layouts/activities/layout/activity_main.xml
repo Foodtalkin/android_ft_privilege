@@ -450,7 +450,8 @@
                     android:id="@+id/for_login1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
                     <LinearLayout
                         android:id="@+id/nav_logout"
                         android:layout_width="match_parent"
@@ -502,6 +503,7 @@
                 android:textAlignment="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
+                android:visibility="gone"
                 />
             <LinearLayout
                 android:id="@+id/nav_city"

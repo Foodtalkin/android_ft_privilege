@@ -53,6 +53,8 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
     RelativeLayout progressBar;
 
     View lineName, lineEmail, linePhone;
+
+    TextView tvHeader;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,11 +63,18 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
         etEmail = (EditText) layout.findViewById(R.id.et_email);
         etPhone = (EditText) layout.findViewById(R.id.et_phone);
         btnVerify = (LinearLayout) layout.findViewById(R.id.btn_verify);
+        tvHeader = (TextView) layout.findViewById(R.id.tv_header);
         btnVerify.setOnTouchListener(this);
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         progressBar = (RelativeLayout) layout.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
+
+        if (type.equals("payment")){
+            tvHeader.setText("Make every meal a Privilege, for only \nINR 1,200 for an entire year");
+        }else {
+            tvHeader.setText("Sign up to start your 7 day free trial. Access deals, discounts and experiences");
+        }
 
         lineName = layout.findViewById(R.id.line_name);
         lineEmail = layout.findViewById(R.id.line_email);

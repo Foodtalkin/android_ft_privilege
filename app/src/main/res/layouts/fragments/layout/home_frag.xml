@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:textSize="13sp"
-            android:text="Unloack all the offers &amp; feachers for 7 days at no cost. Start your trial."/>
+            android:text="Start your 7 day free trial. Access deals, discounts and experiences"/>
         <TextView
             android:id="@+id/btn_buy"
             android:layout_width="wrap_content"

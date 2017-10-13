@@ -84,10 +84,12 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         db = new DatabaseHandler(getActivity());
 
         loadCities();
+        Log.e(TAG,"call load cities");
         return layout;
     }
 
     private void loadCities(){
+        Log.e(TAG, "loadCities");
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_CITIES, "getCities", this);
     }
 
@@ -96,12 +98,15 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
     private void setData(JSONObject response) throws JSONException {
         this.response = response;
 
-        Log.d(TAG, "check city: "+db.getUserDetails().get("cityId"));
-        Log.d(TAG, "getUserDetails: "+db.getUserDetails());
+        //Log.d(TAG, "check city: "+db.getUserDetails().get("cityId"));
+        //Log.d(TAG, "getUserDetails: "+db.getUserDetails());
+        Log.e(TAG, "delhi is_active"+ response.getJSONArray("result").getJSONObject(0).getString("is_active"));
+        Log.e(TAG, "delhi "+ response.getJSONArray("result").getJSONObject(0).getString("outlet_count"));
 
         if (response.getJSONArray("result").getJSONObject(0).getString("is_active").equals("1")){
             //tvRestaurantCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("restaurant_count"));
             tvOutletCity1.setText(response.getJSONArray("result").getJSONObject(0).getString("outlet_count")+" Restaurants");
+
         }else {
             tvOutletCity1.setText("Coming Soon!");
         }
@@ -162,7 +167,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("city_id", cityId);
 
-        Log.d(TAG, "json obj: "+jsonObject);
+        //Log.d(TAG, "json obj: "+jsonObject);
         ParseUtils.sendCityToParse(cityId);
         if (db.getRowCount() > 0){
             ApiCall.jsonObjRequest(Request.Method.PUT, getActivity(), jsonObject, Url.USER_UPDATE+"?sessionid="+db.getUserDetails().get("sessionId"), "saveCity", this);
@@ -182,12 +187,12 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
     }
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        Log.d(TAG,"btn clicked");
+        //Log.d(TAG,"btn clicked");
         switch (view.getId()){
             case R.id.btn_city1:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        Log.d(TAG, "btn city delhi");
+                        //Log.d(TAG, "btn city delhi");
                         if (response != null){
                             btnCity1.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
                             btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg4));
@@ -204,7 +209,7 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
             case R.id.btn_city2:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        Log.d(TAG, "btn city Mumbai");
+                        //Log.d(TAG, "btn city Mumbai");
                         if (response != null){
                             if (cityMumbai == true){
                                 btnCity2.setBackground(getResources().getDrawable(R.drawable.btn_bg3));
@@ -251,9 +256,10 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
+        Log.e(TAG,"apiResponse -- :"+ response);
         if (response != null){
             if (tag.equals("getCities")){
-                Log.d(TAG, "response: "+ response);
+                Log.e(TAG, "get Cities response: "+ response);
                 try {
                     setData(response);
                 } catch (JSONException e) {
@@ -261,13 +267,12 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
                 }
             }
             if (tag.equals("saveCity")){
-                Log.d(TAG,"city save response: "+ response);
+                Log.e(TAG,"city save response: "+ response);
                 try {
                     citySaved(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }

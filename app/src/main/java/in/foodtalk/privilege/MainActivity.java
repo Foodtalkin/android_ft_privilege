@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         tvCityName1 = (TextView) findViewById(R.id.tv_city_name1);
 
 
-        checkVersion();
+        //checkVersion();
 
 
 
@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     private void logoutView(){
         forLogin.setVisibility(View.GONE);
-        forLogin1.setVisibility(View.GONE);
+        //forLogin1.setVisibility(View.GONE);
         navLogin.setVisibility(View.VISIBLE);
         navBuyNow.setVisibility(View.VISIBLE);
         txtFoodtalkNav.setText("FOODTALK");
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
     public void loginView(){
         forLogin.setVisibility(View.VISIBLE);
-        forLogin1.setVisibility(View.VISIBLE);
+        //forLogin1.setVisibility(View.VISIBLE);
         navLogin.setVisibility(View.GONE);
         navBuyNow.setVisibility(View.GONE);
         txtFoodtalkNav.setText(db.getUserDetails().get("name"));

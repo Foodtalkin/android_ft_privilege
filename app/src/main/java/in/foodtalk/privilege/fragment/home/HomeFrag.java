@@ -212,7 +212,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
                     header.setVisibility(View.VISIBLE);
                     btnBuy.setText("Buy Now");
-                    tvHeader.setText("You have _ days of trial remaining, buy now to continue using privilege.");
+                    tvHeader.setText("- days free trial left. Buy your annual membership to continue");
                     userType = "trial";
                     AppController.getInstance().userType = userType;
                     Log.d(TAG, "UserType: Trial user");
@@ -240,6 +240,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 }
             }
         }else {
+            AppController.getInstance().userType = userType;
             cityId = AppController.getInstance().cityId;
             header.setVisibility(View.VISIBLE);
             valueCallback.setValue("cityName", AppController.getInstance().cityName);
@@ -634,7 +635,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
-        Log.d(TAG, "response: "+ response);
+        //Log.d(TAG, "response: "+ response);
         if (response != null){
             try {
                 if (tag.equals("loadOffers") || tag.equals("loadOffersMore")){
@@ -645,6 +646,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     if (response.getString("status").equals("OK")){
                         savingsLoaded = true;
                         savingsAmount = response.getJSONObject("result").getString("saving");
+
+                        Log.d(TAG, "response: saving "+ response);
 
                         checkUserStatus(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),response.getString("date_time"));
                     }
@@ -669,13 +672,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
         if (userType.equals("trial")){
             if (Integer.parseInt(leftDays) < 1){
-                tvHeader.setText("You have finished your 7 day trial, Buy privilege now to use privilege.");
+                tvHeader.setText("You Free trial has expired. Buy your annual membership to continue");
                 AppController.getInstance().userStatus = "expire";
             }else {
                 if (Integer.parseInt(leftDays) == 1){
-                    tvHeader.setText("You have "+ leftDays +" day of trial remaining, buy now to continue using privilege.");
+                    tvHeader.setText(leftDays +" day free trial left. Buy your annual membership to continue");
                 }else {
-                    tvHeader.setText("You have "+ leftDays +" days of trial remaining, buy now to continue using privilege.");
+                    tvHeader.setText(leftDays +" day free trial left. Buy your annual membership to continue");
                 }
                 AppController.getInstance().userStatus = "active";
             }

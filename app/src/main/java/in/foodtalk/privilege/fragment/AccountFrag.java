@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
+import in.foodtalk.privilege.BuildConfig;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
@@ -37,6 +40,8 @@ import in.foodtalk.privilege.library.DateFunction;
 import in.foodtalk.privilege.library.StringCase;
 import in.foodtalk.privilege.library.ToastShow;
 import in.foodtalk.privilege.models.LoginValue;
+
+import static android.R.attr.versionName;
 
 /**
  * Created by RetailAdmin on 15-05-2017.
@@ -63,6 +68,10 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
 
     LinearLayout btnSave;
 
+    TextView tvVersion;
+
+    String versionName;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +89,8 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
 
         tvVeg.setOnTouchListener(this);
         tvGender.setOnTouchListener(this);
+
+        tvVersion = (TextView) layout.findViewById(R.id.tv_version);
 
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AbrilFatface_Regular.ttf");
 
@@ -102,7 +113,29 @@ public class AccountFrag extends Fragment implements View.OnTouchListener, ApiCa
         setTextValue();
         setPref();
         setGender();
+
+        checkVersion();
         return layout;
+    }
+    private void checkVersion(){
+        PackageManager manager = getActivity().getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(
+                    getActivity().getPackageName(), 0);
+            versionName = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (versionName != null){
+            if (BuildConfig.BUILD_TYPE.equals("debug")){
+                tvVersion.setText("Version "+versionName+" "+BuildConfig.BUILD_TYPE);
+            }
+            else {
+                tvVersion.setText("Version "+versionName);
+            }
+        }
     }
 
     private void sendToServer() throws JSONException{

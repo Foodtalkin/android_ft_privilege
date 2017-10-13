@@ -80,7 +80,7 @@ public class ParseUtils {
         });*/
     }
 
-    public static void sendInfoToParse(String userId, String expiry){
+    public static void sendInfoToParse(String userId, String expiry, String subscriptionId){
         if (ParseUser.getCurrentUser() == null) {
             ParseUser.enableAutomaticUser();
             Log.d("getCurrentUser","currentuser null");
@@ -93,8 +93,8 @@ public class ParseUtils {
                 String userId = ParseInstallation.getCurrentInstallation().get("userId").toString();
 
                 //Map<String, String>map = ParseInstallation.getCurrentInstallation();
-                Log.d("userIdP", userId);
-                Log.e("deviceToken callback", deviceToken+" ");
+               // Log.d("userIdP", userId);
+                //Log.e("deviceToken callback", deviceToken+" ");
 
                 if (e!= null){
                     Log.e("ParseException", e.toString()+" done");
@@ -119,8 +119,11 @@ public class ParseUtils {
         Log.d("ParseUtils", userId+" : "+expiry);
        // Date date = new Date();
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("userId", userId);
+        if (!userId.equals("")){
+            installation.put("userId", userId);
+        }
         installation.put("expiry", date);
+        installation.put("subscription_type_id", subscriptionId);
 
         installation.saveInBackground();
     }

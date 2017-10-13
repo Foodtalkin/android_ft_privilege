@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
@@ -52,6 +53,8 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
     LinearLayout otpBox;
 
     Animation shakingAni;
+
+    String tempSessionId;
 
 
     String phone;
@@ -268,6 +271,10 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         }
     }
 
+    private void startTrialM(){
+        ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.URL_TRIAL+"?sessionid="+AppController.getInstance().sessionId, "trialApi", this);
+
+    }
     Dialog dialog;
     private void paymentDueDialog(){
         // custom dialog
@@ -277,9 +284,16 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.payment_due_dialog);
 
-
         TextView paynow = (TextView) dialog.findViewById(R.id.btn_paynow);
         TextView logout = (TextView) dialog.findViewById(R.id.btn_logout);
+        TextView startTrial = (TextView) dialog.findViewById(R.id.btn_trial);
+        startTrial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                startTrialM();
+            }
+        });
         paynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -374,8 +388,23 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
         }
         return false;
     }
+
+    private void saveUser(JSONObject response){
+        try {
+            JSONObject savedResponse = AppController.getInstance().loginResponse;
+            savedResponse.getJSONObject("result").getJSONArray("subscription").put(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0));
+            //SaveLogin.addUser(this, savedResponse, "");
+            SaveLogin.addUser(this, savedResponse, "homeFrag");
+            Log.d(TAG, "updated response: " +savedResponse);
+            //((MainActivity)getActivity()).loginView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void apiResponse(JSONObject response, String tag) {
+        Log.e(TAG,"apiResponse: "+ response);
         if (response != null ){
             if (tag.equals("getOtp")){
                 Log.d(TAG, "response: "+ response);
@@ -384,6 +413,17 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             if (tag.equals("sendOtp")){
                 try {
                     gotoHome(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (tag.equals("trialApi")){
+                Log.d(TAG, "trialApi: "+response+"");
+                try {
+                    if (response.getString("status").equals("OK")){
+                        saveUser(response);
+                        //callbackFragOpen.openFrag("homeFrag","");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

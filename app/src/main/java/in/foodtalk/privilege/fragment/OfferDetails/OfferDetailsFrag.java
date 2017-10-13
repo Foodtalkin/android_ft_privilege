@@ -372,13 +372,19 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             tvLine1.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(0).toString());
             tvLine2.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(1).toString());
             tvLine3.setText(result.getJSONObject("metadata").getJSONObject("rules").getJSONArray("lines").getString(2).toString());
-
         }
 
         if (db.getRowCount() > 0){
-            redeemBar.setVisibility(View.VISIBLE);
-            btnSlideUp.setVisibility(View.VISIBLE);
-            btnBuyNow.setVisibility(View.GONE);
+            if (AppController.getInstance().userStatus.equals("expire")){
+                redeemBar.setVisibility(View.GONE);
+                btnBuyNow.setVisibility(View.VISIBLE);
+                btnSlideUp.setVisibility(View.GONE);
+            }else {
+                redeemBar.setVisibility(View.VISIBLE);
+                btnSlideUp.setVisibility(View.VISIBLE);
+                btnBuyNow.setVisibility(View.GONE);
+            }
+
         }else {
             redeemBar.setVisibility(View.GONE);
             btnBuyNow.setVisibility(View.VISIBLE);
@@ -627,7 +633,12 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             case R.id.btn_buy_now:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        callbackFragOpen.openFrag("signupAlert","");
+                        if (AppController.getInstance().userType.equals("guest")){
+                            callbackFragOpen.openFrag("signupAlert","");
+                        }else if (AppController.getInstance().userStatus.equals("expire")){
+                            callbackFragOpen.openFrag("signupAlert","");
+                        }
+
                         Log.d(TAG, "btn buy now clicked");
                         break;
                 }

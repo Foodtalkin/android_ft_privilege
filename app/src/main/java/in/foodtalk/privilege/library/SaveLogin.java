@@ -63,7 +63,7 @@ public class SaveLogin {
             installation.put("expiry", subArray.getJSONObject(0).getString("expiry"));
             installation.saveInBackground();*/
 
-            ParseUtils.sendInfoToParse(loginValue.uId, subArray.getJSONObject(0).getString("expiry"));
+            ParseUtils.sendInfoToParse(loginValue.uId, subArray.getJSONObject(0).getString("expiry"), subArray.getJSONObject(0).getString("subscription_type_id") );
 
             Log.d("SaveLogin","done");
             //name = ((result.isNull("name")) ? "N/A" : result.getString("name"));

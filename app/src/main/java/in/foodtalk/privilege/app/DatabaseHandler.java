@@ -7,8 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.HashMap;
 
+import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.models.LoginValue;
 
 /**
@@ -133,6 +137,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_SUBSCRIPTION, subscription);
 
         db.update(TABLE_LOGIN, values, KEY_USERID + " = '" + uId + "'", null);
+
+        JSONArray subArray = null;
+        try {
+            subArray = new JSONArray(subscription);
+            ParseUtils.sendInfoToParse("", subArray.getJSONObject(0).getString("expiry"), subArray.getJSONObject(0).getString("subscription_type_id") );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void updateUserInfo(String uId, LoginValue loginValue){
