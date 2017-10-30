@@ -41,7 +41,6 @@ public class SearchFilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.filter_card, parent, false);
         FilterCard filterCard = new FilterCard(view);
-
         return filterCard;
     }
 

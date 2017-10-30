@@ -40,7 +40,7 @@ public class AppController extends Application {
 
     public String signuptype;
     public String userType;
-    public String userStatus;
+    public String userStatus ="active";
 
 
 

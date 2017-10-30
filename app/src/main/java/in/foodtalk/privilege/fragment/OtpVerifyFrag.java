@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.crashlytics.android.answers.SignUpEvent;
 
 import org.json.JSONException;
@@ -240,6 +241,7 @@ public class OtpVerifyFrag extends Fragment implements CallbackKeypad, ApiCallba
                     if (response.getString("status").equals("OK")){
                         saveUser(response);
                         callbackFragOpen.openFrag("homeFrag","");
+                        Answers.getInstance().logCustom(new CustomEvent("Trial Started"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

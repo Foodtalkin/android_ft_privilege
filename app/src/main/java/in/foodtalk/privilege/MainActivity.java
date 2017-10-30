@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             btnLogoutBar.setVisibility(View.VISIBLE);
             Log.d(TAG,"show logout button");
         }else {
-           Log.d(TAG, "fragment: "+ fragment.getClass().getSimpleName());
+           //Log.d(TAG, "fragment: "+ fragment.getClass().getSimpleName());
             btnLogoutBar.setVisibility(View.GONE);
             Log.d(TAG,"hide logout button");
         }

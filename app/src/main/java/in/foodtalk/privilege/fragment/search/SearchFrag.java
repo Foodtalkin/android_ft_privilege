@@ -234,12 +234,14 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewFilters.setLayoutManager(layoutManager1);
 
+        setLocationFilters();
+
         textListener();
         loadCuisineData ();
 
         checkLocationPermission();
 
-        setLocationFilters();
+
 
         return layout;
     }
@@ -306,6 +308,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
             }
             cityId = AppController.getInstance().cityId;
         }
+        Log.d(TAG, "cityId: "+ cityId);
     }
     private void setFilterForDelhi(){
         tvLocation1.setText("Gurgaon");
@@ -389,6 +392,7 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         }else {
             query = query+"?city_id="+cityId;
         }
+        Log.d(TAG,"loadData - cityId: "+cityId);
         Log.d(TAG, "key: "+ query);
 
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.SEARCH_TEXT+"/"+query, "search", this);
@@ -403,8 +407,10 @@ public class SearchFrag extends Fragment implements View.OnTouchListener, ApiCal
         JSONArray list = response.getJSONArray("result");
         progressBar.setVisibility(View.GONE);
         if (status.equals("OK")){
-            SearchFilterAdapter searchFilterAdapter = new SearchFilterAdapter(getActivity(), this, list);
-            recyclerViewFilters.setAdapter(searchFilterAdapter);
+            if (getActivity() != null){
+                SearchFilterAdapter searchFilterAdapter = new SearchFilterAdapter(getActivity(), this, list);
+                recyclerViewFilters.setAdapter(searchFilterAdapter);
+            }
         }
     }
 

@@ -171,16 +171,15 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
                 callbackFragOpen.openFrag("selectOfferFrag","");
             }
         });*/
+        if (db.getRowCount() > 0){
+            cityId = db.getUserDetails().get("cityId");
+        }else {
+            cityId = AppController.getInstance().cityId;
+        }
         checkLocationPermission();
 
 
-        if (db.getRowCount() > 0){
 
-            cityId = db.getUserDetails().get("cityId");
-        }else {
-
-            cityId = AppController.getInstance().cityId;
-        }
         return layout;
     }
 

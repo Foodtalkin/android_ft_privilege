@@ -670,7 +670,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
        // Log.e(TAG, "check days: "+ DateFunction.getCountOfDays(currentDate, expiryDate));
         String leftDays = DateFunction.getCountOfDays(currentDate, expiryDate);
 
-        if (userType.equals("trial")){
+        //if (userType.equals("trial")){
             if (Integer.parseInt(leftDays) < 1){
                 tvHeader.setText("You Free trial has expired. Buy your annual membership to continue");
                 AppController.getInstance().userStatus = "expire";
@@ -682,7 +682,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 }
                 AppController.getInstance().userStatus = "active";
             }
-        }
+        //}
     }
 
     @Override
@@ -766,7 +766,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                         // All location settings are satisfied. The client can initialize location
                         // requests here.
                         //...
-
                         Log.d(TAG,"GPS enabled");
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -775,9 +774,11 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(
-                                    getActivity(),
-                                    REQUEST_LOCATION);
+                            if (getActivity() != null){
+                                status.startResolutionForResult(
+                                        getActivity(),
+                                        REQUEST_LOCATION);
+                            }
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -790,7 +791,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 }
             }
         });
-
     }
 
     @Override

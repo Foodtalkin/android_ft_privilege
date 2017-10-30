@@ -453,6 +453,7 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
 
             BigImagesAdapter bigImagesAdapter = new BigImagesAdapter(getActivity(), imagesList, this);
             SnapHelper snapHelper = new PagerSnapHelper();
+            recyclerView1.setOnFlingListener(null);
             snapHelper.attachToRecyclerView(recyclerView1);
             recyclerView1.setAdapter(bigImagesAdapter);
         }
@@ -804,7 +805,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         if (response != null){
             if (tag.equals("offerDetails")){
                 try {
-                    setData(response);
+                    if (getActivity() != null){
+                        setData(response);
+                    }
                     scrollView.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
