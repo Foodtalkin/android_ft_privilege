@@ -210,7 +210,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     Log.d(TAG, "UserType: Paid user");
                     AppController.getInstance().userType = userType;
                 }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
-                    header.setVisibility(View.VISIBLE);
+                    //--header.setVisibility(View.VISIBLE);
                     btnBuy.setText("Buy Now");
                     tvHeader.setText("- days free trial left. Buy your annual membership to continue");
                     userType = "trial";
@@ -242,18 +242,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }else {
             AppController.getInstance().userType = userType;
             cityId = AppController.getInstance().cityId;
-            header.setVisibility(View.VISIBLE);
+            //--header.setVisibility(View.VISIBLE);
             valueCallback.setValue("cityName", AppController.getInstance().cityName);
         }
 
 
         tvHeader.setTypeface(typefaceFmedium);
         btnBuy.setTypeface(typefaceFutura);
-
         btnBuy.setOnTouchListener(this);
-
-
-
 
 
 

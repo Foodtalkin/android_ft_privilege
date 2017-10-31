@@ -68,6 +68,7 @@ import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.account.AccountTabFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
+import in.foodtalk.privilege.fragment.home.HomeTabFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
 import in.foodtalk.privilege.fragment.SignupFrag;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     String TAG = MainActivity.class.getSimpleName();
 
     HomeFrag homeFrag;
+    HomeTabFrag homeTabFrag = new HomeTabFrag();
     //FrameLayout container;
     TextView txtFoodtalkNav, txtTitle;
     ImageView navBtn;
@@ -250,14 +252,12 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             }
         }else {
             searchFrag = new SearchFrag();
-            homeFrag = new HomeFrag();
-            setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+            //homeFrag = new HomeFrag();
+            //setFragmentView(homeFrag, R.id.container, "homeFrag", false);
+            setFragmentView(homeTabFrag, R.id.container, "homeFrag", false);
         }
 
         getFragmentManager().addOnBackStackChangedListener(this);
-
-
-
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/AbrilFatface_Regular.ttf");
 
