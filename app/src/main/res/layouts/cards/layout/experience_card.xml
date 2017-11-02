@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/img_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/mask_copy"
@@ -22,6 +23,7 @@
             android:orientation="vertical"
             android:layout_margin="15dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="French Pastry Workshop"
@@ -38,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_location_24"/>
                 <TextView
+                    android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="9dp"
@@ -55,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_location_24"/>
                 <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="9dp"
@@ -72,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_location_24"/>
                 <TextView
+                    android:id="@+id/tv_cost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="9dp"
@@ -82,7 +87,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

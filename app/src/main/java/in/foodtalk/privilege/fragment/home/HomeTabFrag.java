@@ -36,12 +36,19 @@ public class HomeTabFrag extends Fragment {
     PagerAdapter pagerAdapter;
     TabLayout tabLayout;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.home_tab_frag, container, false);
         viewPager = (ViewPager) layout.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) layout.findViewById(R.id.tab_layout);
+        //viewPager.setOffscreenPageLimit(0);
         initViewPager();
         return layout;
     }

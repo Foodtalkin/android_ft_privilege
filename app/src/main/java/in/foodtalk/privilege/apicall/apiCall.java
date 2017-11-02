@@ -39,6 +39,8 @@ public class ApiCall {
     static DatabaseHandler db;
     public static void jsonObjRequest(final int requestType, final Context context, final JSONObject obj, final String url, final String tag, final ApiCallback apiCallback){
 
+        Log.e("ApiCall", "apiCallback from: "+apiCallback.getClass().getSimpleName()+" tag: "+tag +" url: "+url);
+
         db = new DatabaseHandler(context);
         //Request.Method.POST
         apiCallback1 = apiCallback;

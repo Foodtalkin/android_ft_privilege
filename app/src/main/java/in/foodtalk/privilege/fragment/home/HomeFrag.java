@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -141,7 +142,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
         Log.d(TAG, "onCreate");
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -418,7 +419,16 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         if (lat.equals("")){
             checkLocationPermission();
         }else {
-            startLoading();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startLoading();
+                    // Do something after 5s = 5000ms
+                    //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
+                }
+            }, 500);
+
         }
 
 
@@ -492,6 +502,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 OfferCardObj offerCardObj = new OfferCardObj();
                 offerCardObj.type = "loader";
                 offerCardList.add(offerCardObj);
+
+                Log.e(TAG,"loadmoreoffers");
 
                 recyclerView.post(new Runnable() {
                     public void run() {
@@ -631,12 +643,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
-        //Log.d(TAG, "response: "+ response);
+      //  Log.d(TAG, "response: "+ response);
+        Log.e(TAG,"loaded tag: "+tag+" response: "+ response);
         if (response != null){
             try {
                 if (tag.equals("loadOffers") || tag.equals("loadOffersMore")){
                     if (response.getString("status").equals("OK")){
                         sendToAdapter(response, tag);
+
                     }
                 }else if (tag.equals("savings")){
                     if (response.getString("status").equals("OK")){
