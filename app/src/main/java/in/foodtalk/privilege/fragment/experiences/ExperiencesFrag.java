@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -39,6 +41,8 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+    LinearLayout progressBar, placeholderInternet;
+    TextView btnRetry;
 
 
     @Nullable
@@ -49,7 +53,17 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
+        placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
+        btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadData();
+            }
+        });
 
+        placeholderInternet.setVisibility(View.GONE);
 
 
         final Handler handler = new Handler();
@@ -65,12 +79,17 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
     }
 
     private void loadData(){
+        placeholderInternet.setVisibility(View.GONE);
         Log.d(TAG, "load experiences");
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCES, "experiences", this);
     }
 
     private void sendToAdapter(JSONObject reponse) throws JSONException {
+        progressBar.setVisibility(View.GONE);
         JSONArray expeArrayList = reponse.getJSONObject("result").getJSONArray("data");
+        expeList.clear();
+
+        Log.d(TAG, "expe total: "+expeArrayList.length());
         for (int i = 0; i< expeArrayList.length(); i++){
             expeList.add(expeArrayList.getJSONObject(i));
         }
@@ -92,6 +111,8 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
                     e.printStackTrace();
                 }
             }
+        }else {
+            placeholderInternet.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -68,6 +68,7 @@ import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.account.AccountTabFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
+import in.foodtalk.privilege.fragment.experiencesDetails.ExperienceDetailsFrag;
 import in.foodtalk.privilege.fragment.home.HomeTabFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
 import in.foodtalk.privilege.fragment.search.SearchFrag;
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     ExpeFrag expeFrag = new ExpeFrag();
     HelpSupportFrag helpSupportFrag = new HelpSupportFrag();
     HowItWorks howItWorks = new HowItWorks();
+    ExperienceDetailsFrag experienceDetailsFrag = new ExperienceDetailsFrag();
+
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
     AccountTabFrag accountTabFrag = new AccountTabFrag();
@@ -535,6 +538,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         if (fragName.equals("legalFrag")){
             webView("http://foodtalk.in/app/legal.html");
             AppController.getInstance().fbLogEvent("legal_view", null);
+        }
+        if (fragName.equals("ExperienceDetailsFrag")){
+            setFragmentView(experienceDetailsFrag, R.id.container, "experienceDetailsFrag", true);
         }
     }
 

@@ -10,12 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import in.foodtalk.privilege.R;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 /**
  * Created by RetailAdmin on 02-11-2017.
@@ -25,10 +28,12 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Context context;
     LayoutInflater layoutInflater;
     List<JSONObject> expeList;
+    CallbackFragOpen callbackFragOpen;
     public ExperienceAdapter(Context context, List<JSONObject> expeList){
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.expeList = expeList;
+        callbackFragOpen = (CallbackFragOpen) context;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +48,15 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         JSONObject expeObj = expeList.get(position);
         try {
             expeCard.tvTitle.setText(expeObj.getString("title"));
+            expeCard.tvAddress.setText(expeObj.getString("address"));
+            expeCard.tvCost.setText("Starting at "+expeObj.getString("cost")+"/Person");
+
+            Picasso.with(context)
+                    .load(expeObj.getString("card_image"))
+                    //.fit()
+                    .placeholder(R.drawable.ic_placeholder)
+                    .fit().centerCrop()
+                    .into(expeCard.imgView);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -53,7 +67,6 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private class ExpeCard extends RecyclerView.ViewHolder implements View.OnTouchListener{
-
         ImageView imgView;
         TextView tvTitle, tvAddress, tvTime, tvCost;
         LinearLayout btnDetails;
@@ -64,10 +77,22 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvAddress = (TextView) itemView.findViewById(R.id.tv_address);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
+            tvCost = (TextView) itemView.findViewById(R.id.tv_cost);
+            btnDetails = (LinearLayout) itemView.findViewById(R.id.btn_details);
+            btnDetails.setOnTouchListener(this);
         }
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (view.getId()){
+                case R.id.btn_details:
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_UP:
+                            callbackFragOpen.openFrag("ExperienceDetailsFrag","");
+                            break;
+                    }
+                    break;
+            }
             return false;
         }
     }
