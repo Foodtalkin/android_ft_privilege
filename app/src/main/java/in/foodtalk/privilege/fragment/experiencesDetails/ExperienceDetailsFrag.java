@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.foodtalk.privilege.R;
@@ -40,9 +42,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback {
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
         placeholderInternet.setVisibility(View.GONE);
-
         loadData();
         return layout;
     }
@@ -53,12 +53,27 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback {
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCE_DETAILS, "experienceDetails", this);
     }
 
+    private void sendToAdapter(JSONObject reponse) throws JSONException {
+
+        //JSONArray dataList = reponse.getJSONObject("result").getJSONArray("data");
+        if (getActivity() != null){
+            ExperienceDetailsAdapter experienceDetailsAdapter = new ExperienceDetailsAdapter(getActivity(), reponse);
+            recyclerView.setAdapter(experienceDetailsAdapter);
+        }
+
+    }
+
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (tag.equals("experienceDetails")){
             progressBar.setVisibility(View.GONE);
             if (response != null){
                 Log.d(TAG, "response: "+response);
+                try {
+                    sendToAdapter(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }else {
                 placeholderInternet.setVisibility(View.VISIBLE);
             }
