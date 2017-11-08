@@ -3,6 +3,7 @@ package in.foodtalk.privilege.fragment.experiencesDetails;
 import android.content.Context;
 import android.net.Uri;
 import android.net.UrlQuerySanitizer;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -164,7 +165,6 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             String videoId = uri.getQueryParameter("v");  //will return "V-Maths-Addition "
 
             videoCard.videoId1 = videoId;
@@ -172,6 +172,24 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
             String summary = "<html><body><iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/"+videoId+"?rel=0\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
             videoCard.webView.loadData(summary, "text/html", null);
+        }
+        if (holder instanceof List2Card){
+            List2Card list2Card = (List2Card) holder;
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+            list2Card.recyclerView.setLayoutManager(layoutManager);
+            list2Card.recyclerView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    //view.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+            try {
+                List2Adapter list2Adapter = new List2Adapter(context, dataList.getJSONObject(position-1).getJSONArray("content"));
+                list2Card.recyclerView.setAdapter(list2Adapter);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
     @Override
@@ -246,9 +264,10 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
     private class List2Card extends RecyclerView.ViewHolder{
-
+        RecyclerView recyclerView;
         public List2Card(View itemView) {
             super(itemView);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view);
         }
     }
     private class ImageCard extends RecyclerView.ViewHolder{
