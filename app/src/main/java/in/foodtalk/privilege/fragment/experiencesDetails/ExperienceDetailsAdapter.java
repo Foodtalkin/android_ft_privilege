@@ -27,6 +27,7 @@ import java.util.Set;
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.comm.ValueCallback;
 
 /**
  * Created by RetailAdmin on 06-11-2017.
@@ -38,6 +39,8 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
     JSONObject response;
     JSONArray dataList;
 
+    ValueCallback valueCallback;
+
     private final int VIEW_COVER = 0;
     private final int VIEW_DES = 1;
     private final int VIEW_LIST1 = 2;
@@ -48,9 +51,10 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
 
     CallbackFragOpen callbackFragOpen;
 
-    public ExperienceDetailsAdapter (Context context, JSONObject response){
+    public ExperienceDetailsAdapter (Context context, JSONObject response, ValueCallback valueCallback){
         this.context = context;
         this.response = response;
+        this.valueCallback = valueCallback;
         try {
             this.dataList = response.getJSONObject("result").getJSONArray("data");
         } catch (JSONException e) {
@@ -165,7 +169,7 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String videoId = uri.getQueryParameter("v");  //will return "V-Maths-Addition "
+            String videoId = uri.getQueryParameter("v");  //will return "V-Maths-Addition"
 
             videoCard.videoId1 = videoId;
             Log.e("videoCard","videoId: "+ videoId);
@@ -187,6 +191,17 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             try {
                 List2Adapter list2Adapter = new List2Adapter(context, dataList.getJSONObject(position-1).getJSONArray("content"));
                 list2Card.recyclerView.setAdapter(list2Adapter);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (holder instanceof ImageCard){
+            ImageCard imageCard = (ImageCard) holder;
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            imageCard.recyclerView.setLayoutManager(layoutManager);
+            try {
+                ExpeImageAdapter expeImageAdapter = new ExpeImageAdapter(context,dataList.getJSONObject(position-1).getJSONArray("content"), valueCallback);
+                imageCard.recyclerView.setAdapter(expeImageAdapter);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -271,9 +286,11 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
     private class ImageCard extends RecyclerView.ViewHolder{
+        RecyclerView recyclerView;
 
         public ImageCard(View itemView) {
             super(itemView);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view);
         }
     }
     private class VideoCard extends RecyclerView.ViewHolder{
