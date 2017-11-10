@@ -13,9 +13,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
@@ -42,17 +45,46 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
     RecyclerView.LayoutManager layoutManager;
     ValueCallback valueCallback;
     public Boolean imgSliderVisible = false;
+    Animation slideUpAnimation, slideDownAnimation, slideUpAnimation1;
 
     RelativeLayout imgSlider;
     RecyclerView recyclerView1;
 
     RecyclerView.LayoutManager layoutManager1;
 
-    ImageView btnClose;
+    LinearLayout btnSlideUp, redeemBar;
+    public Boolean redeemBarVisible = false;
+
+    ImageView btnClose, btnCancel, btnAdd, btnRemove;
+
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount;
+
+    public int purchaseLimit;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.experience_details, container, false);
+
+        tvTitleBar = (TextView) layout.findViewById(R.id.tv_title_bar);
+        tvDateBar = (TextView) layout.findViewById(R.id.tv_date_bar);
+        tvCounter = (TextView) layout.findViewById(R.id.tv_counter);
+        tvTotalAmount = (TextView) layout.findViewById(R.id.tv_total_amount);
+        btnNext = (TextView) layout.findViewById(R.id.btn_next);
+        btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
+        btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
+        tvSeatsCount = (TextView) layout.findViewById(R.id.tv_seats_count);
+
+        btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
+        redeemBar = (LinearLayout) layout.findViewById(R.id.redeem_bar);
+        redeemBar.setClickable(false);
+
+        btnCancel = (ImageView) layout.findViewById(R.id.btn_cancel);
+        btnCancel.setOnTouchListener(this);
+
+        btnSlideUp.setOnTouchListener(this);
+        btnSlideUp.setVisibility(View.GONE);
+
         imgSlider = (RelativeLayout) layout.findViewById(R.id.img_slider);
         recyclerView1 = (RecyclerView) layout.findViewById(R.id.recycler_view1);
         layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -67,10 +99,12 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         btnClose.setOnTouchListener(this);
         valueCallback = this;
         loadData();
+        setAnimation("onePlus");
         return layout;
     }
 
     private void loadData(){
+        btnSlideUp.setVisibility(View.VISIBLE);
         placeholderInternet.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCE_DETAILS, "experienceDetails", this);
@@ -84,6 +118,13 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             recyclerView.setAdapter(experienceDetailsAdapter);
         }
 
+        setData(reponse);
+
+    }
+
+    private void setData(JSONObject reponse) throws JSONException {
+        purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
+        tvSeatsCount.setText(reponse.getJSONObject("result").getString("avilable_seats")+" Spots");
     }
 
     @Override
@@ -144,6 +185,94 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         }
     }
 
+    private void showRedeemBar(){
+        redeemBar.startAnimation(slideDownAnimation);
+        redeemBarVisible = true;
+        //blackLayer.setAlpha(.5f);
+    }
+
+    public void hideRedeemBar(){
+       // blackLayer.setAlpha(0);
+        redeemBarVisible = false;
+        redeemBar.startAnimation(slideUpAnimation);
+    }
+    private void setAnimation(String offerType){
+        if (offerType.equals("onePlus")){
+            slideUpAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation);
+
+            slideDownAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_down_animation);
+
+            slideUpAnimation1 = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation1);
+        }else {
+            slideUpAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation_p);
+
+            slideDownAnimation = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_down_animation_p);
+
+            slideUpAnimation1 = AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_up_animation1_p);
+        }
+
+
+        redeemBar.startAnimation(slideUpAnimation1);
+
+        slideUpAnimation1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //redeemBar.setVisibility(View.VISIBLE);
+                //btnBuyNow.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        slideUpAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //barButtons.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+               // barButtons.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
@@ -154,6 +283,65 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                         break;
                 }
                 break;
+            case R.id.btn_slideUp:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        showRedeemBar();
+                        btnSlideUp.setVisibility(View.GONE);
+                        redeemBar.setClickable(true);
+                        break;
+                }
+                break;
+            case R.id.btn_cancel:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "btn cancel clicked");
+                        hideRedeemBar();
+                        btnSlideUp.setVisibility(View.VISIBLE);
+                        redeemBar.setClickable(false);
+                        break;
+                }
+                break;
+            case R.id.btn_add:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "btn add clicked");
+                        int currentCounter = Integer.parseInt(tvCounter.getText().toString());
+                        if (currentCounter < purchaseLimit){
+                            tvCounter.setText(String.valueOf(currentCounter+1));
+                        }
+                        if (Integer.parseInt(tvCounter.getText().toString()) == purchaseLimit){
+                            //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.warm_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                            btnAdd.setVisibility(View.INVISIBLE);
+                        }
+                        btnRemove.setVisibility(View.VISIBLE);
+                        break;
+                }
+                break;
+            case R.id.btn_remove:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d(TAG, "btn remove clicked");
+                        int currentCounter = Integer.parseInt(tvCounter.getText().toString());
+                        if (currentCounter > 1){
+                            tvCounter.setText(String.valueOf(currentCounter-1));
+                        }
+                        if (Integer.parseInt(tvCounter.getText().toString()) == 1){
+                            btnRemove.setVisibility(View.INVISIBLE);
+                        }
+
+
+                        //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        //btnRemove.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        //btnRemove.setVisibility(View.GONE);
+                        /*if (currentCounter < purchaseLimit){
+                            Log.d(TAG,"currentCounter: "+currentCounter+" - purchaseLimit: "+purchaseLimit);
+
+                        }*/
+                        btnAdd.setVisibility(View.VISIBLE);
+
+                        break;
+                }
         }
         return false;
     }
