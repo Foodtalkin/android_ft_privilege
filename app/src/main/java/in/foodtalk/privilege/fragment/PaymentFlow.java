@@ -126,8 +126,6 @@ public class PaymentFlow extends Fragment implements ApiCallback, View.OnTouchLi
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         ApiCall.jsonObjRequest(Request.Method.POST, getActivity(), jsonObject, Url.SUBSCRIPTION+"?sessionid="+sId, "subscription", this);
     }
 

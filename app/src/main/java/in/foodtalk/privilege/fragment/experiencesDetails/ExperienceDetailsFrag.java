@@ -1,6 +1,7 @@
 package in.foodtalk.privilege.fragment.experiencesDetails;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
+import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.ValueCallback;
@@ -52,14 +55,18 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     RecyclerView.LayoutManager layoutManager1;
 
-    LinearLayout btnSlideUp, redeemBar;
+    LinearLayout btnSlideUp, redeemBar, vegNonBar;
     public Boolean redeemBarVisible = false;
 
     ImageView btnClose, btnCancel, btnAdd, btnRemove;
 
-    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount;
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow;
 
     public int purchaseLimit;
+
+    SeekBar seekBar;
+
+    DatabaseHandler db;
 
     @Nullable
     @Override
@@ -74,6 +81,18 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         btnAdd = (ImageView) layout.findViewById(R.id.btn_add);
         btnRemove = (ImageView) layout.findViewById(R.id.btn_remove);
         tvSeatsCount = (TextView) layout.findViewById(R.id.tv_seats_count);
+        vegNonBar = (LinearLayout) layout.findViewById(R.id.veg_non_bar);
+        vegNonBar.setVisibility(View.GONE);
+
+        btnBookNow = (TextView) layout.findViewById(R.id.btn_book_now);
+        btnBookNow.setOnTouchListener(this);
+
+        tvVegCounter = (TextView) layout.findViewById(R.id.tv_veg_counter);
+
+        seekBar = (SeekBar) layout.findViewById(R.id.seek_bar);
+
+        vegBarCancel = (TextView) layout.findViewById(R.id.veg_bar_cancel);
+        vegBarCancel.setOnTouchListener(this);
 
         btnSlideUp = (LinearLayout) layout.findViewById(R.id.btn_slideUp);
         redeemBar = (LinearLayout) layout.findViewById(R.id.redeem_bar);
@@ -84,6 +103,10 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
         btnSlideUp.setOnTouchListener(this);
         btnSlideUp.setVisibility(View.GONE);
+
+        btnAdd.setOnTouchListener(this);
+        btnRemove.setOnTouchListener(this);
+        btnNext.setOnTouchListener(this);
 
         imgSlider = (RelativeLayout) layout.findViewById(R.id.img_slider);
         recyclerView1 = (RecyclerView) layout.findViewById(R.id.recycler_view1);
@@ -100,6 +123,15 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         valueCallback = this;
         loadData();
         setAnimation("onePlus");
+
+        db = new DatabaseHandler(getActivity());
+
+        if (db.getRowCount() > 0){
+            btnBookNow.setText("Book Now");
+        }else {
+            btnBookNow.setText("Sign Up");
+        }
+
         return layout;
     }
 
@@ -121,10 +153,39 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         setData(reponse);
 
     }
-
+    int avilableSeats;
     private void setData(JSONObject reponse) throws JSONException {
         purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
-        tvSeatsCount.setText(reponse.getJSONObject("result").getString("avilable_seats")+" Spots");
+        avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
+        tvSeatsCount.setText(avilableSeats+" Spots");
+        if (avilableSeats < 11){
+
+        }else {
+            tvVegCounter.setText(10+" / "+"0");
+            seekBar.setMax(10);
+            avilableSeats = 10;
+        }
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Log.d("seekBar", "i: "+ i+" b: "+b);
+                int nonVegSeats = Integer.parseInt(tvCounter.getText().toString()) - i;
+                int vegSeats = i;
+                tvVegCounter.setText(nonVegSeats+" / "+ vegSeats);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
@@ -286,9 +347,20 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             case R.id.btn_slideUp:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        showRedeemBar();
-                        btnSlideUp.setVisibility(View.GONE);
-                        redeemBar.setClickable(true);
+
+                        break;
+                }
+                break;
+            case R.id.btn_book_now:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        if (db.getRowCount() > 0){
+                            showRedeemBar();
+                            btnSlideUp.setVisibility(View.GONE);
+                            redeemBar.setClickable(true);
+                        }else {
+                            btnBookNow.setText("Sign Up");
+                        }
                         break;
                 }
                 break;
@@ -302,15 +374,31 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                         break;
                 }
                 break;
+            case R.id.btn_next:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        vegNonBar.setVisibility(View.VISIBLE);
+                        seekBar.setMax(Integer.parseInt(tvCounter.getText().toString()));
+                        tvVegCounter.setText(Integer.parseInt(tvCounter.getText().toString())+" / "+"0");
+                        break;
+                }
+                break;
+            case R.id.veg_bar_cancel:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        vegNonBar.setVisibility(View.GONE);
+                        break;
+                }
+                break;
             case R.id.btn_add:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "btn add clicked");
                         int currentCounter = Integer.parseInt(tvCounter.getText().toString());
-                        if (currentCounter < purchaseLimit){
+                        if (currentCounter < avilableSeats){
                             tvCounter.setText(String.valueOf(currentCounter+1));
                         }
-                        if (Integer.parseInt(tvCounter.getText().toString()) == purchaseLimit){
+                        if (Integer.parseInt(tvCounter.getText().toString()) == avilableSeats){
                             //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.warm_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
                             btnAdd.setVisibility(View.INVISIBLE);
                         }

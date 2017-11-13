@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/dark_grey"
-        android:visibility="gone"
+        android:visibility="visible"
         android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -231,10 +231,128 @@
                     android:paddingLeft="40dp"
                     android:paddingRight="40dp"
                     android:gravity="center"
+                    android:clickable="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"/>
             </RelativeLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/veg_non_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/dark_grey"
+        android:visibility="visible"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="French Pastry Workshop"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Booking 5 ticktes, select dining preferences"
+                android:textColor="@color/warm_grey"
+                android:textSize="12sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:text="non-veg"
+                android:textAllCaps="true"/>
+            <TextView
+                android:id="@+id/tv_veg_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/red"
+                android:textAlignment="center"
+                android:text="4 / 1"
+
+                android:textSize="22sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:text="veg"
+                android:textAllCaps="true"/>
+
+        </LinearLayout>
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:visibility="visible"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:progressTint="@color/white"
+            android:thumbTint="@color/white"
+            android:progressBackgroundTint="@color/white"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:id="@+id/veg_bar_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:clickable="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_bg1"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+            <TextView
+                android:id="@+id/veg_bar_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="Continue"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_bg5"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+        </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -291,6 +409,7 @@
                     android:textColor="@color/warm_grey"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/btn_book_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BOOK NOW"
@@ -299,6 +418,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:gravity="center"
+                android:clickable="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"/>
         </RelativeLayout>
