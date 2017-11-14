@@ -89,6 +89,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
         btnDone.setTypeface(futuraMedium);
         db = new DatabaseHandler(getActivity());
         getInfoToPayent();
+
         return layout;
     }
 
@@ -219,6 +220,8 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
 
         Service = PaytmPGService.getProductionService();
 
+
+
         //Create new order Object having all order information.
         Map<String, String> paramMap = new HashMap<String,String>();
         paramMap.put( "MID" , response.getJSONObject("result").getString("MID"));
@@ -232,6 +235,7 @@ public class PaymentPaytm extends Fragment implements ApiCallback, View.OnTouchL
         //paramMap.put( "EMAIL" , "abc@gmail.com");
        // paramMap.put( "MOBILE_NO" , "9999999999");
         paramMap.put( "CHECKSUMHASH" , response.getJSONObject("result").getString("CHECKSUMHASH"));
+
 
         PaytmOrder Order = new PaytmOrder(paramMap);
         Service.initialize(Order, null);

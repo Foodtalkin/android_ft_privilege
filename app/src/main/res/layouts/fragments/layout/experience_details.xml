@@ -338,7 +338,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"/>
             <TextView
-                android:id="@+id/veg_bar_continue"
+                android:id="@+id/btn_continue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"

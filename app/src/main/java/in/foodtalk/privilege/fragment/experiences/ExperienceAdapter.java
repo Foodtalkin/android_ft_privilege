@@ -88,7 +88,11 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 case R.id.btn_details:
                     switch (motionEvent.getAction()){
                         case MotionEvent.ACTION_UP:
-                            callbackFragOpen.openFrag("ExperienceDetailsFrag","");
+                            try {
+                                callbackFragOpen.openFrag("ExperienceDetailsFrag",expeList.get(getAdapterPosition()).getString("id"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             break;
                     }
                     break;

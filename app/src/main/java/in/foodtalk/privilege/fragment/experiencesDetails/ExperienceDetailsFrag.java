@@ -28,11 +28,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
 
 /**
@@ -60,7 +63,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     ImageView btnClose, btnCancel, btnAdd, btnRemove;
 
-    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow;
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue;
 
     public int purchaseLimit;
 
@@ -68,10 +71,17 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     DatabaseHandler db;
 
+    CallbackFragOpen callbackFragOpen;
+
+    public String expeId;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.experience_details, container, false);
+
+        btnContinue = (TextView) layout.findViewById(R.id.btn_continue);
+        btnContinue.setOnTouchListener(this);
 
         tvTitleBar = (TextView) layout.findViewById(R.id.tv_title_bar);
         tvDateBar = (TextView) layout.findViewById(R.id.tv_date_bar);
@@ -124,6 +134,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         loadData();
         setAnimation("onePlus");
 
+        callbackFragOpen = (CallbackFragOpen) getActivity();
+
         db = new DatabaseHandler(getActivity());
 
         if (db.getRowCount() > 0){
@@ -139,9 +151,9 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         btnSlideUp.setVisibility(View.VISIBLE);
         placeholderInternet.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCE_DETAILS, "experienceDetails", this);
+        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCES+"/"+expeId, "experienceDetails", this);
     }
-
+    JSONObject response;
     private void sendToAdapter(JSONObject reponse) throws JSONException {
 
         //JSONArray dataList = reponse.getJSONObject("result").getJSONArray("data");
@@ -154,7 +166,11 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     }
     int avilableSeats;
+    int nonVegSeats;
+    int vegSeats;
     private void setData(JSONObject reponse) throws JSONException {
+
+        this.response = reponse;
         purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         tvSeatsCount.setText(avilableSeats+" Spots");
@@ -171,8 +187,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Log.d("seekBar", "i: "+ i+" b: "+b);
-                int nonVegSeats = Integer.parseInt(tvCounter.getText().toString()) - i;
-                int vegSeats = i;
+                nonVegSeats = Integer.parseInt(tvCounter.getText().toString()) - i;
+                vegSeats = i;
                 tvVegCounter.setText(nonVegSeats+" / "+ vegSeats);
             }
 
@@ -387,6 +403,28 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         vegNonBar.setVisibility(View.GONE);
+                        break;
+                }
+                break;
+            case R.id.btn_continue:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("nonVegSeats", String.valueOf(nonVegSeats));
+                            jsonObject.put("vegSeats", String.valueOf(vegSeats));
+                            jsonObject.put("totalTickets", tvCounter.getText().toString());
+                            jsonObject.put("expeId", expeId);
+
+                            jsonObject.put("title", response.getJSONObject("result").getString("title"));
+                            jsonObject.put("address", response.getJSONObject("result").getString("address"));
+                           // jsonObject.put("time", response.getJSONObject("result").getString("time"));
+                            jsonObject.put("cover_image", response.getJSONObject("result").getString("card_image"));
+                            Log.e("btn_continue", response.getJSONObject("result").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callbackFragOpen.openFrag("expeInvoice", jsonObject.toString());
                         break;
                 }
                 break;

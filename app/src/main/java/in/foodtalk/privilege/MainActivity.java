@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
@@ -68,6 +69,7 @@ import in.foodtalk.privilege.fragment.WebViewFrag;
 import in.foodtalk.privilege.fragment.account.AccountTabFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
+import in.foodtalk.privilege.fragment.experiences.ExpeInvoice;
 import in.foodtalk.privilege.fragment.experiencesDetails.ExperienceDetailsFrag;
 import in.foodtalk.privilege.fragment.home.HomeTabFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     HelpSupportFrag helpSupportFrag = new HelpSupportFrag();
     HowItWorks howItWorks = new HowItWorks();
     ExperienceDetailsFrag experienceDetailsFrag = new ExperienceDetailsFrag();
+    ExpeInvoice expeInvoice = new ExpeInvoice();
 
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
@@ -540,7 +543,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             AppController.getInstance().fbLogEvent("legal_view", null);
         }
         if (fragName.equals("ExperienceDetailsFrag")){
+            experienceDetailsFrag.expeId = value;
             setFragmentView(experienceDetailsFrag, R.id.container, "experienceDetailsFrag", true);
+        }
+        if (fragName.equals("expeInvoice")){
+            Log.d(TAG, "expeInvoice: "+ value);
+            try {
+                JSONObject jsonObject = new JSONObject(value);
+                expeInvoice.infoObj = jsonObject;
+                setFragmentView(expeInvoice, R.id.container, "expeInvoice", true);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
