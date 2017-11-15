@@ -70,6 +70,7 @@ import in.foodtalk.privilege.fragment.account.AccountTabFrag;
 import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeInvoice;
+import in.foodtalk.privilege.fragment.experiences.ExpePayment;
 import in.foodtalk.privilege.fragment.experiencesDetails.ExperienceDetailsFrag;
 import in.foodtalk.privilege.fragment.home.HomeTabFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     HowItWorks howItWorks = new HowItWorks();
     ExperienceDetailsFrag experienceDetailsFrag = new ExperienceDetailsFrag();
     ExpeInvoice expeInvoice = new ExpeInvoice();
+    ExpePayment expePayment = new ExpePayment();
+
 
 
     CitySelectFrag citySelectFrag = new CitySelectFrag();
@@ -552,6 +555,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 JSONObject jsonObject = new JSONObject(value);
                 expeInvoice.infoObj = jsonObject;
                 setFragmentView(expeInvoice, R.id.container, "expeInvoice", true);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (fragName.equals("expePayment")){
+            try {
+                JSONObject jsonObject = new JSONObject(value);
+                expePayment.infoObj = jsonObject;
+                setFragmentView(expePayment, R.id.container, "expePayment", true);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

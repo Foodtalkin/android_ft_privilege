@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -56,31 +57,27 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/group_3"
                 android:layout_marginTop="68dp"
-                android:id="@+id/imageView" />
+                android:src="@drawable/group_3" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:layout_marginTop="40dp"
-                android:text="Welcome aboard"
+                android:text="Success"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You have successfully purchased \nFood Talk Privilege"
+                android:text="You have successfully purchased 2 tickets for event French Pastry Workshop"
                 android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thank you!"
-                android:layout_marginTop="16dp"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -101,7 +98,7 @@
                 android:layout_marginRight="40dp"
                 android:gravity="center"
                 android:layout_marginLeft="40dp"
-                android:text="Start Redeeming"
+                android:text="Goto Tickets"
                 android:textSize="15sp"
                 android:background="@drawable/btn_bg2"
                 android:clickable="true"

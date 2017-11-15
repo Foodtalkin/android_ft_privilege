@@ -42,6 +42,8 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
 
     ImageView imgView;
 
+    CallbackFragOpen callbackFragOpen;
+
     TextView tvTitle, tvTime, tvTime1, tvAddress, tvAddress1, tvVegNon, tvSubTotal, tvAmount, tvTax, tvFee, tvTotalAmount;
 
     @Nullable
@@ -62,6 +64,8 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
         tvTotalAmount = (TextView) layout.findViewById(R.id.tv_total_amount);
         btnPay = (LinearLayout) layout.findViewById(R.id.btn_pay);
         btnPay.setOnTouchListener(this);
+
+        callbackFragOpen = (CallbackFragOpen) getActivity();
 
         db = new DatabaseHandler(getActivity());
 
@@ -124,6 +128,7 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
         switch (view.getId()){
             case R.id.btn_pay:
                 Log.d("btnpay", "clicked");
+                callbackFragOpen.openFrag("expePayment", infoObj.toString());
                 break;
         }
         return false;
