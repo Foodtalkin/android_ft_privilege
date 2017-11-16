@@ -1,34 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="0dp"
+        android:layout_marginTop="5dp">
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
+          android:orientation="vertical"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="10dp">
           <RelativeLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
               <TextView
+                  android:id="@+id/tv_title"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="French Pastry Workshop"
                   android:textAllCaps="true"
-                  android:textSize="16sp"/>
+                  android:textSize="16sp"
+                  android:textStyle="bold"/>
+          </RelativeLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginTop="10dp">
+
               <ImageView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/ic_search_24"
-                  android:layout_alignParentRight="true"/>
+                  android:src="@drawable/ic_clock" />
+              <TextView
+                  android:id="@+id/tv_time"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:text="September 17 at 10 AM - 12 PM"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginTop="8dp">
+
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/ic_location_outline" />
+              <TextView
+                  android:id="@+id/tv_address"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:text="Miam Pati, 52 B, South ex, Delhi"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginTop="8dp">
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/ic_bookmark_24" />
+              <TextView
+                  android:id="@+id/tv_ticktes"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:text="3 Ticktes"/>
+          </LinearLayout>
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="15dp">
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Transaction Id"
+                      android:textSize="13sp"/>
+                  <TextView
+                      android:id="@+id/tv_tra_id"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="2365xd874fg"
+                      android:textSize="18sp"
+                      android:textStyle="bold"/>
+              </LinearLayout>
+              <TextView
+                  android:id="@+id/btn_event"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="View Event"
+                  android:textAllCaps="true"
+                  android:textColor="@color/white"
+                  android:layout_alignParentRight="true"
+                  android:background="@drawable/btn_bg6"
+                  android:gravity="center"
+                  android:paddingLeft="20dp"
+                  android:paddingRight="20dp"/>
           </RelativeLayout>
       </LinearLayout>
-
     </android.support.v7.widget.CardView>
 </RelativeLayout>

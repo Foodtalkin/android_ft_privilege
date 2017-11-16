@@ -52,6 +52,8 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
     DatabaseHandler db;
     CallbackFragOpen callbackFragOpen;
 
+
+
     public JSONObject infoObj;
     @Nullable
     @Override
@@ -204,12 +206,30 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
+            case R.id.btn_retry:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        try {
+                            getInfoToPayent();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // Log.d(TAG, "payment retry");
+                        break;
+                }
+                break;
             case R.id.btn_done:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-
+                        callbackFragOpen.openFrag("ticketsFrag","");
                         break;
                 }
                 break;

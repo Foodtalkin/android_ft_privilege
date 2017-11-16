@@ -71,6 +71,7 @@ import in.foodtalk.privilege.fragment.city.CitySelectFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeFrag;
 import in.foodtalk.privilege.fragment.experiences.ExpeInvoice;
 import in.foodtalk.privilege.fragment.experiences.ExpePayment;
+import in.foodtalk.privilege.fragment.experiences.TicketsFrag;
 import in.foodtalk.privilege.fragment.experiencesDetails.ExperienceDetailsFrag;
 import in.foodtalk.privilege.fragment.home.HomeTabFrag;
 import in.foodtalk.privilege.fragment.howitwork.HowItWorks;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     ExperienceDetailsFrag experienceDetailsFrag = new ExperienceDetailsFrag();
     ExpeInvoice expeInvoice = new ExpeInvoice();
     ExpePayment expePayment = new ExpePayment();
+    TicketsFrag ticketsFrag = new TicketsFrag();
 
 
 
@@ -411,7 +413,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     }
     public void setFragmentView(Fragment newFragment, int container, String tag, Boolean bStack){
-
         /*if (tag.equals("successFrag")){
             //mActionBar.setDisplayShowCustomEnabled(false);
             getSupportActionBar().hide();
@@ -563,10 +564,13 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             try {
                 JSONObject jsonObject = new JSONObject(value);
                 expePayment.infoObj = jsonObject;
-                setFragmentView(expePayment, R.id.container, "expePayment", true);
+                setFragmentView(expePayment, R.id.container, "expePayment", false);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        if (fragName.equals("ticketsFrag")){
+            setFragmentView(ticketsFrag, R.id.container, "ticketsFrag", true);
         }
     }
 
