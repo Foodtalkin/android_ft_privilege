@@ -22,6 +22,7 @@ import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.comm.CallbackFragOpen;
 
 /**
  * Created by RetailAdmin on 16-11-2017.
@@ -35,7 +36,9 @@ public class TicketsFrag extends Fragment implements ApiCallback {
     DatabaseHandler db;
 
     LinearLayout progressBar, placeholderInternet;
-    TextView btnRetry;
+    TextView btnRetry, btnBrowseExpe;
+
+    CallbackFragOpen callbackFragOpen;
 
 
     @Nullable
@@ -45,6 +48,16 @@ public class TicketsFrag extends Fragment implements ApiCallback {
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
         placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+
+        callbackFragOpen = (CallbackFragOpen) getActivity();
+        btnBrowseExpe = (TextView) layout.findViewById(R.id.btn_browse_expe);
+        btnBrowseExpe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("btnBrowseExpe", "clicked");
+                callbackFragOpen.openFrag("homeTabFrag", "");
+            }
+        });
 
         placeholderInternet.setVisibility(View.GONE);
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);

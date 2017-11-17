@@ -106,6 +106,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="@dimen/nav_icon_margin"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:background="@drawable/ripple_effect">
                     <LinearLayout
                         android:layout_width="30dp"
@@ -123,6 +124,38 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Experiences"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/nav_text_margin"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/nav_tickets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_marginLeft="@dimen/nav_icon_margin"
+                    android:clickable="true"
+                    android:background="@drawable/ripple_effect">
+                    <LinearLayout
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_ticket_icon"
+                            android:tint="@color/light_gold"
+                            android:scaleX=".8"
+                            android:scaleY=".8"/>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tickets"
                         android:textSize="@dimen/nav_text_size"
                         android:textAllCaps="true"
                         android:textStyle="bold"

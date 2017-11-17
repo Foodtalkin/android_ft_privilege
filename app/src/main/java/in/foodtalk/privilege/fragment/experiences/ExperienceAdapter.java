@@ -52,7 +52,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             expeCard.tvCost.setText("Starting at "+expeObj.getString("cost")+"/Person");
 
             Picasso.with(context)
-                    .load(expeObj.getString("card_image"))
+                    .load(expeObj.getString("cover_image"))
                     //.fit()
                     .placeholder(R.drawable.ic_placeholder)
                     .fit().centerCrop()

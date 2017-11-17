@@ -62,7 +62,6 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
                 loadData();
             }
         });
-
         placeholderInternet.setVisibility(View.GONE);
 
 

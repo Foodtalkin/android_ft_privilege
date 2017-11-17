@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
 
 
-    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines, navCity;
+    LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines, navCity, navTickets;
 
     SuccessFrag successFrag = new SuccessFrag();
     PaymentFlow paymentFlow = new PaymentFlow();
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navCity = (LinearLayout) findViewById(R.id.nav_city);
 
         navExperines = (LinearLayout) findViewById(R.id.nav_experines);
-
+        navTickets = (LinearLayout) findViewById(R.id.nav_tickets);
 
 
         txtVersion = (TextView) findViewById(R.id.txt_version);
@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navAbout.setOnTouchListener(this);
         navHome.setOnTouchListener(this);
         navCity.setOnTouchListener(this);
+        navTickets.setOnTouchListener(this);
 
 
         Log.d(TAG,"check login status: "+ db.getRowCount());
@@ -363,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navBuyNow.setVisibility(View.VISIBLE);
         txtFoodtalkNav.setText("FOODTALK");
         tvPm.setText("");
+        navTickets.setVisibility(View.GONE);
     }
     public void loginView(){
         forLogin.setVisibility(View.VISIBLE);
@@ -371,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         navBuyNow.setVisibility(View.GONE);
         txtFoodtalkNav.setText(db.getUserDetails().get("name"));
         tvPm.setText("Privilege Member");
-
+        navTickets.setVisibility(View.VISIBLE);
     }
     ActionBar mActionBar;
     private void actionBar(){
@@ -498,8 +500,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             finish();
             startActivity(intent);
         }
+        if (fragName.equals("homeTabFrag")){
+            setFragmentView(homeTabFrag, R.id.container, "homeTabFrag", true);
+        }
         if (fragName.equals("successFrag")){
-
             successFrag.rId = value;
             setFragmentView(successFrag, R.id.container, "successFrag", false);
         }
@@ -614,7 +618,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             }else {
                 super.onBackPressed();
             }
-
         }
     }
     private void clearBackStack() {
@@ -850,6 +853,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         Log.d(TAG, "nav exprines");
                         experines();
                         AppController.getInstance().fbLogEvent("experiences_view", null);
+                        break;
+                }
+                break;
+            case R.id.nav_tickets:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        setFragmentView(ticketsFrag, R.id.container, "ticketsFrag", true);
+                        drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
                 }
                 break;

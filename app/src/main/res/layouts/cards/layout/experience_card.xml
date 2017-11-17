@@ -15,7 +15,7 @@
             <ImageView
                 android:id="@+id/img_view"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="180dp"
                 android:src="@drawable/mask_copy"
                 />
         </RelativeLayout>

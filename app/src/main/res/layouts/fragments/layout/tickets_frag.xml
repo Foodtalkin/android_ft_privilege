@@ -12,5 +12,34 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         layout="@layout/placeholder_internet"
+        android:visibility="gone"
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tickets_placeholder"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your tickets will be listed here"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/btn_browse_expe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Browse Experiences"
+            android:textSize="18sp"
+            android:textColor="@color/bright_sky_blue"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 </RelativeLayout>
