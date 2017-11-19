@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,7 +64,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     ImageView btnClose, btnCancel, btnAdd, btnRemove;
 
-    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue;
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue, tvCost;
 
     public int purchaseLimit;
 
@@ -83,6 +84,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         btnContinue = (TextView) layout.findViewById(R.id.btn_continue);
         btnContinue.setOnTouchListener(this);
 
+        tvCost = (TextView) layout.findViewById(R.id.tv_cost);
         tvTitleBar = (TextView) layout.findViewById(R.id.tv_title_bar);
         tvDateBar = (TextView) layout.findViewById(R.id.tv_date_bar);
         tvCounter = (TextView) layout.findViewById(R.id.tv_counter);
@@ -174,12 +176,22 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         tvSeatsCount.setText(avilableSeats+" Spots");
+        tvCost.setText(response.getJSONObject("result").getString("cost"));
+        tvTotalAmount.setText(reponse.getJSONObject("result").getString("cost"));
         if (avilableSeats < 11){
 
         }else {
-            tvVegCounter.setText(10+" / "+"0");
+            String txtCounter = "<font color='red'>10</font> / <font color='green'>0</font>";
+            tvVegCounter.setText((Html.fromHtml(txtCounter)));
+            //tvVegCounter.setText(10+" / "+"0");
             seekBar.setMax(10);
             avilableSeats = 10;
+        }
+
+        if (avilableSeats == 0){
+            btnBookNow.setBackground(getResources().getDrawable(R.drawable.btn_bg_red));
+            btnBookNow.setClickable(false);
+            btnBookNow.setText(" Sold Out ");
         }
 
 
@@ -189,7 +201,9 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                 Log.d("seekBar", "i: "+ i+" b: "+b);
                 nonVegSeats = Integer.parseInt(tvCounter.getText().toString()) - i;
                 vegSeats = i;
-                tvVegCounter.setText(nonVegSeats+" / "+ vegSeats);
+                String txtCounter = "<font color='red'>"+nonVegSeats+"</font> / <font color='green'>"+vegSeats+"</font>";
+                //tvVegCounter.setText(nonVegSeats+" / "+ vegSeats);
+                tvVegCounter.setText(Html.fromHtml(txtCounter));
             }
 
             @Override
@@ -350,6 +364,30 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     }
 
+    private void gotoInvoic(){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("nonVegSeats", String.valueOf(nonVegSeats));
+            jsonObject.put("vegSeats", String.valueOf(vegSeats));
+            jsonObject.put("totalTickets", tvCounter.getText().toString());
+            jsonObject.put("expeId", expeId);
+
+            jsonObject.put("title", response.getJSONObject("result").getString("title"));
+            jsonObject.put("address", response.getJSONObject("result").getString("address"));
+            // jsonObject.put("time", response.getJSONObject("result").getString("time"));
+            jsonObject.put("cover_image", response.getJSONObject("result").getString("card_image"));
+            Log.e("btn_continue", response.getJSONObject("result").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        callbackFragOpen.openFrag("expeInvoice", jsonObject.toString());
+    }
+
+    private void calculatePrice(int num) throws JSONException {
+        int totalM = num*Integer.parseInt(response.getJSONObject("result").getString("cost"));
+        tvTotalAmount.setText(String.valueOf(totalM));
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
@@ -393,9 +431,20 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             case R.id.btn_next:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        vegNonBar.setVisibility(View.VISIBLE);
-                        seekBar.setMax(Integer.parseInt(tvCounter.getText().toString()));
-                        tvVegCounter.setText(Integer.parseInt(tvCounter.getText().toString())+" / "+"0");
+                        try {
+                            if (response.getJSONObject("result").getString("nonveg_preference").equals("1")){
+                                vegNonBar.setVisibility(View.VISIBLE);
+                                seekBar.setMax(Integer.parseInt(tvCounter.getText().toString()));
+                                String txtCounter = "<font color='red'>"+tvCounter.getText().toString()+"</font> / <font color='green'>0</font>";
+                                //tvVegCounter.setText(Integer.parseInt(tvCounter.getText().toString())+" / "+"0");
+                                tvVegCounter.setText(Html.fromHtml(txtCounter));
+                            }else {
+                                gotoInvoic();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         break;
                 }
                 break;
@@ -409,22 +458,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             case R.id.btn_continue:
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("nonVegSeats", String.valueOf(nonVegSeats));
-                            jsonObject.put("vegSeats", String.valueOf(vegSeats));
-                            jsonObject.put("totalTickets", tvCounter.getText().toString());
-                            jsonObject.put("expeId", expeId);
-
-                            jsonObject.put("title", response.getJSONObject("result").getString("title"));
-                            jsonObject.put("address", response.getJSONObject("result").getString("address"));
-                           // jsonObject.put("time", response.getJSONObject("result").getString("time"));
-                            jsonObject.put("cover_image", response.getJSONObject("result").getString("card_image"));
-                            Log.e("btn_continue", response.getJSONObject("result").toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        callbackFragOpen.openFrag("expeInvoice", jsonObject.toString());
+                            gotoInvoic();
                         break;
                 }
                 break;
@@ -435,6 +469,11 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                         int currentCounter = Integer.parseInt(tvCounter.getText().toString());
                         if (currentCounter < avilableSeats){
                             tvCounter.setText(String.valueOf(currentCounter+1));
+                            try {
+                                calculatePrice(Integer.parseInt(tvCounter.getText().toString()));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                         if (Integer.parseInt(tvCounter.getText().toString()) == avilableSeats){
                             //btnAdd.setColorFilter(ContextCompat.getColor(getActivity(), R.color.warm_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -451,6 +490,11 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                         int currentCounter = Integer.parseInt(tvCounter.getText().toString());
                         if (currentCounter > 1){
                             tvCounter.setText(String.valueOf(currentCounter-1));
+                            try {
+                                calculatePrice(Integer.parseInt(tvCounter.getText().toString()));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                         if (Integer.parseInt(tvCounter.getText().toString()) == 1){
                             btnRemove.setVisibility(View.INVISIBLE);

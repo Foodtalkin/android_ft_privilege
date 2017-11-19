@@ -101,7 +101,7 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
             tvVegNon.setText("VEG: "+infoObj.getString("vegSeats")+" | Non-Veg: "+infoObj.getString("nonVegSeats"));
 
             Picasso.with(getActivity())
-                    .load(infoObj.getString("cover_image"))
+                    .load(infoObj.getString("card_image"))
                     //.fit()
                     .placeholder(R.drawable.ic_placeholder)
                     .fit().centerCrop()

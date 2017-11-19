@@ -290,7 +290,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/red"
+                android:textColor="@color/warm_grey"
                 android:textAlignment="center"
                 android:text="4 / 1"
 
@@ -378,6 +378,7 @@
             android:orientation="vertical"
             android:layout_marginLeft="20dp">
             <TextView
+                android:id="@+id/tv_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rs 1000"

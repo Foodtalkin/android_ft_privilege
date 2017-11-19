@@ -98,7 +98,7 @@
                 android:layout_marginRight="40dp"
                 android:gravity="center"
                 android:layout_marginLeft="40dp"
-                android:text="Goto Tickets"
+                android:text="Go to Tickets"
                 android:textSize="15sp"
                 android:background="@drawable/btn_bg2"
                 android:clickable="true"
