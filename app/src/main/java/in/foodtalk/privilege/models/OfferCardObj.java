@@ -20,4 +20,5 @@ public class OfferCardObj {
     public String type;
     public String savingAmount;
     public String distance = "";
+
 }

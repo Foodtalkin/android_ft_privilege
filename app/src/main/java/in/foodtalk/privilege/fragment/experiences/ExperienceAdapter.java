@@ -49,7 +49,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         try {
             expeCard.tvTitle.setText(expeObj.getString("title"));
             expeCard.tvAddress.setText(expeObj.getString("address"));
-            expeCard.tvCost.setText("Starting at "+expeObj.getString("cost")+"/Person");
+            expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
 
             Picasso.with(context)
                     .load(expeObj.getString("cover_image"))

@@ -35,6 +35,7 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.DateFunction;
 import in.foodtalk.privilege.models.OfferCardObj;
 
 /**
@@ -53,6 +54,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final int VIEW_LOADER = 0;
     public final int VIEW_OFFER = 1;
     public final int VIEW_SAVING = 2;
+    public final int VIEW_HEADER = 3;
+
+    JSONObject profileObj;
 
     DatabaseHandler db;
     String sId;
@@ -61,10 +65,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     int imgSize;
 
-    public HomeAdapter(Context context, List<OfferCardObj> offerCardList){
+    public HomeAdapter(Context context, List<OfferCardObj> offerCardList, JSONObject profileObj){
         this.context = context;
         this.offerCardList = offerCardList;
         layoutInflater = LayoutInflater.from(context);
+
+        this.profileObj = profileObj;
 
         callbackFragOpen = (CallbackFragOpen) context;
 
@@ -94,12 +100,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             View view = layoutInflater.inflate(R.layout.savings_card, parent, false);
             SavingsCard savingsCard = new SavingsCard(view);
             return savingsCard;
+        }else if (viewType == VIEW_HEADER){
+            View view = layoutInflater.inflate(R.layout.header_card, parent, false);
+            HeaderCard headerCard = new HeaderCard(view);
+            return headerCard;
         }else {
             return null;
         }
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.d("check type", offerCardList.get(position).type);
         if (holder instanceof OfferCard){
             OfferCardObj offerCardObj = offerCardList.get(position);
             OfferCard offerCard = (OfferCard) holder;
@@ -164,15 +175,52 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             SavingsCard savingsCard = (SavingsCard) holder;
 
             savingsCard.tvLine.setText("You have saved "+rs+" "+offerCardObj.savingAmount);
+        }else if (holder instanceof HeaderCard){
+            OfferCardObj offerCardObj = offerCardList.get(position);
+            HeaderCard headerCard = (HeaderCard) holder;
+            if (offerCardObj.type.equals("headerOnTrial")){
+                //headerCard.tvHeader.setText("Your trial will expire in 3 days redeem now to get benefits.");
+                headerCard.btnAction.setText("Buy Now");
+
+                try {
+                    checkUserStatus(profileObj.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),profileObj.getString("date_time"),headerCard.tvHeader);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else if (offerCardObj.type.equals("headerStartTrial")){
+                headerCard.tvHeader.setText("Unloack all the offers & features for 7 days at no cost. Start your trial.");
+            }
         }
 
+    }
+
+    private void checkUserStatus(String expiryDate, String currentDate, TextView tvHeader) throws JSONException {
+        // Log.e(TAG, "check days: "+ DateFunction.getCountOfDays(currentDate, expiryDate));
+        String leftDays = DateFunction.getCountOfDays(currentDate, expiryDate);
+        String savingAmount = profileObj.getJSONObject("result").getString("saving");
+        //if (userType.equals("trial")){
+        if (Integer.parseInt(leftDays) < 1){
+            if (savingAmount.equals("0")){
+                tvHeader.setText("You have finished your 7 days trial. Buy now to continue");
+            }else {
+                tvHeader.setText("You have finished your 7 days trial & saved Rs "+savingAmount+". Buy now to continue");
+            }
+            AppController.getInstance().userStatus = "expire";
+        }else {
+            if (savingAmount.equals("0")){
+                tvHeader.setText("Your trial will expire in "+leftDays+" days redeem now to get benefits.");
+            }else {
+                tvHeader.setText("You saved Rs "+savingAmount+" with privilege trial. You have "+leftDays+" days of trial remaining");
+            }
+            AppController.getInstance().userStatus = "active";
+        }
+        //}
     }
 
     @Override
     public int getItemCount() {
         return offerCardList.size();
     }
-
     @Override
     public int getItemViewType(int position) {
 //        Log.d(TAG, "type: "+ offerCardList.get(position).type.equals("loader"));
@@ -182,7 +230,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     return VIEW_LOADER;
                 }else if (offerCardList.get(position).type.equals("savings")){
                     return VIEW_SAVING;
-                }else {
+                }else if (offerCardList.get(position).type.equals("headerStartTrial") || offerCardList.get(position).type.equals("headerOnTrial") ){
+                    return VIEW_HEADER;
+                } else {
                     return VIEW_OFFER;
                 }
             }else {
@@ -201,6 +251,34 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public LoaderCard(View itemView) {
             super(itemView);
             loaderView = (RelativeLayout) itemView.findViewById(R.id.loader_view);
+        }
+    }
+    class  HeaderCard extends RecyclerView.ViewHolder implements View.OnTouchListener{
+        TextView tvHeader, btnAction;
+        public HeaderCard(View itemView) {
+            super(itemView);
+            tvHeader = (TextView) itemView.findViewById(R.id.tv_header);
+            btnAction = (TextView) itemView.findViewById(R.id.btn_action);
+            //tvHeader.setText("sadfasdf gsdfgsdf");
+            btnAction.setOnTouchListener(this);
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (view.getId()){
+                case R.id.btn_action:
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_UP:
+                            if (offerCardList.get(getAdapterPosition()).type.equals("headerStartTrial")){
+                                callbackFragOpen.openFrag("signUp", "trial");
+                            }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnTrial")){
+                                callbackFragOpen.openFrag("signupAlert","");
+                            }
+                            break;
+                    }
+                    break;
+            }
+            return false;
         }
     }
     class SavingsCard extends RecyclerView.ViewHolder{

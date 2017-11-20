@@ -193,8 +193,6 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             btnBookNow.setClickable(false);
             btnBookNow.setText(" Sold Out ");
         }
-
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

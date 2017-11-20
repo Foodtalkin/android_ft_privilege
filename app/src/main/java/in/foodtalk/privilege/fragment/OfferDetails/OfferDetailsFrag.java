@@ -389,6 +389,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
             redeemBar.setVisibility(View.GONE);
             btnBuyNow.setVisibility(View.VISIBLE);
             btnSlideUp.setVisibility(View.GONE);
+
+            btnBuyNow.setText("Start trial");
         }
        // redeemBar.setVisibility(View.INVISIBLE);
        // btnBuyNow.setVisibility(View.INVISIBLE);
@@ -635,7 +637,8 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         if (AppController.getInstance().userType.equals("guest")){
-                            callbackFragOpen.openFrag("signupAlert","");
+                            //callbackFragOpen.openFrag("signupAlert","");
+                            callbackFragOpen.openFrag("signUp","trial");
                         }else if (AppController.getInstance().userStatus.equals("expire")){
                             callbackFragOpen.openFrag("signupAlert","");
                         }

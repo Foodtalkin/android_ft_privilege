@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         forLogin.setVisibility(View.GONE);
         //forLogin1.setVisibility(View.GONE);
         navLogin.setVisibility(View.VISIBLE);
-        navBuyNow.setVisibility(View.VISIBLE);
+        //navBuyNow.setVisibility(View.VISIBLE);
         txtFoodtalkNav.setText("FOODTALK");
         tvPm.setText("");
         navTickets.setVisibility(View.GONE);
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         forLogin.setVisibility(View.VISIBLE);
         //forLogin1.setVisibility(View.VISIBLE);
         navLogin.setVisibility(View.GONE);
-        navBuyNow.setVisibility(View.GONE);
+        //navBuyNow.setVisibility(View.GONE);
         txtFoodtalkNav.setText(db.getUserDetails().get("name"));
         tvPm.setText("Privilege Member");
         navTickets.setVisibility(View.VISIBLE);

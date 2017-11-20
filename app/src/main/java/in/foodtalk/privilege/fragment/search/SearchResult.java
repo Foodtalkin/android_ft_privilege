@@ -350,7 +350,7 @@ public class SearchResult extends Fragment implements ApiCallback, View.OnTouchL
         }
         if (getActivity() != null){
             if (tag.equals("loadOffers")){
-                homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+                homeAdapter = new HomeAdapter(getActivity(), offerCardList, null);
                 recyclerView.setAdapter(homeAdapter);
             }else if (tag.equals("loadOffersMore")){
                 homeAdapter.notifyDataSetChanged();

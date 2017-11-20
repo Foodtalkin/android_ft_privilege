@@ -73,7 +73,7 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
                 // Do something after 5s = 5000ms
                 //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
             }
-        }, 300);
+        }, 2000);
         return layout;
     }
 

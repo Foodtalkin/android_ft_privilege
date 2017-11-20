@@ -121,6 +121,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     Boolean savingsLoaded = false;
     String savingsAmount;
 
+    JSONObject profileObj;
+
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -138,6 +140,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
     public String cityId;
 
     String userType = "guest";
+
+    String firstCardType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -217,6 +221,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     userType = "trial";
                     AppController.getInstance().userType = userType;
                     Log.d(TAG, "UserType: Trial user");
+
+                    //--for scroll header--
+                   /* OfferCardObj offerCardObj = new OfferCardObj();
+                    offerCardObj.type = "headerOnTrial";
+                    offerCardList.add(offerCardObj);*/
+
+                    firstCardType = "headerOnTrial";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -245,6 +256,14 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             cityId = AppController.getInstance().cityId;
             //--header.setVisibility(View.VISIBLE);
             valueCallback.setValue("cityName", AppController.getInstance().cityName);
+
+
+
+            //-----for scroll header--
+           /* OfferCardObj offerCardObj = new OfferCardObj();
+            offerCardObj.type = "headerStartTrial";
+            offerCardList.add(offerCardObj);*/
+            firstCardType = "headerStartTrial";
         }
 
 
@@ -423,11 +442,13 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startLoading();
+                   // startLoading();
                     // Do something after 5s = 5000ms
                     //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
                 }
-            }, 500);
+            }, 100);
+
+            startLoading();
 
         }
 
@@ -444,7 +465,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             saveState = true;
             Log.d(TAG,"StartLoading 1");
         }else {
-            homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+            homeAdapter = new HomeAdapter(getActivity(), offerCardList, profileObj);
             recyclerView.setAdapter(homeAdapter);
             setMethod();
             Log.d(TAG,"StartLoading 2");
@@ -551,7 +572,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         if (tag.equals("loadOffers")){
 
             offerCardList.clear();
-            if (savingsLoaded){
+            if (savingsLoaded && !userType.equals("trial")){
                 if (!savingsAmount.equals("0") && !savingsAmount.equals("")){
                     OfferCardObj offerCardObj = new OfferCardObj();
                     offerCardObj.type = "savings";
@@ -559,6 +580,12 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     offerCardList.add(offerCardObj);
                 }
             }
+            if (firstCardType != null){
+                OfferCardObj offerCardObj = new OfferCardObj();
+                offerCardObj.type = firstCardType;
+                offerCardList.add(offerCardObj);
+            }
+
         }else {
             loadingMore = false;
             remove();
@@ -567,7 +594,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
 
         nextUrl = response.getJSONObject("result").getString("next_page_url");
-
 
         for (int i = 0; i< listArray.length(); i++ ){
             OfferCardObj offerCardObj = new OfferCardObj();
@@ -594,7 +620,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         }
         if (getActivity() != null){
             if (tag.equals("loadOffers")){
-                homeAdapter = new HomeAdapter(getActivity(), offerCardList);
+                homeAdapter = new HomeAdapter(getActivity(), offerCardList, profileObj);
                 recyclerView.setAdapter(homeAdapter);
             }else if (tag.equals("loadOffersMore")){
                 homeAdapter.notifyDataSetChanged();
@@ -616,6 +642,8 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     case 1:
                         // Log.d(TAG, "getSpan 1");
                         return 1;
+                    case  3:
+                        return 2;
                     default:
                         //  Log.d(TAG, "getSpan default");
                         return -1;
@@ -654,14 +682,12 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     }
                 }else if (tag.equals("savings")){
                     if (response.getString("status").equals("OK")){
+                        profileObj = response;
                         savingsLoaded = true;
                         savingsAmount = response.getJSONObject("result").getString("saving");
-
                         Log.d(TAG, "response: saving "+ response);
-
                         checkUserStatus(response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),response.getString("date_time"));
                     }
-
                 }
 
             } catch (JSONException e) {
