@@ -188,7 +188,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     e.printStackTrace();
                 }
             }else if (offerCardObj.type.equals("headerStartTrial")){
-                headerCard.tvHeader.setText("Unloack all the offers & features for 7 days at no cost. Start your trial.");
+                headerCard.tvHeader.setText("Unlock all the offers & features for 7 days at no cost. Start your trial.");
             }
         }
 
