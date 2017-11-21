@@ -11,8 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- Tarts"
-
-            android:textSize="16sp"/>
+            android:textColor="@color/dark_grey"/>
         <TextView
             android:id="@+id/tv_des"
             android:layout_width="wrap_content"

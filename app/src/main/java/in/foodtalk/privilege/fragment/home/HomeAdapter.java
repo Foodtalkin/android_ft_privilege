@@ -188,7 +188,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     e.printStackTrace();
                 }
             }else if (offerCardObj.type.equals("headerStartTrial")){
-                headerCard.tvHeader.setText("Unlock all the offers & features for 7 days at no cost. Start your trial.");
+                headerCard.tvHeader.setText("Unlock all the offers for 7 days at no cost. Start your trial.");
             }
         }
 
@@ -201,16 +201,16 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //if (userType.equals("trial")){
         if (Integer.parseInt(leftDays) < 1){
             if (savingAmount.equals("0")){
-                tvHeader.setText("You have finished your 7 days trial. Buy now to continue");
+                tvHeader.setText("Your 7 days trial has expired. Buy now to continue");
             }else {
-                tvHeader.setText("You have finished your 7 days trial & saved Rs "+savingAmount+". Buy now to continue");
+                tvHeader.setText("Your 7 days trial has expired, you saved "+context.getResources().getString(R.string.rs)+savingAmount+". Buy now to continue");
             }
             AppController.getInstance().userStatus = "expire";
         }else {
             if (savingAmount.equals("0")){
-                tvHeader.setText("Your trial will expire in "+leftDays+" days redeem now to get benefits.");
+                tvHeader.setText("Your trial will expire in "+leftDays+" days, start redeeming now");
             }else {
-                tvHeader.setText("You saved Rs "+savingAmount+" with privilege trial. You have "+leftDays+" days of trial remaining");
+                tvHeader.setText("You saved "+context.getResources().getString(R.string.rs)+ savingAmount+" with privilege trial, You have "+leftDays+" days of trial remaining");
             }
             AppController.getInstance().userStatus = "active";
         }
