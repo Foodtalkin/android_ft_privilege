@@ -35,7 +35,7 @@ public class TicketsFrag extends Fragment implements ApiCallback {
     RecyclerView.LayoutManager layoutManager;
     DatabaseHandler db;
 
-    LinearLayout progressBar, placeholderInternet;
+    LinearLayout progressBar, placeholderInternet, placeholderEmpty;
     TextView btnRetry, btnBrowseExpe;
 
     CallbackFragOpen callbackFragOpen;
@@ -48,6 +48,9 @@ public class TicketsFrag extends Fragment implements ApiCallback {
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
         placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
+        placeholderEmpty = (LinearLayout) layout.findViewById(R.id.placeholder_empty);
+        placeholderEmpty.setVisibility(View.GONE);
+
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
         btnBrowseExpe = (TextView) layout.findViewById(R.id.btn_browse_expe);
@@ -82,8 +85,13 @@ public class TicketsFrag extends Fragment implements ApiCallback {
     }
     private void sendToAdapter(JSONObject response) throws JSONException {
         if (response.getString("status").equals("OK")){
+            if (response.getJSONArray("result").length() == 0){
+                placeholderEmpty.setVisibility(View.VISIBLE);
+            }
             TicketsAdapter ticketsAdapter = new TicketsAdapter(getActivity(), response.getJSONArray("result"));
             recyclerView.setAdapter(ticketsAdapter);
+        }else {
+
         }
     }
 

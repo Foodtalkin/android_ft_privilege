@@ -11,7 +11,8 @@
             <ImageView
                 android:id="@+id/img_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:src="@drawable/mask_copy"/>
 
         <LinearLayout
@@ -38,8 +39,8 @@
                     android:src="@drawable/ic_clock"
                     android:layout_gravity="center"
                     android:tint="@color/warm_grey"
-                    android:scaleY="1.8"
-                    android:scaleX="1.8"
+                    android:scaleY="1.2"
+                    android:scaleX="1.2"
                     android:layout_marginLeft="8dp"
                     />
                 <LinearLayout
@@ -62,6 +63,7 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="12sp"
                         android:text="2 hour on Sunday noon"
+                        android:visibility="gone"
                         android:textColor="@color/warm_grey"/>
                 </LinearLayout>
 
@@ -77,8 +79,8 @@
                     android:src="@drawable/ic_location_outline"
                     android:layout_gravity="center"
                     android:tint="@color/warm_grey"
-                    android:scaleY="1.8"
-                    android:scaleX="1.8"
+                    android:scaleY="1.2"
+                    android:scaleX="1.2"
                     android:layout_marginLeft="8dp"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -92,7 +94,8 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="16sp"
                         android:text="K 3/25, DLF Phase 2, Gurugram, Haryana"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        />
                     <TextView
                         android:id="@+id/tv_address1"
                         android:layout_width="wrap_content"
@@ -100,6 +103,7 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="12sp"
                         android:text="New Delhi"
+                        android:visibility="gone"
                         android:textColor="@color/warm_grey"/>
                 </LinearLayout>
 

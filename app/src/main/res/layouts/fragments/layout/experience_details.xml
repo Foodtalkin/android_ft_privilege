@@ -105,6 +105,7 @@
                         android:text="SEP 17"
                         android:textColor="@color/warm_grey"
                         android:textSize="13sp"
+                        android:visibility="gone"
                         />
                 </LinearLayout>
 
@@ -264,6 +265,7 @@
                 android:textColor="@color/white"
                 android:textSize="15sp"/>
             <TextView
+                android:id="@+id/tv_pref"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Booking 5 ticktes, select dining preferences"

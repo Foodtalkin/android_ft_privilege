@@ -501,7 +501,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             startActivity(intent);
         }
         if (fragName.equals("homeTabFrag")){
-            setFragmentView(homeTabFrag, R.id.container, "homeTabFrag", true);
+            //setFragmentView(homeTabFrag, R.id.container, "homeTabFrag", true);
+            setFragmentView(homeTabFrag, R.id.container, "homeFrag", false);
         }
         if (fragName.equals("successFrag")){
             successFrag.rId = value;

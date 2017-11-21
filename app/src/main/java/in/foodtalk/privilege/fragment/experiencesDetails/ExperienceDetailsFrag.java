@@ -64,7 +64,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     ImageView btnClose, btnCancel, btnAdd, btnRemove;
 
-    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue, tvCost;
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue, tvCost, tvPref;
 
     public int purchaseLimit;
 
@@ -95,6 +95,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         tvSeatsCount = (TextView) layout.findViewById(R.id.tv_seats_count);
         vegNonBar = (LinearLayout) layout.findViewById(R.id.veg_non_bar);
         vegNonBar.setVisibility(View.GONE);
+
+        tvPref = (TextView) layout.findViewById(R.id.tv_pref);
 
         btnBookNow = (TextView) layout.findViewById(R.id.btn_book_now);
         btnBookNow.setOnTouchListener(this);
@@ -143,7 +145,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         if (db.getRowCount() > 0){
             btnBookNow.setText("Book Now");
         }else {
-            btnBookNow.setText("Sign Up");
+            btnBookNow.setText("Book Now");
         }
 
         return layout;
@@ -373,7 +375,10 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             jsonObject.put("title", response.getJSONObject("result").getString("title"));
             jsonObject.put("address", response.getJSONObject("result").getString("address"));
             // jsonObject.put("time", response.getJSONObject("result").getString("time"));
-            jsonObject.put("cover_image", response.getJSONObject("result").getString("card_image"));
+            jsonObject.put("cover_image", response.getJSONObject("result").getString("cover_image"));
+            jsonObject.put("nonveg_preference", response.getJSONObject("result").getString("nonveg_preference"));
+            jsonObject.put("start_time", response.getJSONObject("result").getString("start_time"));
+            jsonObject.put("end_time", response.getJSONObject("result").getString("end_time"));
             Log.e("btn_continue", response.getJSONObject("result").toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -411,7 +416,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                             btnSlideUp.setVisibility(View.GONE);
                             redeemBar.setClickable(true);
                         }else {
-                            btnBookNow.setText("Sign Up");
+                            //btnBookNow.setText("Sign Up");
+                            callbackFragOpen.openFrag("signUp", "trial");
                         }
                         break;
                 }
@@ -431,6 +437,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                     case MotionEvent.ACTION_UP:
                         try {
                             if (response.getJSONObject("result").getString("nonveg_preference").equals("1")){
+                                tvPref.setText("Booking "+tvCounter.getText().toString()+" tickets, select dining preferences");
                                 vegNonBar.setVisibility(View.VISIBLE);
                                 seekBar.setMax(Integer.parseInt(tvCounter.getText().toString()));
                                 String txtCounter = "<font color='red'>"+tvCounter.getText().toString()+"</font> / <font color='green'>0</font>";

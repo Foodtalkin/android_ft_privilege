@@ -15,6 +15,7 @@
         android:visibility="gone"
         />
     <LinearLayout
+        android:id="@+id/placeholder_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

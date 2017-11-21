@@ -28,6 +28,7 @@ import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
+import in.foodtalk.privilege.library.DateFunction;
 
 /**
  * Created by RetailAdmin on 06-11-2017.
@@ -110,16 +111,21 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CoverCard){
             CoverCard coverCard = (CoverCard) holder;
+
             try {
                 coverCard.tvTitle.setText(response.getJSONObject("result").getString("title"));
                 coverCard.tvAddress.setText(response.getJSONObject("result").getString("address"));
+
+                String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+                String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+                coverCard.tvTime.setText(date+" - "+date1);
                 //coverCard.tvAddress1.setText(response.getJSONObject("result").getString(""));
 
                 Picasso.with(context)
                         .load(response.getJSONObject("result").getString("cover_image"))
                         //.fit()
                         .placeholder(R.drawable.ic_placeholder)
-                        .fit().centerCrop()
+                        //.fit().centerCrop()
                         .into(coverCard.imgView);
             } catch (JSONException e) {
                 e.printStackTrace();

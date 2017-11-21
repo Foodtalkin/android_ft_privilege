@@ -19,6 +19,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.DateFunction;
 
 /**
  * Created by RetailAdmin on 02-11-2017.
@@ -51,11 +52,16 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             expeCard.tvAddress.setText(expeObj.getString("address"));
             expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
 
+            String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+            String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+
+            expeCard.tvTime.setText(date+" - "+date1);
+
             Picasso.with(context)
                     .load(expeObj.getString("cover_image"))
                     //.fit()
                     .placeholder(R.drawable.ic_placeholder)
-                    .fit().centerCrop()
+                    //.fit().centerCrop()
                     .into(expeCard.imgView);
         } catch (JSONException e) {
             e.printStackTrace();

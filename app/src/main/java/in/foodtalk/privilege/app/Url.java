@@ -6,8 +6,8 @@ package in.foodtalk.privilege.app;
 
 public class Url {
 
-    //private static String baseUrl = "http://api.foodtalk.in/";
-    private static String baseUrl = "http://stg-api.foodtalk.in/";
+    private static String baseUrl = "http://api.foodtalk.in/";
+   // private static String baseUrl = "http://stg-api.foodtalk.in/";
 
     public static String OFFERS = baseUrl+"offers";
     public static String OUTLET_OFFER = baseUrl+"outletoffer";

@@ -41,7 +41,7 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
-    LinearLayout progressBar, placeholderInternet;
+    LinearLayout progressBar, placeholderInternet, placeholderEmpty;
     TextView btnRetry;
 
 
@@ -52,6 +52,8 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         recyclerView = (RecyclerView) layout.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        placeholderEmpty = (LinearLayout) layout.findViewById(R.id.placeholder_empty);
+        placeholderEmpty.setVisibility(View.GONE);
 
         progressBar = (LinearLayout) layout.findViewById(R.id.progress_bar);
         placeholderInternet = (LinearLayout) layout.findViewById(R.id.placeholder_internet);
@@ -87,6 +89,10 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         progressBar.setVisibility(View.GONE);
         JSONArray expeArrayList = reponse.getJSONObject("result").getJSONArray("data");
         expeList.clear();
+
+        if (expeArrayList.length() == 0){
+            placeholderEmpty.setVisibility(View.VISIBLE);
+        }
 
         Log.d(TAG, "expe total: "+expeArrayList.length());
         for (int i = 0; i< expeArrayList.length(); i++){

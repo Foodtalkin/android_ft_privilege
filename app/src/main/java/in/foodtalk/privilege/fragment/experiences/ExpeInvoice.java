@@ -24,6 +24,7 @@ import in.foodtalk.privilege.app.DatabaseHandler;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.library.DateFunction;
 
 /**
  * Created by RetailAdmin on 13-11-2017.
@@ -97,14 +98,21 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
 
             tvTitle.setText(infoObj.getString("title"));
             tvAddress.setText(infoObj.getString("address"));
+            String date = DateFunction.convertFormat(infoObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+            String date1 = DateFunction.convertFormat(infoObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+            tvTime.setText(date+" - "+date1);
+
+            if (infoObj.getString("nonveg_preference").equals("0")){
+                tvVegNon.setVisibility(View.GONE);
+            }
 
             tvVegNon.setText("VEG: "+infoObj.getString("vegSeats")+" | Non-Veg: "+infoObj.getString("nonVegSeats"));
 
             Picasso.with(getActivity())
-                    .load(infoObj.getString("card_image"))
+                    .load(infoObj.getString("cover_image"))
                     //.fit()
                     .placeholder(R.drawable.ic_placeholder)
-                    .fit().centerCrop()
+                    //.fit().centerCrop()
                     .into(imgView);
         }
     }

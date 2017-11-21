@@ -45,12 +45,16 @@ import in.foodtalk.privilege.library.Convert;
 public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCallback {
     View layout;
 
-    TextView tvFoodtalk, tvFoodtalk1, btnRetry, btnDone;
+    TextView tvFoodtalk, tvFoodtalk1, btnRetry, btnDone, tvSuccess, tvTrnId;
 
     RelativeLayout errorView, successView, loaderView;
 
     DatabaseHandler db;
     CallbackFragOpen callbackFragOpen;
+
+    String transactionId;
+
+
 
 
 
@@ -66,6 +70,10 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
         tvFoodtalk1 = (TextView) layout.findViewById(R.id.txt_foodtalk1);
         btnRetry = (TextView) layout.findViewById(R.id.btn_retry);
         btnDone = (TextView) layout.findViewById(R.id.btn_done);
+
+        tvTrnId = (TextView) layout.findViewById(R.id.tv_trn_id);
+
+        tvSuccess = (TextView) layout.findViewById(R.id.tv_success);
 
         btnRetry.setOnTouchListener(this);
         btnDone.setOnTouchListener(this);
@@ -96,6 +104,7 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
         sId = AppController.getInstance().sessionId;
         setScreen("loader");
         //setScreen("success");
+        Log.d("infoObj", infoObj.toString());
         try {
             jsonObject.put("total_tickets", infoObj.getString("totalTickets"));
             jsonObject.put("non_veg",infoObj.getString("nonVegSeats"));
@@ -123,12 +132,18 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
             successView.setVisibility(View.VISIBLE);
             loaderView.setVisibility(View.GONE);
 
-           /*Answers.getInstance().logPurchase(new PurchaseEvent()
+            try {
+                tvSuccess.setText("You have successfully purchased "+infoObj.getString("totalTickets")+" tickets for event "+infoObj.getString("title"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+           /*Answers.getInstance().logPurchase(new urchaseEvent()
                     .putItemPrice(BigDecimal.valueOf(1200))
                     .putCurrency(Currency.getInstance("INR"))
                     .putItemName("Privilege Membership")
                     //.putItemType("Apparel")
-                    //.putItemId("sku-350")
+                    //.putItemId("sku-350")P
                     .putSuccess(true));*/
 
         }else if (screen.equals("loader")){
@@ -140,9 +155,9 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
 
     private void startPayment(JSONObject response) throws JSONException {
         PaytmPGService Service = null;
-         Service = PaytmPGService.getStagingService();
+         //Service = PaytmPGService.getStagingService();
 
-       // Service = PaytmPGService.getProductionService();
+        Service = PaytmPGService.getProductionService();
 
        // Map<String, Object> paramMap = Convert.jsonToMap(response.getJSONObject("result"));
 
@@ -239,6 +254,7 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
 
     @Override
     public void apiResponse(JSONObject response, String tag) {
+        Log.d("apiResponse", "tag: "+tag+" : "+response);
         if (tag.equals("paytmOrder")){
             if (response != null){
                 Log.d("paytm order object", response+"");
@@ -253,15 +269,21 @@ public class ExpePayment extends Fragment implements View.OnTouchListener, ApiCa
         }
         if (tag.equals("paymentStatus")){
             Log.d("paymentStatus response", response+"");
-            try {
-                if (response.getString("status").equals("OK")){
-                    setScreen("success");
-                }else {
-                    setScreen("retry");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+           if (response != null){
+               try {
+                   if (response.getString("status").equals("OK")){
+                       setScreen("success");
+                       tvTrnId.setText("TRN ID - "+response.getJSONObject("result").getString("txn_id"));
+                   }else {
+                       setScreen("retry");
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+           }else {
+               Log.e("response", "null");
+           }
+
         }
     }
 }

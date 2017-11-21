@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Created with perfection, simple yet super."
             android:layout_marginLeft="15dp"
-            android:textSize="16sp"/>
+            />
 
     </LinearLayout>
 </RelativeLayout>
