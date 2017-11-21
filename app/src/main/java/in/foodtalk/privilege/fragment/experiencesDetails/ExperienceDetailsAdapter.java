@@ -184,8 +184,12 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
             videoCard.webView.loadData(summary, "text/html", null);
         }
         if (holder instanceof List2Card){
+
+
             List2Card list2Card = (List2Card) holder;
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+
+
             list2Card.recyclerView.setLayoutManager(layoutManager);
             list2Card.recyclerView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -195,6 +199,7 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 }
             });
             try {
+                list2Card.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
                 List2Adapter list2Adapter = new List2Adapter(context, dataList.getJSONObject(position-1).getJSONArray("content"));
                 list2Card.recyclerView.setAdapter(list2Adapter);
             } catch (JSONException e) {
@@ -286,8 +291,10 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
     }
     private class List2Card extends RecyclerView.ViewHolder{
         RecyclerView recyclerView;
+        TextView tvTitle;
         public List2Card(View itemView) {
             super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view);
         }
     }
