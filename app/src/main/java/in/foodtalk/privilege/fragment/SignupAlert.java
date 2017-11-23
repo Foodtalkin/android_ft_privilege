@@ -82,9 +82,14 @@ public class SignupAlert extends Fragment implements View.OnTouchListener {
             JSONArray subscription;
             try {
                 subscription = new JSONArray(db.getUserDetails().get("subscription"));
-                if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")) {
+                if (subscription.length() > 0){
+                    if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")) {
+                        callbackFragOpen.openFrag("paymentFlow","");
+                    }
+                }else {
                     callbackFragOpen.openFrag("paymentFlow","");
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

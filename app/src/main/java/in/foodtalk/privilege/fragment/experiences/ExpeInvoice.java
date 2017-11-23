@@ -45,7 +45,7 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
 
     CallbackFragOpen callbackFragOpen;
 
-    TextView tvTitle, tvTime, tvTime1, tvAddress, tvAddress1, tvVegNon, tvSubTotal, tvAmount, tvTax, tvFee, tvTotalAmount;
+    TextView tvTitle, tvTime, tvTime1, tvAddress, tvAddress1, tvVegNon, tvSubTotal, tvAmount, tvTax, tvFee, tvTotalAmount, tncLink;
 
     @Nullable
     @Override
@@ -65,6 +65,9 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
         tvTotalAmount = (TextView) layout.findViewById(R.id.tv_total_amount);
         btnPay = (LinearLayout) layout.findViewById(R.id.btn_pay);
         btnPay.setOnTouchListener(this);
+
+        tncLink = (TextView) layout.findViewById(R.id.tnc_link);
+        tncLink.setOnTouchListener(this);
 
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
@@ -135,8 +138,19 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (view.getId()){
             case R.id.btn_pay:
-                Log.d("btnpay", "clicked");
-                callbackFragOpen.openFrag("expePayment", infoObj.toString());
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d("btnpay", "clicked");
+                        callbackFragOpen.openFrag("expePayment", infoObj.toString());
+                        break;
+                }
+                break;
+            case R.id.tnc_link:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        callbackFragOpen.openFrag("webViewFrag", "http://foodtalk.in/legal.html");
+                        break;
+                }
                 break;
         }
         return false;

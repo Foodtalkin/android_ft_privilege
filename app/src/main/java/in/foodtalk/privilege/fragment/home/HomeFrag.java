@@ -209,25 +209,31 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             JSONArray subscription;
             try {
                 subscription = new JSONArray(db.getUserDetails().get("subscription"));
-                if (subscription.getJSONObject(0).getString("subscription_type_id").equals("1")){
-                    header.setVisibility(View.GONE);
-                    userType = "paid";
-                    Log.d(TAG, "UserType: Paid user");
-                    AppController.getInstance().userType = userType;
-                }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
-                    //--header.setVisibility(View.VISIBLE);
-                    btnBuy.setText("Buy Now");
-                    tvHeader.setText("- days free trial left. Buy your annual membership to continue");
-                    userType = "trial";
-                    AppController.getInstance().userType = userType;
-                    Log.d(TAG, "UserType: Trial user");
+                if (subscription.length() > 0){
+                    if (subscription.getJSONObject(0).getString("subscription_type_id").equals("1")){
+                        header.setVisibility(View.GONE);
+                        userType = "paid";
+                        Log.d(TAG, "UserType: Paid user");
+                        AppController.getInstance().userType = userType;
+                    }else if (subscription.getJSONObject(0).getString("subscription_type_id").equals("3")){
+                        //--header.setVisibility(View.VISIBLE);
+                        btnBuy.setText("Buy Now");
+                        tvHeader.setText("- days free trial left. Buy your annual membership to continue");
+                        userType = "trial";
+                        AppController.getInstance().userType = userType;
+                        Log.d(TAG, "UserType: Trial user");
 
-                    //--for scroll header--
+                        //--for scroll header--
                    /* OfferCardObj offerCardObj = new OfferCardObj();
                     offerCardObj.type = "headerOnTrial";
                     offerCardList.add(offerCardObj);*/
 
-                    firstCardType = "headerOnTrial";
+                        firstCardType = "headerOnTrial";
+                    }
+                }else {
+                    userType = "signedUp";
+                    firstCardType = "headerStartTrial";
+                    AppController.getInstance().userType = userType;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -256,7 +262,6 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             cityId = AppController.getInstance().cityId;
             //--header.setVisibility(View.VISIBLE);
             valueCallback.setValue("cityName", AppController.getInstance().cityName);
-
 
 
             //-----for scroll header--

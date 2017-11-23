@@ -168,7 +168,7 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
 
         String status = response.getString("status");
         String message = response.getString("message");
-        JSONArray subscription = response.getJSONObject("result").getJSONArray("subscription");
+
         if (status.equals("ERROR")){
             otpBox.startAnimation(shakingAni);
             ToastShow.showToast(this,"wrong OTP");
@@ -177,13 +177,15 @@ public class LoginOtp extends AppCompatActivity implements View.OnTouchListener,
             tvOtp3.setText("");
             tvOtp4.setText("");
         }else {
+            SaveLogin.addUser(this, response, "homeFrag");
+            /*JSONArray subscription = response.getJSONObject("result").getJSONArray("subscription");
             if (subscription.length() > 0){
                 SaveLogin.addUser(this, response, "homeFrag");
             }else {
                 AppController.getInstance().sessionId = response.getJSONObject("result").getJSONObject("session").getString("session_id");
                 AppController.getInstance().loginResponse = response;
                 paymentDueDialog();
-            }
+            }*/
         }
         /*
         String status = response.getString("status");

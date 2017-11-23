@@ -64,7 +64,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     ImageView btnClose, btnCancel, btnAdd, btnRemove;
 
-    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue, tvCost, tvPref;
+    TextView tvTitleBar, tvDateBar, tvCounter, tvTotalAmount, btnNext, tvSeatsCount, vegBarCancel, tvVegCounter, btnBookNow, btnContinue, tvCost, tvPref, tvPrefTitle;
 
     public int purchaseLimit;
 
@@ -84,6 +84,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         btnContinue = (TextView) layout.findViewById(R.id.btn_continue);
         btnContinue.setOnTouchListener(this);
 
+        tvPrefTitle = (TextView) layout.findViewById(R.id.tv_pref_title);
+
         tvCost = (TextView) layout.findViewById(R.id.tv_cost);
         tvTitleBar = (TextView) layout.findViewById(R.id.tv_title_bar);
         tvDateBar = (TextView) layout.findViewById(R.id.tv_date_bar);
@@ -95,6 +97,8 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         tvSeatsCount = (TextView) layout.findViewById(R.id.tv_seats_count);
         vegNonBar = (LinearLayout) layout.findViewById(R.id.veg_non_bar);
         vegNonBar.setVisibility(View.GONE);
+
+
 
         tvPref = (TextView) layout.findViewById(R.id.tv_pref);
 
@@ -138,6 +142,11 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         loadData();
         setAnimation("onePlus");
 
+        tvCost.setText("--");
+        tvSeatsCount.setText("--");
+
+
+
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         db = new DatabaseHandler(getActivity());
@@ -178,8 +187,12 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         tvSeatsCount.setText(avilableSeats+" Spots");
-        tvCost.setText(response.getJSONObject("result").getString("cost"));
+        tvCost.setText(getResources().getString(R.string.rs)+" "+ response.getJSONObject("result").getString("cost"));
         tvTotalAmount.setText(reponse.getJSONObject("result").getString("cost"));
+
+        tvTitleBar.setText(reponse.getJSONObject("result").getString("title"));
+        tvPrefTitle.setText(reponse.getJSONObject("result").getString("title"));
+
         if (avilableSeats < 11){
 
         }else {

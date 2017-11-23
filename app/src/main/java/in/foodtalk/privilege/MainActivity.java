@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         //btnS.setScaleX(2);
     }
     private void onFragmentChange(Fragment fragment){
-        if (fragment == homeFrag){
+        if (fragment == homeTabFrag){
             searchBtn.setVisibility(View.VISIBLE);
         }else {
             searchBtn.setVisibility(View.INVISIBLE);

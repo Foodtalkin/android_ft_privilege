@@ -57,6 +57,12 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             expeCard.tvTime.setText(date+" - "+date1);
 
+            if (expeObj.getString("avilable_seats").equals("0")){
+                expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));
+                //expeCard.btnDetails.setClickable(false);
+                expeCard.tvBtnDetails.setText(" Sold Out ");
+            }
+
             Picasso.with(context)
                     .load(expeObj.getString("cover_image"))
                     //.fit()
@@ -74,8 +80,9 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ExpeCard extends RecyclerView.ViewHolder implements View.OnTouchListener{
         ImageView imgView;
-        TextView tvTitle, tvAddress, tvTime, tvCost;
+        TextView tvTitle, tvAddress, tvTime, tvCost, tvBtnDetails;
         LinearLayout btnDetails;
+
 
         public ExpeCard(View itemView) {
             super(itemView);
@@ -84,6 +91,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvAddress = (TextView) itemView.findViewById(R.id.tv_address);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
             tvCost = (TextView) itemView.findViewById(R.id.tv_cost);
+            tvBtnDetails  = (TextView) itemView.findViewById(R.id.tv_btn_details);
             btnDetails = (LinearLayout) itemView.findViewById(R.id.btn_details);
             btnDetails.setOnTouchListener(this);
         }

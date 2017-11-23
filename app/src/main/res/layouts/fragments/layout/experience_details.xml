@@ -260,6 +260,7 @@
             android:gravity="center"
             android:layout_margin="20dp">
             <TextView
+                android:id="@+id/tv_pref_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="French Pastry Workshop"

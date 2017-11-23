@@ -183,7 +183,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 headerCard.btnAction.setText("Buy Now");
 
                 try {
-                    checkUserStatus(profileObj.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),profileObj.getString("date_time"),headerCard.tvHeader);
+                    Log.e("check profileObj", profileObj+"");
+                    if (profileObj != null){
+                        checkUserStatus(profileObj.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"),profileObj.getString("date_time"),headerCard.tvHeader);
+                    }else {
+                        Log.e("HomeAdapter","profile not loaded");
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -273,6 +279,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 callbackFragOpen.openFrag("signUp", "trial");
                             }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnTrial")){
                                 callbackFragOpen.openFrag("signupAlert","");
+                            }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnSignedUp")){
+                                Log.d("btn header", "call trial api");
                             }
                             break;
                     }

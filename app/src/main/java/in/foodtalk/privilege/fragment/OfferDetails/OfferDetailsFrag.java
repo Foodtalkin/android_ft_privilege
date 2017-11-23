@@ -375,15 +375,22 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
         }
 
         if (db.getRowCount() > 0){
-            if (AppController.getInstance().userStatus.equals("expire")){
+            if (new JSONArray(db.getUserDetails().get("subscription")).length() > 0){
+                if (AppController.getInstance().userStatus.equals("expire")){
+                    redeemBar.setVisibility(View.GONE);
+                    btnBuyNow.setVisibility(View.VISIBLE);
+                    btnSlideUp.setVisibility(View.GONE);
+                }else {
+                    redeemBar.setVisibility(View.VISIBLE);
+                    btnSlideUp.setVisibility(View.VISIBLE);
+                    btnBuyNow.setVisibility(View.GONE);
+                }
+            }else {
                 redeemBar.setVisibility(View.GONE);
                 btnBuyNow.setVisibility(View.VISIBLE);
                 btnSlideUp.setVisibility(View.GONE);
-            }else {
-                redeemBar.setVisibility(View.VISIBLE);
-                btnSlideUp.setVisibility(View.VISIBLE);
-                btnBuyNow.setVisibility(View.GONE);
             }
+
 
         }else {
             redeemBar.setVisibility(View.GONE);
@@ -639,6 +646,9 @@ public class OfferDetailsFrag extends Fragment implements View.OnTouchListener, 
                         if (AppController.getInstance().userType.equals("guest")){
                             //callbackFragOpen.openFrag("signupAlert","");
                             callbackFragOpen.openFrag("signUp","trial");
+                        }else if (AppController.getInstance().userType.equals("signedUp")){
+                            //callbackFragOpen.openFrag("signUp","trial");
+                            callbackFragOpen.openFrag("signupAlert","");
                         }else if (AppController.getInstance().userStatus.equals("expire")){
                             callbackFragOpen.openFrag("signupAlert","");
                         }
