@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
@@ -50,8 +51,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.AppController;
 import in.foodtalk.privilege.app.DatabaseHandler;
+import in.foodtalk.privilege.app.Url;
+import in.foodtalk.privilege.comm.ApiCallback;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
 import in.foodtalk.privilege.comm.ValueCallback;
 import in.foodtalk.privilege.fragment.AccountFrag;
@@ -87,7 +91,7 @@ import in.foodtalk.privilege.helper.ParseUtils;
 import in.foodtalk.privilege.library.PayNow;
 import in.foodtalk.privilege.library.ToastShow;
 
-public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener, FragmentManager.OnBackStackChangedListener, ValueCallback {
+public class MainActivity extends AppCompatActivity implements CallbackFragOpen, View.OnTouchListener, FragmentManager.OnBackStackChangedListener, ValueCallback, ApiCallback {
 
     NavigationView navigationView;
     Fragment currentFragment;
@@ -304,6 +308,16 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         //Save the fragment's instance
         //getFragmentManager().putFragment(outState, "myFragmentName", mContent);
+
+    }
+
+    private void trialApi(){
+        if (db.getRowCount() > 0){
+
+            ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.URL_TRIAL+"?sessionid="+db.getUserDetails().get("sessionId"), "trialApi", this);
+        }else {
+            Log.d("MainActivity", "user not loge in");
+        }
 
     }
 
@@ -576,6 +590,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
         if (fragName.equals("ticketsFrag")){
             setFragmentView(ticketsFrag, R.id.container, "ticketsFrag", true);
+        }
+        if (fragName.equals("startTrial")){
+            trialDialog();
         }
     }
 
@@ -1023,6 +1040,35 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         });
         dialogRating.show();
     }
+    Dialog dialogTrial;
+    private void trialDialog(){
+        // custom dialog
+
+        dialogTrial = new Dialog(this);
+        dialogTrial.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogTrial.setContentView(R.layout.trial_alert_dialog);
+
+
+        TextView cancel = (TextView) dialogTrial.findViewById(R.id.btn_cancel);
+        TextView ok = (TextView) dialogTrial.findViewById(R.id.btn_ok);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTrial.dismiss();
+
+            }
+        });
+        // if button is clicked, close the custom dialog
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogTrial.dismiss();
+                trialApi();
+            }
+        });
+
+        dialogTrial.show();
+    }
 
     private void checkAndOpenPlayStore(){
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
@@ -1137,6 +1183,27 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             tvCityName.setText(v2);
             tvCityName1.setText(v2);
             AppController.getInstance().cityName = v2;
+        }
+    }
+
+    @Override
+    public void apiResponse(JSONObject response, String tag) {
+        if (tag.equals("trialApi")){
+            if (response != null){
+                Log.d("MainActivity","trial is active");
+                try {
+                    if (response.getString("status").equals("OK")){
+                        ParseUtils.sendInfoToParse(db.getUserDetails().get("userId"), response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("expiry"), response.getJSONObject("result").getJSONArray("subscription").getJSONObject(0).getString("subscription_type_id"));
+                        db.updateSubscription(db.getUserDetails().get("userId"),response.getJSONObject("result").getJSONArray("subscription").toString());
+                        Intent intent = new Intent(this, MainActivity.class);
+                        finish();
+                        startActivity(intent);
+                        ToastShow.showToast(this,"Your 7 days free trial has started.");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

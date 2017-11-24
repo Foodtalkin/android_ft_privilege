@@ -202,12 +202,20 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             seekBar.setMax(10);
             avilableSeats = 10;
         }
-
-        if (avilableSeats == 0){
+        String isDisabled = reponse.getJSONObject("result").getString("is_disabled");
+        String isActive = reponse.getJSONObject("result").getString("is_active");
+        if (isActive.equals("0") && isDisabled.equals("0")){
             btnBookNow.setBackground(getResources().getDrawable(R.drawable.btn_bg_red));
             btnBookNow.setClickable(false);
-            btnBookNow.setText(" Sold Out ");
+            btnBookNow.setText(" Closed ");
+        }else {
+            if (avilableSeats == 0){
+                btnBookNow.setBackground(getResources().getDrawable(R.drawable.btn_bg_red));
+                btnBookNow.setClickable(false);
+                btnBookNow.setText(" Sold Out ");
+            }
         }
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

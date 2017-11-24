@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="Make every meal a Privilege, for only \nINR 1,200 for an entire year"
+                android:text="Please signup to continue"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout

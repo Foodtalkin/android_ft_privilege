@@ -274,16 +274,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (view.getId()){
                 case R.id.btn_action:
                     switch (motionEvent.getAction()){
-                        case MotionEvent.ACTION_UP:
-                            if (offerCardList.get(getAdapterPosition()).type.equals("headerStartTrial")){
+                    case MotionEvent.ACTION_UP:
+                        if (offerCardList.get(getAdapterPosition()).type.equals("headerStartTrial")){
+                            if (AppController.getInstance().userType.equals("guest")){
                                 callbackFragOpen.openFrag("signUp", "trial");
-                            }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnTrial")){
-                                callbackFragOpen.openFrag("signupAlert","");
-                            }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnSignedUp")){
-                                Log.d("btn header", "call trial api");
+                            }else if (AppController.getInstance().userType.equals("signedUp")){
+                                Log.d("onTrialBtn","call trial api only");
+                                callbackFragOpen.openFrag("startTrial","");
                             }
-                            break;
-                    }
+                        }else if (offerCardList.get(getAdapterPosition()).type.equals("headerOnTrial")){
+                            callbackFragOpen.openFrag("signupAlert","");
+                        }
+                        break;
+                }
                     break;
             }
             return false;

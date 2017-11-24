@@ -70,11 +70,11 @@ public class SignupFrag extends Fragment implements View.OnTouchListener, ApiCal
         progressBar = (RelativeLayout) layout.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
 
-        if (type.equals("payment")){
+       /* if (type.equals("payment")){
             tvHeader.setText("Make every meal a Privilege, for only \nINR 1,200 for an entire year");
         }else {
             tvHeader.setText("Sign up to start your 7 day free trial. Access deals, discounts and experiences");
-        }
+        }*/
 
         lineName = layout.findViewById(R.id.line_name);
         lineEmail = layout.findViewById(R.id.line_email);
