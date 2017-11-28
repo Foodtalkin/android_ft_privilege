@@ -2,12 +2,14 @@ package in.foodtalk.privilege.fragment.experiences;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.comm.CallbackFragOpen;
+import in.foodtalk.privilege.fragment.home.HomeAdapter;
 import in.foodtalk.privilege.library.DateFunction;
 
 /**
@@ -30,6 +33,9 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     LayoutInflater layoutInflater;
     List<JSONObject> expeList;
     CallbackFragOpen callbackFragOpen;
+
+    private final int VIEW_LOADER = 0;
+    private final int VIEW_EXPE = 1;
     public ExperienceAdapter(Context context, List<JSONObject> expeList){
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -38,44 +44,78 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.experience_card, parent, false);
-        ExpeCard expeCard = new ExpeCard(view);
-        return expeCard;
+
+        if (viewType == VIEW_LOADER){
+            View view = layoutInflater.inflate(R.layout.loader_card, parent, false);
+            LoaderCard loaderCard = new LoaderCard(view);
+            return loaderCard;
+        }else {
+            View view = layoutInflater.inflate(R.layout.experience_card, parent, false);
+            ExpeCard expeCard = new ExpeCard(view);
+            return expeCard;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ExpeCard expeCard = (ExpeCard) holder;
-        JSONObject expeObj = expeList.get(position);
-        try {
-            expeCard.tvTitle.setText(expeObj.getString("title"));
-            expeCard.tvAddress.setText(expeObj.getString("address"));
-            expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
+        if (holder instanceof  ExpeCard){
+            ExpeCard expeCard = (ExpeCard) holder;
+            JSONObject expeObj = expeList.get(position);
+            Log.d("expeList obj", expeObj+"");
+            try {
+                expeCard.tvTitle.setText(expeObj.getString("title"));
+                expeCard.tvAddress.setText(expeObj.getString("address"));
+                expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
 
-            String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
-            String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+                String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+                String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
 
-            expeCard.tvTime.setText(date+" - "+date1);
+                expeCard.tvTime.setText(date+" - "+date1);
 
-            if (expeObj.getString("avilable_seats").equals("0")){
-                expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));
-                //expeCard.btnDetails.setClickable(false);
-                expeCard.tvBtnDetails.setText(" Sold Out ");
+                if (expeObj.getString("avilable_seats").equals("0")){
+                    expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));
+                    //expeCard.btnDetails.setClickable(false);
+                    expeCard.tvBtnDetails.setText(" Sold Out ");
+                }else {
+                    expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg5));
+                    //expeCard.btnDetails.setClickable(false);
+                    expeCard.tvBtnDetails.setText("View Details");
+                }
+
+                Picasso.with(context)
+                        .load(expeObj.getString("cover_image"))
+                        //.fit()
+                        .placeholder(R.drawable.ic_placeholder)
+                        //.fit().centerCrop()
+                        .into(expeCard.imgView);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+        }else if (holder instanceof LoaderCard){
 
-            Picasso.with(context)
-                    .load(expeObj.getString("cover_image"))
-                    //.fit()
-                    .placeholder(R.drawable.ic_placeholder)
-                    //.fit().centerCrop()
-                    .into(expeCard.imgView);
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
     }
     @Override
     public int getItemCount() {
         return expeList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (expeList.get(position) == null){
+            return VIEW_LOADER;
+        }else {
+            return VIEW_EXPE;
+        }
+    }
+
+    class LoaderCard extends RecyclerView.ViewHolder {
+        RelativeLayout loaderView;
+        public LoaderCard(View itemView) {
+            super(itemView);
+            loaderView = (RelativeLayout) itemView.findViewById(R.id.loader_view);
+        }
     }
 
     private class ExpeCard extends RecyclerView.ViewHolder implements View.OnTouchListener{

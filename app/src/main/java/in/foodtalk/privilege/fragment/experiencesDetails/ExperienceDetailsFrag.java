@@ -188,10 +188,12 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
         avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         tvSeatsCount.setText(avilableSeats+" Spots");
         tvCost.setText(getResources().getString(R.string.rs)+" "+ response.getJSONObject("result").getString("cost"));
-        tvTotalAmount.setText(reponse.getJSONObject("result").getString("cost"));
+        tvTotalAmount.setText(getResources().getString(R.string.rs)+" "+ reponse.getJSONObject("result").getString("cost"));
 
         tvTitleBar.setText(reponse.getJSONObject("result").getString("title"));
         tvPrefTitle.setText(reponse.getJSONObject("result").getString("title"));
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         if (avilableSeats < 11){
 
@@ -409,7 +411,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
     private void calculatePrice(int num) throws JSONException {
         int totalM = num*Integer.parseInt(response.getJSONObject("result").getString("cost"));
-        tvTotalAmount.setText(String.valueOf(totalM));
+        tvTotalAmount.setText(getResources().getString(R.string.rs)+" "+ String.valueOf(totalM));
     }
 
     @Override

@@ -26,6 +26,7 @@ import in.foodtalk.privilege.R;
 import in.foodtalk.privilege.apicall.ApiCall;
 import in.foodtalk.privilege.app.Url;
 import in.foodtalk.privilege.comm.ApiCallback;
+import in.foodtalk.privilege.library.EndlessRecyclerViewScrollListener;
 
 /**
  * Created by RetailAdmin on 31-10-2017.
@@ -41,8 +42,15 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+
+
     LinearLayout progressBar, placeholderInternet, placeholderEmpty;
     TextView btnRetry;
+
+    Boolean loadingMore = false;
+    Boolean loadedData = false;
+
+    String nextUrl;
 
 
     @Nullable
@@ -61,7 +69,7 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadData();
+                loadData("load");
             }
         });
         placeholderInternet.setVisibility(View.GONE);
@@ -71,24 +79,67 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                loadData();
+                    loadData("load");
                 // Do something after 5s = 5000ms
                 //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
             }
         }, 2000);
+        endlessScrolling();
         return layout;
     }
 
-    private void loadData(){
-        placeholderInternet.setVisibility(View.GONE);
-        Log.d(TAG, "load experiences");
-        ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCES, "experiences", this);
+    EndlessRecyclerViewScrollListener scrollListener;
+    private void endlessScrolling(){
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG,"onLoadMore");
+                if (loadingMore == false){
+                    if (!nextUrl.equals("")){
+                        loadData("loadMore");
+                        loadingMore = true;
+                    }
+                }
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
     }
 
-    private void sendToAdapter(JSONObject reponse) throws JSONException {
+    public void remove() {
+        int i = expeList.indexOf(null);
+        expeList.remove(i);
+        experienceAdapter.notifyItemRemoved(i);
+        Log.d("remove index of", i+"");
+        //int position = offerCardList.indexOf(data);
+        //Log.d("position for remove", position+"");
+
+    }
+
+    private void loadData(String tag){
+        //Log.d(TAG, "load experiences");
+        if (tag.equals("loadMore")){
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, nextUrl, "experiencesLoadMore", this);
+            expeList.add(null);
+            recyclerView.post(new Runnable() {
+                public void run() {
+                    experienceAdapter.notifyItemInserted(expeList.size()-1);
+                }
+            });
+        }else {
+            placeholderInternet.setVisibility(View.GONE);
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_EXPERIENCES, "experiences", this);
+        }
+    }
+    ExperienceAdapter experienceAdapter;
+    private void sendToAdapter(JSONObject response, String tag) throws JSONException {
         progressBar.setVisibility(View.GONE);
-        JSONArray expeArrayList = reponse.getJSONObject("result").getJSONArray("data");
-        expeList.clear();
+        JSONArray expeArrayList = response.getJSONObject("result").getJSONArray("data");
+
+        if (tag.equals("load")){
+            expeList.clear();
+        }
+
+        nextUrl = response.getJSONObject("result").getString("next_page_url");
 
         if (expeArrayList.length() == 0){
             placeholderEmpty.setVisibility(View.VISIBLE);
@@ -99,8 +150,14 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
             expeList.add(expeArrayList.getJSONObject(i));
         }
         if (getActivity() != null){
-            ExperienceAdapter experienceAdapter = new ExperienceAdapter(getActivity(), expeList);
-            recyclerView.setAdapter(experienceAdapter);
+            if (tag.equals("load")){
+                experienceAdapter = new ExperienceAdapter(getActivity(), expeList);
+                recyclerView.setAdapter(experienceAdapter);
+            }else {
+                remove();
+                loadingMore = false;
+                experienceAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -111,7 +168,14 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
             if (tag.equals("experiences")){
                 Log.e(TAG, "response: "+ response);
                 try {
-                    sendToAdapter(response);
+                    sendToAdapter(response, "load");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else if (tag.equals("experiencesLoadMore")){
+                Log.e(TAG, "response: "+ response);
+                try {
+                    sendToAdapter(response, "loadMore");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -26,8 +26,8 @@ android {
         applicationId "in.foodtalk.privilege"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 22
-        versionName "1.9.3"
+        versionCode 23
+        versionName "1.9.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.

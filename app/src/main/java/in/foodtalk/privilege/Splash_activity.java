@@ -93,8 +93,8 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
         fragments.add(new LandingTour());
         fragments.add(new ExperiTour());
         fragments.add(new DiningTour());
-        fragments.add(new OffersTour());
-        fragments.add(new RedeemTour());
+        //fragments.add(new OffersTour());
+       // fragments.add(new RedeemTour());
         fragments.add(new EnterTour());
 
         fm = getSupportFragmentManager();
@@ -114,7 +114,7 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
             @Override
             public void onPageSelected(int position) {
                 Log.d(TAG, "vp postion: "+ position);
-                if (position == 5){
+                if (position == 3){
                     exploreHolder.setVisibility(View.VISIBLE);
                     btnNext.setVisibility(View.GONE);
                     tv1.setVisibility(View.GONE);
@@ -136,7 +136,8 @@ public class Splash_activity extends AppCompatActivity implements View.OnTouchLi
                        tv1.setText("Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges.");
                        break;
                    case 3:
-                       tv1.setText("Search for your favourite restaurants or discover a restaurant you haven’t tried before!");
+                       //tv1.setText("Search for your favourite restaurants or discover a restaurant you haven’t tried before!");
+                       //tv1.setText("Just ask your server to enter the unique PIN to redeem your offer.");
                        break;
                    case 4:
                        tv1.setText("Just ask your server to enter the unique PIN to redeem your offer.");
