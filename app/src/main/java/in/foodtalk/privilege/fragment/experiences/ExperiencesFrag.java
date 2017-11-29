@@ -112,7 +112,6 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         Log.d("remove index of", i+"");
         //int position = offerCardList.indexOf(data);
         //Log.d("position for remove", position+"");
-
     }
 
     private void loadData(String tag){

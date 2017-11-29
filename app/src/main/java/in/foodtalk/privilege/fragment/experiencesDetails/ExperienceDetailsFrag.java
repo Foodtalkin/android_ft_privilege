@@ -168,21 +168,17 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
     }
     JSONObject response;
     private void sendToAdapter(JSONObject reponse) throws JSONException {
-
         //JSONArray dataList = reponse.getJSONObject("result").getJSONArray("data");
         if (getActivity() != null){
             ExperienceDetailsAdapter experienceDetailsAdapter = new ExperienceDetailsAdapter(getActivity(), reponse, valueCallback);
             recyclerView.setAdapter(experienceDetailsAdapter);
+            setData(reponse);
         }
-
-        setData(reponse);
-
     }
     int avilableSeats;
     int nonVegSeats;
     int vegSeats;
     private void setData(JSONObject reponse) throws JSONException {
-
         this.response = reponse;
         purchaseLimit = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
         avilableSeats = Integer.parseInt(reponse.getJSONObject("result").getString("avilable_seats"));
@@ -228,12 +224,10 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
                 //tvVegCounter.setText(nonVegSeats+" / "+ vegSeats);
                 tvVegCounter.setText(Html.fromHtml(txtCounter));
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 

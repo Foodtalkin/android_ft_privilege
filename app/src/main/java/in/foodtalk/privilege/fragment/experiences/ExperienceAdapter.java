@@ -66,6 +66,7 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 expeCard.tvTitle.setText(expeObj.getString("title"));
                 expeCard.tvAddress.setText(expeObj.getString("address"));
                 expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
+                expeCard.tvTag.setText(expeObj.getString("tag"));
 
                 String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
                 String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
@@ -120,12 +121,13 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ExpeCard extends RecyclerView.ViewHolder implements View.OnTouchListener{
         ImageView imgView;
-        TextView tvTitle, tvAddress, tvTime, tvCost, tvBtnDetails;
+        TextView tvTitle, tvAddress, tvTime, tvCost, tvBtnDetails, tvTag;
         LinearLayout btnDetails;
 
 
         public ExpeCard(View itemView) {
             super(itemView);
+            tvTag = (TextView) itemView.findViewById(R.id.tv_tag);
             imgView = (ImageView) itemView.findViewById(R.id.img_view);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvAddress = (TextView) itemView.findViewById(R.id.tv_address);
