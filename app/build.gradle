@@ -26,8 +26,8 @@ android {
         applicationId "in.foodtalk.privilege"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 23
-        versionName "1.9.4"
+        versionCode 24
+        versionName "1.9.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Enabling multidex support.
@@ -54,6 +54,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            //ext.enableCrashlytics = false
         }
     }
 }

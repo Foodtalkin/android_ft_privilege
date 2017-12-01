@@ -68,10 +68,11 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 expeCard.tvCost.setText(expeObj.getString("cost")+"/Person");
                 expeCard.tvTag.setText(expeObj.getString("tag"));
 
-                String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
-                String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+                //String date = DateFunction.convertFormat(expeObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+               // String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
 
-                expeCard.tvTime.setText(date+" - "+date1);
+                //expeCard.tvTime.setText(date+" - "+date1);
+                expeCard.tvTime.setText(expeObj.getString("display_time"));
 
                 if (expeObj.getString("avilable_seats").equals("0")){
                     expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));

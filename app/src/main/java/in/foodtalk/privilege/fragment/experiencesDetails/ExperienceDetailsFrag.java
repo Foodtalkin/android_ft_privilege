@@ -24,6 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -233,8 +235,11 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
 
             }
         });
-    }
 
+
+        Answers.getInstance().logCustom(new CustomEvent("Experience Details")
+                .putCustomAttribute("Title", reponse.getJSONObject("result").getString("title")));
+    }
     @Override
     public void apiResponse(JSONObject response, String tag) {
         if (tag.equals("experienceDetails")){
@@ -396,6 +401,7 @@ public class ExperienceDetailsFrag extends Fragment implements ApiCallback, Valu
             jsonObject.put("nonveg_preference", response.getJSONObject("result").getString("nonveg_preference"));
             jsonObject.put("start_time", response.getJSONObject("result").getString("start_time"));
             jsonObject.put("end_time", response.getJSONObject("result").getString("end_time"));
+            jsonObject.put("display_time", response.getJSONObject("result").getString("display_time"));
             Log.e("btn_continue", response.getJSONObject("result").toString());
         } catch (JSONException e) {
             e.printStackTrace();

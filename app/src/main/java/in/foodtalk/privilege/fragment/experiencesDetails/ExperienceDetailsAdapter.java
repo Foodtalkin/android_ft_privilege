@@ -116,9 +116,10 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 coverCard.tvTitle.setText(response.getJSONObject("result").getString("title"));
                 coverCard.tvAddress.setText(response.getJSONObject("result").getString("address"));
 
-                String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
-                String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
-                coverCard.tvTime.setText(date+" - "+date1);
+                //String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+                //String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+                //coverCard.tvTime.setText(date+" - "+date1);
+                coverCard.tvTime.setText(response.getJSONObject("result").getString("display_time"));
                 //coverCard.tvAddress1.setText(response.getJSONObject("result").getString(""));
 
                 Picasso.with(context)

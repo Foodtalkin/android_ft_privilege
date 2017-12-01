@@ -10,7 +10,6 @@
         card_view:cardCornerRadius="0dp"
         android:layout_marginTop="5dp"
         >
-
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -36,28 +35,27 @@
               android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:layout_marginTop="10dp">
-
               <ImageView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/ic_clock" />
+                  android:src="@drawable/ic_clock"
+                  android:layout_gravity="center"/>
               <TextView
                   android:id="@+id/tv_time"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginLeft="10dp"
-                  android:text="September 17 at 10 AM - 12 PM"/>
+                  android:text="September 17 at 10 AM - 12 PM\n dsf"/>
           </LinearLayout>
           <LinearLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:layout_marginTop="8dp">
-
               <ImageView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/ic_location_outline" />
+                  android:src="@drawable/ic_location_outline"/>
               <TextView
                   android:id="@+id/tv_address"
                   android:layout_width="wrap_content"

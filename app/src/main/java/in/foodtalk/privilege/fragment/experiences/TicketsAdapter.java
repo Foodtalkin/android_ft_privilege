@@ -45,9 +45,10 @@ public class TicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ticketCard.tvTitle.setText(listData.getJSONObject(position).getString("title"));
             //ticketCard.tvTime.setText(listData.getJSONObject(position).getString("start_time"));
 
-            String date = DateFunction.convertFormat(listData.getJSONObject(position).getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+            /*String date = DateFunction.convertFormat(listData.getJSONObject(position).getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
             String date1 = DateFunction.convertFormat(listData.getJSONObject(position).getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
-            ticketCard.tvTime.setText(date+" - "+date1);
+            ticketCard.tvTime.setText(date+" - "+date1);*/
+            ticketCard.tvTime.setText(listData.getJSONObject(position).getString("display_time"));
 
 
             ticketCard.tvAddress.setText(listData.getJSONObject(position).getString("address"));
