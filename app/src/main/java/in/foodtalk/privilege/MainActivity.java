@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
@@ -38,6 +39,8 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -109,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     DrawerLayout drawerLayout;
 
+    TextView btnSubmitRating;
+
 
 
     LinearLayout navLogin, navBuyNow, navHowItWork, navRules, navLegal, navContact, navAbout, forLogin, forLogin1, navAccount, navHistory, navFavourites, navLogout, navHome, navExperines, navCity, navTickets;
@@ -158,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     Fragment mContent;
 
+    RatingBar ratingBar;
+    RelativeLayout ratingHolder;
+
 
 
 
@@ -166,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingHolder = (RelativeLayout) findViewById(R.id.rating_holder);
+        ratingHolder.setVisibility(View.GONE);
 
 
         //firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -207,6 +219,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         navExperines = (LinearLayout) findViewById(R.id.nav_experines);
         navTickets = (LinearLayout) findViewById(R.id.nav_tickets);
+
+        btnSubmitRating = (TextView) findViewById(R.id.btn_submit_rating);
+        btnSubmitRating.setOnTouchListener(this);
 
 
         txtVersion = (TextView) findViewById(R.id.txt_version);
@@ -267,10 +282,15 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 startPaymentFlow();
             }
         }else {
+            if (db.getRowCount() > 0){
+                Log.d("check1", "call check for rating");
+                checkForRating();
+            }
             searchFrag = new SearchFrag();
             //homeFrag = new HomeFrag();
             //setFragmentView(homeFrag, R.id.container, "homeFrag", false);
             setFragmentView(homeTabFrag, R.id.container, "homeFrag", false);
+
         }
 
         getFragmentManager().addOnBackStackChangedListener(this);
@@ -285,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         tvCityName1 = (TextView) findViewById(R.id.tv_city_name1);
 
 
+
+
         //checkVersion();
 
 
@@ -294,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         setUserProperty();
 
         checkAndOpenPlayStore();
+
 /*
         if (savedInstanceState != null) {
             //Restore the fragment's instance
@@ -302,23 +325,30 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     }
 
+    private void checkForRating(){
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if ((int)rating != 0 && fromUser){
+                   // ratingCallback.goforReview(Integer.toString((int)rating));
+                    Log.d("rating", rating+"");
+                }
+            }
+        });
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         //Save the fragment's instance
         //getFragmentManager().putFragment(outState, "myFragmentName", mContent);
-
     }
 
     private void trialApi(){
         if (db.getRowCount() > 0){
-
             ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.URL_TRIAL+"?sessionid="+db.getUserDetails().get("sessionId"), "trialApi", this);
         }else {
             Log.d("MainActivity", "user not loge in");
         }
-
     }
 
 
@@ -593,6 +623,9 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
         if (fragName.equals("startTrial")){
             trialDialog();
+        }
+        if (fragName.equals("ratingPopup")){
+            ratingHolder.setVisibility(View.VISIBLE);
         }
     }
 
@@ -904,6 +937,14 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                         break;
                 }
                 break;
+            case R.id.btn_submit_rating:
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Log.d("btn rating", "submit");
+                        ratingHolder.setVisibility(View.GONE);
+                        break;
+                }
+                break;
         }
         return false;
     }
@@ -1205,5 +1246,6 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 }
             }
         }
+
     }
 }

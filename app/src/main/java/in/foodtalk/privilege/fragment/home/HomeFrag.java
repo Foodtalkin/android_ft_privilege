@@ -205,6 +205,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         if (db.getRowCount() > 0){
+            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_UNREVIEWED+"?sessionid="+db.getUserDetails().get("sessionId"), "unReviewed", this);
             Log.d(TAG,"subscription id: "+ db.getUserDetails().get("subscription"));
             JSONArray subscription;
             try {
@@ -570,6 +571,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
 
     }
     private void sendToAdapter(JSONObject response, String tag) throws JSONException {
+
         JSONArray listArray = response.getJSONObject("result").getJSONArray("data");
 
         progressBar.setVisibility(View.GONE);
@@ -702,6 +704,20 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
             if (tag.equals("loadOffers")){
                 progressBar.setVisibility(View.GONE);
                 placeholderInternet.setVisibility(View.VISIBLE);
+            }
+        }
+        if (tag.equals("unReviewed")){
+            Log.e("response", response+"");
+            if (response != null){
+                try {
+                    if (response.getString("status").equals("OK")){
+                        Log.e("response", response+"");
+                        callbackFragOpen.openFrag("ratingPopup", response.toString());
+                        //ratingHolder.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
