@@ -74,12 +74,12 @@ public class ExperiencesFrag extends Fragment implements ApiCallback {
         });
         placeholderInternet.setVisibility(View.GONE);
 
-
+        loadData("load");
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                    loadData("load");
+                    //loadData("load");
                 // Do something after 5s = 5000ms
                 //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
             }

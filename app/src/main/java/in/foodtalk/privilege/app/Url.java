@@ -57,6 +57,7 @@ public class Url {
     public static String URL_EXPERIENCE_DETAILS = baseUrl+"experiences/2";
 
     public static String URL_UNREVIEWED = baseUrl+"unreviewed";
+    public static String URL_OFFER_REVIEW = baseUrl+"offer/review";
 
 
 

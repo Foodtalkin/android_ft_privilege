@@ -39,11 +39,14 @@ public class ApiCall {
     static DatabaseHandler db;
     public static void jsonObjRequest(final int requestType, final Context context, final JSONObject obj, final String url, final String tag, final ApiCallback apiCallback){
 
-        Log.e("ApiCall", "apiCallback from: "+apiCallback.getClass().getSimpleName()+" tag: "+tag +" url: "+url);
+
 
         db = new DatabaseHandler(context);
         //Request.Method.POST
-        apiCallback1 = apiCallback;
+        //apiCallback1 = apiCallback;
+
+        Log.e("ApiCall", "apiCallback from: "+apiCallback.getClass().getSimpleName()+" tag: "+tag +" url: "+url);
+        //Log.e("ApiCall", "apiCallback from: "+apiCallback1.getClass().getSimpleName()+" tag: "+tag +" url: "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(requestType , url, obj,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -51,13 +54,13 @@ public class ApiCall {
                         //Log.d(TAG, "After Sending JsongObj"+response.toString());
                         //msgResponse.setText(response.toString());
                         Log.d("ApiCall", response.toString());
-                        if (apiCallback1 != null){
+                        if (apiCallback != null){
                             //apiCallback1.apiResponse(response, tag);
                         }
                         try {
                             String status = response.getString("status");
                             if (!status.equals("ERROR")){
-                                apiCallback1.apiResponse(response, tag);
+                                apiCallback.apiResponse(response, tag);
                                 //-- getAndSave(response);
                                 //loadDataIntoView(response);
                                 if(tag.equals("userReport") || tag.equals("restaurantReport")){
@@ -74,7 +77,7 @@ public class ApiCall {
                                     getSessionToken(requestType, context, obj, url, tag, apiCallback);
                                     //logOut();
                                 }else {
-                                    apiCallback1.apiResponse(response, tag);
+                                    apiCallback.apiResponse(response, tag);
                                 }
                             }
                         } catch (JSONException e) {
@@ -88,7 +91,7 @@ public class ApiCall {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("error response", "Error: " + error.getMessage());
-                apiCallback1.apiResponse(null, tag);
+                apiCallback.apiResponse(null, tag);
                 //hideProgressDialog();
             }
         }){
@@ -191,7 +194,7 @@ public class ApiCall {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("error response", "Error: " + error.getMessage());
-                apiCallback1.apiResponse(null, tag);
+                apiCallback.apiResponse(null, tag);
             }
         }){
             /**

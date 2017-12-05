@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
     RatingBar ratingBar;
     RelativeLayout ratingHolder;
+    TextView tvNameExpe;
 
 
 
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         ratingHolder = (RelativeLayout) findViewById(R.id.rating_holder);
         ratingHolder.setVisibility(View.GONE);
+        tvNameExpe = (TextView) findViewById(R.id.tv_name_exp);
 
 
         //firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -282,10 +284,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 startPaymentFlow();
             }
         }else {
-            if (db.getRowCount() > 0){
-                Log.d("check1", "call check for rating");
-                checkForRating();
-            }
+
             searchFrag = new SearchFrag();
             //homeFrag = new HomeFrag();
             //setFragmentView(homeFrag, R.id.container, "homeFrag", false);
@@ -304,9 +303,22 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         tvCityName = (TextView) findViewById(R.id.tv_city_name);
         tvCityName1 = (TextView) findViewById(R.id.tv_city_name1);
 
-
-
-
+        if (db.getRowCount() > 0){
+            Log.d("check1", "call check for rating");
+            if (currentFragment == homeTabFrag){
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkForRating();
+                        Log.d(TAG, "call checkForRating");
+                        // startLoading();
+                        // Do something after 5s = 5000ms
+                        //buttons[inew][jnew].setBackgroundColor(Color.BLACK);
+                    }
+                }, 1000);
+            }
+        }
         //checkVersion();
 
 
@@ -326,12 +338,21 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
     }
 
     private void checkForRating(){
+        submitBtn(false);
+        ApiCall.jsonObjRequest(Request.Method.GET, this, null, Url.URL_UNREVIEWED+"?sessionid="+db.getUserDetails().get("sessionId"), "unReviewed", this);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if ((int)rating != 0 && fromUser){
                    // ratingCallback.goforReview(Integer.toString((int)rating));
                     Log.d("rating", rating+"");
+                }
+                if (fromUser){
+                    if ((int)rating != 0){
+                        submitBtn(true);
+                    }else {
+                        submitBtn(false);
+                    }
                 }
             }
         });
@@ -941,12 +962,36 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
                         Log.d("btn rating", "submit");
-                        ratingHolder.setVisibility(View.GONE);
+
+                        submitRating(String.valueOf(ratingBar.getRating()));
                         break;
                 }
                 break;
         }
         return false;
+    }
+    private void submitBtn(Boolean active){
+        if (!active){
+            btnSubmitRating.setAlpha((float) 0.5);
+            //btnSubmitRating.setBackground(getResources().getDrawable(R.color.warm_grey));
+            btnSubmitRating.setClickable(false);
+        }else {
+            btnSubmitRating.setAlpha(1);
+            //btnSubmitRating.setBackground(getResources().getDrawable(R.color.green));
+            btnSubmitRating.setClickable(true);
+        }
+    }
+    String rId;
+    private void submitRating(String value){
+        ratingHolder.setVisibility(View.GONE);
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("rating", value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApiCall.jsonObjRequest(Request.Method.POST, this, obj, Url.URL_OFFER_REVIEW+"/"+rId+"?sessionid="+db.getUserDetails().get("sessionId"), "offerReview", this);
+        Log.d(TAG,"submit rating: "+value);
     }
     private void selectCity(){
         if (currentFragment != citySelectFrag){
@@ -1217,6 +1262,17 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         }
     }
+    private void showRatingPopup(JSONObject response) throws JSONException {
+        if (response.getString("status").equals("OK")){
+            Log.e("response main", response+"");
+            //callbackFragOpen.openFrag("ratingPopup", response.toString());
+            if (response.getJSONObject("result").getJSONArray("offers").length() > 0){
+                ratingHolder.setVisibility(View.VISIBLE);
+                tvNameExpe.setText(response.getJSONObject("result").getJSONArray("offers").getJSONObject(0).getString("name"));
+                rId = response.getJSONObject("result").getJSONArray("offers").getJSONObject(0).getString("id");
+            }
+        }
+    }
 
     @Override
     public void setValue(String v1, String v2) {
@@ -1246,6 +1302,18 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
                 }
             }
         }
-
+        if (tag.equals("unReviewed")){
+            Log.e("response", response+"");
+            if (response != null){
+                try {
+                   showRatingPopup(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (tag.equals("offerReview")){
+            Log.d(TAG,"offerReview response: "+response);
+        }
     }
 }

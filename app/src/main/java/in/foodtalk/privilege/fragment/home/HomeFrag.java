@@ -205,7 +205,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
         callbackFragOpen = (CallbackFragOpen) getActivity();
 
         if (db.getRowCount() > 0){
-            ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_UNREVIEWED+"?sessionid="+db.getUserDetails().get("sessionId"), "unReviewed", this);
+            //ApiCall.jsonObjRequest(Request.Method.GET, getActivity(), null, Url.URL_UNREVIEWED+"?sessionid="+db.getUserDetails().get("sessionId"), "unReviewed", this);
             Log.d(TAG,"subscription id: "+ db.getUserDetails().get("subscription"));
             JSONArray subscription;
             try {
@@ -706,7 +706,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                 placeholderInternet.setVisibility(View.VISIBLE);
             }
         }
-        if (tag.equals("unReviewed")){
+        /*if (tag.equals("unReviewed")){
             Log.e("response", response+"");
             if (response != null){
                 try {
@@ -719,7 +719,7 @@ public class HomeFrag extends Fragment implements ApiCallback, View.OnTouchListe
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
     }
 
