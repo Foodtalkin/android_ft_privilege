@@ -77,147 +77,156 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
         if (viewType == VIEW_COVER){
             view = layoutInflater.inflate(R.layout.expe_cover_card, parent, false);
             coverCard = new CoverCard(view);
+            Log.d("viewType", "VIEW_COVER");
             return coverCard;
         }else if (viewType == VIEW_DES){
             view = layoutInflater.inflate(R.layout.expe_description_card, parent, false);
             descriptionCard = new DescriptionCard(view);
+            Log.d("viewType", "VIEW_DES");
             return descriptionCard;
         }else if (viewType == VIEW_LIST1){
             view = layoutInflater.inflate(R.layout.expe_list1_card, parent, false);
             list1Card = new List1Card(view);
+            Log.d("viewType", "VIEW_LIST1");
             return list1Card;
         }else if (viewType == VIEW_LIST2){
             view = layoutInflater.inflate(R.layout.expe_list2_card, parent, false);
             list2Card = new List2Card(view);
+            Log.d("viewType", "VIEW_LIST2");
             return  list2Card;
         }else if (viewType == VIEW_IMG){
             view = layoutInflater.inflate(R.layout.expe_img_card, parent, false);
             imageCard = new ImageCard(view);
+            Log.d("viewType", "VIEW_IMG");
             return imageCard;
         }else if (viewType == VIEW_VIDEO){
             view = layoutInflater.inflate(R.layout.expe_video_card, parent, false);
             videoCard = new VideoCard(view);
+            Log.d("viewType", "VIEW_VIDEO");
             return videoCard;
         }else if (viewType == VIEW_URL){
             view = layoutInflater.inflate(R.layout.expe_url_card, parent, false);
             urlCard = new UrlCard(view);
+            Log.d("viewType", "VIEW_URL");
             return urlCard;
         }else {
-            return null;
+            view = layoutInflater.inflate(R.layout.ignore_card, parent, false);
+            IgnoreCard ignoreCard = new IgnoreCard(view);
+            return ignoreCard;
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof CoverCard){
-            CoverCard coverCard = (CoverCard) holder;
+            if (holder instanceof CoverCard){
+                CoverCard coverCard = (CoverCard) holder;
 
-            try {
-                coverCard.tvTitle.setText(response.getJSONObject("result").getString("title"));
-                coverCard.tvAddress.setText(response.getJSONObject("result").getString("address"));
+                try {
+                    coverCard.tvTitle.setText(response.getJSONObject("result").getString("title"));
+                    coverCard.tvAddress.setText(response.getJSONObject("result").getString("address"));
 
-                //String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
-                //String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
-                //coverCard.tvTime.setText(date+" - "+date1);
-                coverCard.tvTime.setText(response.getJSONObject("result").getString("display_time"));
-                //coverCard.tvAddress1.setText(response.getJSONObject("result").getString(""));
+                    //String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
+                    //String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
+                    //coverCard.tvTime.setText(date+" - "+date1);
+                    coverCard.tvTime.setText(response.getJSONObject("result").getString("display_time"));
+                    //coverCard.tvAddress1.setText(response.getJSONObject("result").getString(""));
 
-                Picasso.with(context)
-                        .load(response.getJSONObject("result").getString("cover_image"))
-                        //.fit()
-                        .placeholder(R.drawable.ic_placeholder)
-                        //.fit().centerCrop()
-                        .into(coverCard.imgView);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    Picasso.with(context)
+                            .load(response.getJSONObject("result").getString("cover_image"))
+                            //.fit()
+                            .placeholder(R.drawable.ic_placeholder)
+                            //.fit().centerCrop()
+                            .into(coverCard.imgView);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        if (holder instanceof DescriptionCard){
-            DescriptionCard descriptionCard = (DescriptionCard) holder;
-            try {
-                descriptionCard.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
-                descriptionCard.tvDes.setText(dataList.getJSONObject(position-1).getString("content"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (holder instanceof DescriptionCard){
+                DescriptionCard descriptionCard = (DescriptionCard) holder;
+                try {
+                    descriptionCard.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
+                    descriptionCard.tvDes.setText(dataList.getJSONObject(position-1).getString("content"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        if (holder instanceof List1Card){
-            List1Card list1Card = (List1Card) holder;
-            try {
-                list1Card.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
-                JSONArray list = dataList.getJSONObject(position-1).getJSONArray("content");
-                String listStr = "- ";
-                for (int i = 0; i < list.length(); i++){
-                    if (list.length() > i+1){
-                        listStr = listStr+list.getString(i)+"\n- ";
-                    }else {
-                        listStr = listStr+list.getString(i);
+            if (holder instanceof List1Card){
+                List1Card list1Card = (List1Card) holder;
+                try {
+                    list1Card.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
+                    JSONArray list = dataList.getJSONObject(position-1).getJSONArray("content");
+                    String listStr = "- ";
+                    for (int i = 0; i < list.length(); i++){
+                        if (list.length() > i+1){
+                            listStr = listStr+list.getString(i)+"\n- ";
+                        }else {
+                            listStr = listStr+list.getString(i);
+                        }
                     }
+                    list1Card.tvList.setText(listStr);
+                    Log.e("List1Card", listStr);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                list1Card.tvList.setText(listStr);
-                Log.e("List1Card", listStr);
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
-        if (holder instanceof UrlCard){
-            UrlCard urlCard = (UrlCard) holder;
-            try {
-                urlCard.tvLink.setText(dataList.getJSONObject(position-1).getString("title"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        if (holder instanceof VideoCard){
-            VideoCard videoCard = (VideoCard) holder;
-            Uri uri = null;
-            try {
-                uri = Uri.parse(dataList.getJSONObject(position-1).getString("content"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            String videoId = uri.getQueryParameter("v");  //will return "V-Maths-Addition"
-
-            videoCard.videoId1 = videoId;
-            Log.e("videoCard","videoId: "+ videoId);
-
-            String summary = "<html><body><iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/"+videoId+"?rel=0\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-            videoCard.webView.loadData(summary, "text/html", null);
-        }
-        if (holder instanceof List2Card){
-
-
-            List2Card list2Card = (List2Card) holder;
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-
-
-            list2Card.recyclerView.setLayoutManager(layoutManager);
-            list2Card.recyclerView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    //view.getParent().requestDisallowInterceptTouchEvent(true);
-                    return false;
+            if (holder instanceof UrlCard){
+                UrlCard urlCard = (UrlCard) holder;
+                try {
+                    urlCard.tvLink.setText(dataList.getJSONObject(position-1).getString("title"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-            try {
-                list2Card.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
-                List2Adapter list2Adapter = new List2Adapter(context, dataList.getJSONObject(position-1).getJSONArray("content"));
-                list2Card.recyclerView.setAdapter(list2Adapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
-        if (holder instanceof ImageCard){
-            ImageCard imageCard = (ImageCard) holder;
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-            imageCard.recyclerView.setLayoutManager(layoutManager);
-            try {
-                ExpeImageAdapter expeImageAdapter = new ExpeImageAdapter(context,dataList.getJSONObject(position-1).getJSONArray("content"), valueCallback);
-                imageCard.recyclerView.setAdapter(expeImageAdapter);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (holder instanceof VideoCard){
+                VideoCard videoCard = (VideoCard) holder;
+                Uri uri = null;
+                try {
+                    uri = Uri.parse(dataList.getJSONObject(position-1).getString("content"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String videoId = uri.getQueryParameter("v");  //will return "V-Maths-Addition"
+
+                videoCard.videoId1 = videoId;
+                Log.e("videoCard","videoId: "+ videoId);
+
+                String summary = "<html><body><iframe width=\"100%\" height=\"200\" src=\"https://www.youtube.com/embed/"+videoId+"?rel=0\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+                videoCard.webView.loadData(summary, "text/html", null);
             }
-        }
+            if (holder instanceof List2Card){
+
+
+                List2Card list2Card = (List2Card) holder;
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+
+
+                list2Card.recyclerView.setLayoutManager(layoutManager);
+                list2Card.recyclerView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        //view.getParent().requestDisallowInterceptTouchEvent(true);
+                        return false;
+                    }
+                });
+                try {
+                    list2Card.tvTitle.setText(dataList.getJSONObject(position-1).getString("title"));
+                    List2Adapter list2Adapter = new List2Adapter(context, dataList.getJSONObject(position-1).getJSONArray("content"));
+                    list2Card.recyclerView.setAdapter(list2Adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (holder instanceof ImageCard){
+                ImageCard imageCard = (ImageCard) holder;
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                imageCard.recyclerView.setLayoutManager(layoutManager);
+                try {
+                    ExpeImageAdapter expeImageAdapter = new ExpeImageAdapter(context,dataList.getJSONObject(position-1).getJSONArray("content"), valueCallback);
+                    imageCard.recyclerView.setAdapter(expeImageAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
     }
     @Override
     public int getItemViewType(int position) {
@@ -239,11 +248,11 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                 }else if (dataList.getJSONObject(i).getString("type").equals("URL")){
                     return VIEW_URL;
                 }else {
-                    return super.getItemViewType(position);
+                    return 45;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                return super.getItemViewType(position);
+                return 45;
             }
         }
        // return super.getItemViewType(position);
@@ -339,6 +348,13 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                     }
                 }
             });
+        }
+    }
+
+    private class IgnoreCard extends RecyclerView.ViewHolder{
+
+        public IgnoreCard(View itemView) {
+            super(itemView);
         }
     }
 

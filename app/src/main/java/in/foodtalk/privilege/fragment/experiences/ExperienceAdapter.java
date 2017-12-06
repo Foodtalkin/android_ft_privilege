@@ -1,7 +1,9 @@
 package in.foodtalk.privilege.fragment.experiences;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -72,7 +74,23 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                // String date1 = DateFunction.convertFormat(expeObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
 
                 //expeCard.tvTime.setText(date+" - "+date1);
-                expeCard.tvTime.setText(expeObj.getString("display_time"));
+                //expeCard.tvTime.setText(expeObj.getString("display_time"));
+
+                String[] time = expeObj.getString("display_time").split("\n");
+                if (time.length == 1){
+                    expeCard.tvTime.setText(time[0]);
+                }else if (time.length == 2){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br /><small>"+time[1]+"</small>", Html.FROM_HTML_MODE_COMPACT));
+                    }else {
+                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br /><small>"+time[1]+"</small>"));
+                    }
+                    // expeCard.tvTime.setText(time[1]);
+                }else if (time.length == 0){
+                    expeCard.tvTime.setText("");
+                }
+
+                Log.d("string split", time.length+"");
 
                 if (expeObj.getString("avilable_seats").equals("0")){
                     expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));
