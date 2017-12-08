@@ -1,8 +1,10 @@
 package in.foodtalk.privilege.fragment.experiences;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -104,7 +106,21 @@ public class ExpeInvoice extends Fragment implements ApiCallback, View.OnTouchLi
             //String date = DateFunction.convertFormat(infoObj.getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
            // String date1 = DateFunction.convertFormat(infoObj.getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
            // tvTime.setText(date+" - "+date1);
-            tvTime.setText(infoObj.getString("display_time"));
+           // tvTime.setText(infoObj.getString("display_time"));
+
+            String[] time = infoObj.getString("display_time").split("\n");
+            if (time.length == 1){
+                tvTime.setText(time[0]);
+            }else if (time.length == 2){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>", Html.FROM_HTML_MODE_COMPACT));
+                }else {
+                    tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>"));
+                }
+                // expeCard.tvTime.setText(time[1]);
+            }else if (time.length == 0){
+                tvTime.setText("");
+            }
 
             if (infoObj.getString("nonveg_preference").equals("0")){
                 tvVegNon.setVisibility(View.GONE);

@@ -1,7 +1,9 @@
 package in.foodtalk.privilege.fragment.experiences;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,6 +51,20 @@ public class TicketsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             String date1 = DateFunction.convertFormat(listData.getJSONObject(position).getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
             ticketCard.tvTime.setText(date+" - "+date1);*/
             ticketCard.tvTime.setText(listData.getJSONObject(position).getString("display_time"));
+
+            String[] time = listData.getJSONObject(position).getString("display_time").split("\n");
+            if (time.length == 1){
+                ticketCard.tvTime.setText(time[0]);
+            }else if (time.length == 2){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    ticketCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>", Html.FROM_HTML_MODE_COMPACT));
+                }else {
+                    ticketCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>"));
+                }
+                // expeCard.tvTime.setText(time[1]);
+            }else if (time.length == 0){
+                ticketCard.tvTime.setText("");
+            }
 
 
             ticketCard.tvAddress.setText(listData.getJSONObject(position).getString("address"));

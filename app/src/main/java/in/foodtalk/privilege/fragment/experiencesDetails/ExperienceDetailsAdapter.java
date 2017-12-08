@@ -3,8 +3,10 @@ package in.foodtalk.privilege.fragment.experiencesDetails;
 import android.content.Context;
 import android.net.Uri;
 import android.net.UrlQuerySanitizer;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -128,7 +130,21 @@ public class ExperienceDetailsAdapter extends RecyclerView.Adapter<RecyclerView.
                     //String date = DateFunction.convertFormat(response.getJSONObject("result").getString("start_time"), "yyyy-MM-dd HH:mm:ss", "MMM d 'at' h:mm a");
                     //String date1 = DateFunction.convertFormat(response.getJSONObject("result").getString("end_time"), "yyyy-MM-dd HH:mm:ss", "h:mm a");
                     //coverCard.tvTime.setText(date+" - "+date1);
-                    coverCard.tvTime.setText(response.getJSONObject("result").getString("display_time"));
+                    //coverCard.tvTime.setText(response.getJSONObject("result").getString("display_time"));
+
+                    String[] time = response.getJSONObject("result").getString("display_time").split("\n");
+                    if (time.length == 1){
+                        coverCard.tvTime.setText(time[0]);
+                    }else if (time.length == 2){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            coverCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>", Html.FROM_HTML_MODE_COMPACT));
+                        }else {
+                            coverCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>"));
+                        }
+                        // expeCard.tvTime.setText(time[1]);
+                    }else if (time.length == 0){
+                        coverCard.tvTime.setText("");
+                    }
                     //coverCard.tvAddress1.setText(response.getJSONObject("result").getString(""));
 
                     Picasso.with(context)

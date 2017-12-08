@@ -68,7 +68,7 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="15sp"
                         android:text="September 17 at 10am - 12pm"
-                        android:textColor="@color/warm_grey"/>
+                        android:textColor="@color/dark_grey"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="15sp"
                         android:text="K 3/25, DLF Phase 2, Gurugram, Haryana"
-                        android:textColor="@color/warm_grey"/>
+                        android:textColor="@color/dark_grey"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                         android:layout_marginLeft="9dp"
                         android:textSize="15sp"
                         android:text="Starting at 1000/Person"
-                        android:textColor="@color/warm_grey"/>
+                        android:textColor="@color/dark_grey"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

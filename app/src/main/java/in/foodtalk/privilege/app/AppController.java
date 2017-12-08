@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import in.foodtalk.privilege.helper.ParseUtils;
 
+
 /**
  * Created by RetailAdmin on 03-05-2017.
  */
@@ -32,6 +33,8 @@ public class AppController extends Application {
 
     private RequestQueue mRequestQueue;
     private static AppController mInstance;
+
+    public Boolean isHomeActivity = false;
 
     private ParseUtils parseUtils;
 

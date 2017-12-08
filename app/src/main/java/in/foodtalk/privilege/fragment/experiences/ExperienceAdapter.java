@@ -81,16 +81,15 @@ public class ExperienceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     expeCard.tvTime.setText(time[0]);
                 }else if (time.length == 2){
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br /><small>"+time[1]+"</small>", Html.FROM_HTML_MODE_COMPACT));
+                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>", Html.FROM_HTML_MODE_COMPACT));
                     }else {
-                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br /><small>"+time[1]+"</small>"));
+                        expeCard.tvTime.setText(Html.fromHtml(time[0]+"<br/><small><font color='#8c8c8c'>"+time[1]+"</font></small>"));
                     }
                     // expeCard.tvTime.setText(time[1]);
                 }else if (time.length == 0){
                     expeCard.tvTime.setText("");
                 }
 
-                Log.d("string split", time.length+"");
 
                 if (expeObj.getString("avilable_seats").equals("0")){
                     expeCard.btnDetails.setBackground(context.getResources().getDrawable(R.drawable.btn_bg_red));

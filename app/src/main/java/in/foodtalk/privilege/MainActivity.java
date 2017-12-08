@@ -8,10 +8,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -24,6 +26,7 @@ import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -191,6 +194,11 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         db = new DatabaseHandler(this);
 
+        AppController.getInstance().isHomeActivity = true;
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-event-name"));
+
 
         //getKeyHash();
 
@@ -334,6 +342,44 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             //Restore the fragment's instance
             mContent = getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
         }*/
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppController.getInstance().isHomeActivity = false;
+    }
+
+    Boolean isAppPause = false;
+    String screenName;
+    String elementId;
+    String eventType;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+            try {
+                JSONObject jsonObject = new JSONObject(message);
+                screenName = jsonObject.getString("screenName");
+                elementId = jsonObject.getString("id");
+                Log.d("Home broadcastR",screenName);
+                if (!isAppPause){
+                    getFragmentManager().popBackStack();
+                    openNotificationFragment(screenName, elementId);
+                    screenName = null;
+                }else {
+                    Log.d("broadcastR", "app is paused");
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private void openNotificationFragment (String screenName, String id){
 
     }
 

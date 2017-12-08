@@ -62,7 +62,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="9dp"
-                                android:textSize="16sp"
                                 android:text="September 17 at 10am - 12pm"
                                 android:textColor="@color/white"/>
                             <TextView
@@ -75,7 +74,6 @@
                                 android:text="2 hour on Sunday noon"
                                 android:textColor="@color/warm_grey"/>
                         </LinearLayout>
-
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"

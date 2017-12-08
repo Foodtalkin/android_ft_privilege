@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.app.AppController;
 
 
@@ -42,7 +43,7 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
         try {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
             Log.e(TAG, "Push received: " + json);
-            screenName = json.getString("class");
+            screenName = json.getString("screen");
 
            // parseIntent = intent;
            // Intent resultIntent = new Intent(context, ResultNotification.class);
@@ -76,13 +77,13 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
         super.onPushOpen(context, intent);
         String screenName = "_";
         //isRunning(context);
-        /*Log.d(TAG, "onPushOpen: isHomeActivity: "+ AppController.getInstance().isHomeActivity);
+        Log.d(TAG, "onPushOpen: isHomeActivity: "+ AppController.getInstance().isHomeActivity);
         if (AppController.getInstance().isHomeActivity){
             String jsonData = intent.getExtras().getString("com.parse.Data");
             try {
                 JSONObject jsonObject = new JSONObject(jsonData);
-                screenName = jsonObject.getString("class");
-                final String elementId = jsonObject.getString("elementId");
+                screenName = jsonObject.getString("screenName");
+                final String elementId = jsonObject.getString("id");
                 Log.d(TAG+" onPushOpen",screenName+" "+elementId);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -95,7 +96,7 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
                 ParseAnalytics.trackAppOpenedInBackground(intent);
                 //PushService.setDefaultPushCallback(context, Home.class);
                 ParseAnalytics.trackAppOpenedInBackground(intent);
-                Intent i = new Intent(context, Home.class);
+                Intent i = new Intent(context, MainActivity.class);
                 i.putExtras(intent.getExtras());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
@@ -103,7 +104,7 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
                 Log.d("Tag parse", "onPushOpen Error : " + e);
             }
         }
-        AppController.getInstance().trackEvent("Notification", "Open", screenName);*/
+        //AppController.getInstance().trackEvent("Notification", "Open", screenName);
     }
     private void sendMessage(Context context, String jsonData) {
         Log.d("sender", "Broadcasting message");
