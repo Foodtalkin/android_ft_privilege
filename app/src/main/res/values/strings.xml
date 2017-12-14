@@ -5,6 +5,8 @@
     <string name="error_internet">Internet is not working</string>
     <string name="facebook_app_id">131166120735954</string>
 
+    <string name="notificationID">100</string>
+
     <string name="parseAppID">ftp</string>
     <string name="successCopy">
         <![CDATA[

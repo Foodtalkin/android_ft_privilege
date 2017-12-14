@@ -29,7 +29,7 @@ import in.foodtalk.privilege.fragment.history.HistoryFrag;
 public class HomeTabFrag extends Fragment {
     View layout;
 
-    ViewPager viewPager;
+    public ViewPager viewPager;
 
     FragmentManager fm;
 
@@ -66,6 +66,8 @@ public class HomeTabFrag extends Fragment {
         pagerAdapter = new HomePager(fm, fragments);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager, true);
+
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

@@ -282,16 +282,37 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
+
             String frag = bundle.getString("fragment");
+            String pd = bundle.getString("com.parse.Data");
             Log.d(TAG, "open frag: "+ frag);
-            if (frag.equals("signupFrag")){
-                //signUp();
-                signupAlert();
-                Log.d(TAG, "open signup fragment");
-            }else if (frag.equals("paymentFlow")){
-                startPaymentFlow();
+           // Log.d(TAG, "bundle: "+ff);
+            Log.d(TAG, "bundle: "+bundle);
+            if (frag != null){
+                if (frag.equals("signupFrag")){
+                    //signUp();
+                    signupAlert();
+                    Log.d(TAG, "open signup fragment");
+                }else if (frag.equals("paymentFlow")){
+                    startPaymentFlow();
+                }
+            }else if (pd != null){
+               // Log.d("Get extras", extras.getString("com.parse.Data")+"");
+               // String jsonData = pd;
+                Log.d(TAG, "pd: "+pd);
+                try {
+                    JSONObject jsonObject = new JSONObject(pd);
+                    String screenName = jsonObject.getString("screen");
+                    String elementId = jsonObject.getString("id");
+                    openNotificationFragment(screenName, elementId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+
         }else {
+
+            Log.d(TAG,"set home from onCreate");
 
             searchFrag = new SearchFrag();
             //homeFrag = new HomeFrag();
@@ -299,6 +320,8 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             setFragmentView(homeTabFrag, R.id.container, "homeFrag", false);
 
         }
+
+
 
         getFragmentManager().addOnBackStackChangedListener(this);
 
@@ -337,6 +360,20 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
 
         checkAndOpenPlayStore();
 
+        if (AppController.getInstance().pushData != null){
+            Log.d(TAG,"pushData: "+AppController.getInstance().pushData);
+            try {
+                JSONObject jsonObject = AppController.getInstance().pushData;
+                String screenName = jsonObject.getString("screen");
+                String elementId = jsonObject.getString("id");
+                openNotificationFragment(screenName, elementId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            Log.d(TAG,"pushData: is null");
+        }
+
 /*
         if (savedInstanceState != null) {
             //Restore the fragment's instance
@@ -363,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
             Log.d("receiver", "Got message: " + message);
             try {
                 JSONObject jsonObject = new JSONObject(message);
-                screenName = jsonObject.getString("screenName");
+                screenName = jsonObject.getString("screen");
                 elementId = jsonObject.getString("id");
                 Log.d("Home broadcastR",screenName);
                 if (!isAppPause){
@@ -380,7 +417,29 @@ public class MainActivity extends AppCompatActivity implements CallbackFragOpen,
         }
     };
     private void openNotificationFragment (String screenName, String id){
+        Log.d(TAG, "screenName: "+ screenName+" id: "+id);
+        switch (screenName){
+            case "experiences":
+                if (homeTabFrag != null){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            homeTabFrag.viewPager.setCurrentItem(1);
+                            // homeFrag.refreshFeed();
+                        }
+                    }, 1000);
 
+                }else {
+                    Log.e(TAG, "homeTabFrag null");
+                }
+
+                break;
+            case "experiences_details":
+                experienceDetailsFrag.expeId = id;
+                setFragmentView(experienceDetailsFrag, R.id.container, "experienceDetailsFrag", true);
+                Log.d(TAG,"open expeDetails");
+                break;
+        }
     }
 
     private void checkForRating(){

@@ -47,6 +47,8 @@ public class AppController extends Application {
     public String userType;
     public String userStatus ="active";
 
+    public JSONObject pushData;
+
 
 
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 import in.foodtalk.privilege.MainActivity;
 import in.foodtalk.privilege.app.AppController;
+import in.foodtalk.privilege.helper.NotificationUtils;
 
 
 /**
@@ -24,7 +25,7 @@ import in.foodtalk.privilege.app.AppController;
 public class CustomPushReceiver extends ParsePushBroadcastReceiver {
 
     private final String TAG = CustomPushReceiver.class.getSimpleName();
-   // private NotificationUtils notificationUtils;
+    private NotificationUtils notificationUtils;
 
     private Intent parseIntent;
 
@@ -78,7 +79,8 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
         String screenName = "_";
         //isRunning(context);
         Log.d(TAG, "onPushOpen: isHomeActivity: "+ AppController.getInstance().isHomeActivity);
-        if (AppController.getInstance().isHomeActivity){
+        /*if (AppController.getInstance().isHomeActivity){
+            Log.d(TAG,"isHomeActivity false");
             String jsonData = intent.getExtras().getString("com.parse.Data");
             try {
                 JSONObject jsonObject = new JSONObject(jsonData);
@@ -99,10 +101,15 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
                 Intent i = new Intent(context, MainActivity.class);
                 i.putExtras(intent.getExtras());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                //context.startActivity(i);
             } catch (Exception e) {
                 Log.d("Tag parse", "onPushOpen Error : " + e);
             }
+        }*/
+        try {
+            AppController.getInstance().pushData = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         //AppController.getInstance().trackEvent("Notification", "Open", screenName);
     }
