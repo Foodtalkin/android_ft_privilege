@@ -142,7 +142,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (offerCardObj.distance.equals("")){
                 offerCard.tvDistance.setVisibility(View.GONE);
             }else {
-                offerCard.tvDistance.setText(offerCardObj.distance+" KM");
+                if (Double.parseDouble(offerCardObj.distance) < 101){
+                    offerCard.tvDistance.setText(offerCardObj.distance+" KM");
+                }else {
+                    offerCard.tvDistance.setVisibility(View.GONE);
+                }
+
             }
 
 

@@ -261,7 +261,9 @@ public class CitySelectFrag extends Fragment implements View.OnTouchListener, Ap
             if (tag.equals("getCities")){
                 Log.e(TAG, "get Cities response: "+ response);
                 try {
-                    setData(response);
+                    if (getActivity() != null){
+                        setData(response);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

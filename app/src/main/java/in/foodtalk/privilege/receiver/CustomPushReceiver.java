@@ -41,10 +41,10 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
         String screenName = "_";
         if (intent == null)
             return;
-        try {
-            JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+        /*try {
+            //JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
             Log.e(TAG, "Push received: " + json);
-            screenName = json.getString("screen");
+            //screenName = json.getString("screen");
 
            // parseIntent = intent;
            // Intent resultIntent = new Intent(context, ResultNotification.class);
@@ -53,7 +53,7 @@ public class CustomPushReceiver extends ParsePushBroadcastReceiver {
             //parsePushJson(context, json);
         } catch (JSONException e) {
             Log.e(TAG, "Push message json exception: " + e.getMessage());
-        }
+        }*/
         //AppController.getInstance().trackEvent("Notification", "Receive", screenName);
     }
 
